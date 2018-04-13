@@ -1,0 +1,200 @@
+#!/bin/bash --login
+module load intel/14.0.3
+module load hpss
+module load szip/2.1
+module load hdf5/1.8.9
+module load netcdf4
+
+
+
+###################################################################
+#YEARRUN=2015
+#STARTMODAHR=010100
+#startdate10dig=$YEARRUN$STARTMODAHR
+#windowlen_days=49
+#hourincremnt=6
+#diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
+#outputpath='/lustre/f1/Scott.Gregory/FV3s'$YEARRUN'/'
+###################################################################
+
+streamyrs=(2003 2007 2011 2015)
+allstreampath='/lustre/f1/Oar.Esrl.Nggps_psd/'
+numruns=${#streamyrs}
+for i in `seq 1 $numruns`; do
+    echo 'modelrun='${streamyrs[$i-1]}'stream'
+    modelrun=${streamyrs[$i-1]}'stream'
+    fullmodelpath=$allstreampath$modelrun
+
+    
+
+
+
+
+
+done
+
+
+machine_path='/ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/'
+
+
+
+for i in `seq 1 $numruns`; do
+    echo 'i equals' $i
+    if [ "$i" -eq "1" ]
+    then
+    #STREAM 1... 1999->
+    diagpath='/3year/NCEPDEV/GEFSRR/Sherrie.Fredrick/C96_fv3reanl/'
+    outputpath='/lfs3/projects/gfsenkf/Scott.Gregory/FV3s1999/'
+    CFSRpath='/lfs3/projects/gfsenkf/Scott.Gregory/CFSR/'
+    listfilename=latestlist_FV3s1999.txt
+    #rm /misc/whome/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/fv3s1999_cronlog
+    elif  [ "$i" -eq "2" ]
+    then
+    ##STREAM 2... 2000->
+    diagpath='/3year/NCEPDEV/GEFSRR/Gary.Bates/C96_fv3reanl/'
+    outputpath='/lfs3/projects/gfsenkf/Scott.Gregory/FV3s2000/'
+    CFSRpath='/lfs3/projects/gfsenkf/Scott.Gregory/CFSR/'
+    listfilename=latestlist_FV3s2000.txt
+    #rm /misc/whome/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/fv3s2000_cronlog
+    elif  [ "$i" -eq "3" ]
+    then
+    ##2001: /3year/NCEPDEV/GEFSRR/Sherrie.Fredrick/2001_C96_fv3reanl/ /lfs3/projects/gfsenkf/Scott.Gregory/FV3s2001
+    diagpath='/3year/NCEPDEV/GEFSRR/Sherrie.Fredrick/2001_C96_fv3reanl/'
+    outputpath='/lfs3/projects/gfsenkf/Scott.Gregory/FV3s2001/'
+    CFSRpath='/lfs3/projects/gfsenkf/Scott.Gregory/CFSR/'
+    listfilename=latestlist_FV3s2001.txt
+    #rm /misc/whome/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/fv3s2001_cronlog
+    elif  [ "$i" -eq "4" ]
+    then
+    ##2005:
+    diagpath='/3year/NCEPDEV/GEFSRR/Gary.Bates/2005_C96_fv3reanl/'
+    outputpath='/lfs3/projects/gfsenkf/Scott.Gregory/FV3s2005/'
+    CFSRpath='/lfs3/projects/gfsenkf/Scott.Gregory/CFSR/'
+    listfilename=latestlist_FV3s2005.txt
+    #rm /misc/whome/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/fv3s2005_cronlog
+    elif  [ "$i" -eq "5" ]
+    then
+    ##2010: /3year/NCEPDEV/GEFSRR/Gary.Bates/2010_C96_fv3reanl/ /lfs3/projects/gfsenkf/Scott.Gregory/FV3s2010
+    diagpath='/3year/NCEPDEV/GEFSRR/Gary.Bates/2010_C96_fv3reanl/'
+    outputpath='/lfs3/projects/gfsenkf/Scott.Gregory/FV3s2010/'
+    CFSRpath='/lfs3/projects/gfsenkf/Scott.Gregory/CFSR/'
+    listfilename=latestlist_FV3s2010.txt
+    #rm /misc/whome/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/fv3s2010_cronlog
+    fi
+    ###################################################################
+    #####################################################################
+    
+    pattern='([[:digit:]])'
+    pattern2=$diagpath'*_subset.tar'
+    rm dates10dig.txt
+    rm mergedates10dig.txt
+    rmlistofhpss='rm '$listfilename
+    $rmlistofhpss
+    
+    hsi -P ls -1 $pattern2 > $listfilename
+    
+    count=0
+
+    while read -r line
+    do
+            name="$line"
+            NUMBERzz=$(echo $name | tr -dc $pattern)
+            lennum=${#NUMBERzz}
+            date10[$count]=${NUMBERzz:$lennum-10:10}
+            date8[$count]=${date10[$count]:0:8}
+            echo ${date10[$count]}
+            echo ${date10[$count]} >> 'dates10dig.txt'
+            ((count++)) 
+    done < "$listfilename"
+    echo LASTONEHPSS= ${date10[$count-1]}
+
+    count=0
+    for x in `ls -1 -d "$outputpath"bufr2nc*`; do
+          NUMBERzz=$(echo $x | tr -dc $pattern)
+          lennum=${#NUMBERzz}
+          date10B[$count]=${NUMBERzz:$lennum-10:10}
+          date8B[$count]=${date10B[$count]:0:8}
+          #echo ${date10B[$count]}
+          echo ${date10B[$count]} >> 'mergedates10dig.txt'
+          ((count++))
+    done
+    echo LASTONEMERGED= ${date10B[$count-1]}
+    
+    uniqcount=-1
+    for date in ${date10[*]}; do
+            uniqdate=$date
+            for dateB in ${date10B[*]}; do
+                    if [ $date = $dateB ]
+                    then
+                    #       echo $date not unique
+                            uniqdate=0
+                            continue
+                    fi
+            done
+            if [ $uniqdate -gt 0 ];
+            then
+                    echo unique date= $uniqdate
+                    uniqcount=$uniqcount+1
+                    date10dig[$uniqcount]=$date
+            fi
+    done
+    echo unique= ${date10dig[*]}
+    echo num unique= ${#date10dig[*]}
+    
+    
+    ########################################################################################################
+    ########################################################################################################
+    
+    temppath=$outputpath
+    normq_exec='/misc/whome/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/PREP/norm_q/norm_q'
+    
+    #######################################################################################################
+    count=0
+    ###################################################################
+    startdir=${PWD}
+    echo starting place $startdir
+    cd $outputpath
+    echo working place${PWD}
+    
+    for date in ${date10dig[*]}; do
+            if [ -d $date/ ] #if directory exists
+             then
+              echo "have diag, no htar"
+            else
+              echo directory $date doesnot exist
+              echo 'htar -xv -f '$diagpath$date'_subset.tar '$date'/diag*'
+              extract='htar -xv -f '$diagpath$date'_subset.tar '$date'/diag*'
+              $extract
+            fi
+
+            if [ -d $CFSRpath$date/ ] #if directory exists
+             then
+              echo "have CFSR diag, no htar"
+            else
+              echo directory $date doesnot exist
+              bash /misc/whome/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/CFSRextract_single.bash $date $CFSRpath
+            fi
+
+            QSUB='qsub -A gfsenkf -lpartition=xjet -lwalltime=8:00:00 -lvmem=16G -lnodes=1 -venddate10dig='$date',outpath='$outputpath' '$machine_path'makeALL_plotdata_FV3_singlecycle_GAEA.bash'
+                    echo $QSUB
+                    $QSUB
+#            QSUB='qsub -A gfsenkf -lpartition=xjet -lwalltime=8:00:00 -lvmem=16G -lnodes=1 -venddate10dig='$date',outpath='$CFSRpath' /misc/whome/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/makeALL_plotdata_CFSR_singlecycle_NEWnobufr.bash'
+                    echo $QSUB
+                    $QSUB
+            ((count++))
+    done
+    cd $startdir
+    unset date10dig
+    ### clears the date10dig varb
+    unset date8
+    unset date8B
+    unset date10
+    unset date10B
+    unset uniqdate
+    unset uniqcount
+    unset dateB
+    unset NUMBERzz
+    unset lennum
+done
+    
+
