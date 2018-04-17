@@ -30,7 +30,8 @@ nlevs=len(pcutoffs)
 
 
 anndata_nc = Dataset(annual_filename,'w',format='NETCDF4')
-anndata_nc.createDimension('Ncycles',None)
+#anndata_nc.createDimension('Ncycles',None)
+anndata_nc.createDimension('Ncycles',total_ntime)
 anndata_nc.createDimension('Nlevs',None)
 
 anndata_nc.createVariable('nobs_all',np.float32,('Ncycles','Nlevs',),zlib=False)
