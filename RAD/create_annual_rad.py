@@ -23,11 +23,10 @@ def create_annual_rad(outpath, streamyr, datayr, instrmnt, satlite, region):
    anndata_nc.createVariable('All_Dates',np.int,('Ncycles'),zlib=False)
    anndata_nc.createVariable('Full_Dates',np.int,('Ncycles'),zlib=False)
 
-   times = anndata_nc.createVariable('time',np.float64,('Ncycles'),zlib=False)
-   times.units = "hours since 0001-01-01 00:00:00.0"
-   times.calendar = "gregorian"
    dates = [datetime(datayr,1,1)+i*timedelta(hours=6) for i in range(total_ntime)]
-   times[:] = date2num(dates,units=times.units,calendar=times.calendar)
+   alldate=[dates[i].strftime('%Y%m%d%H') for i in range(total_ntime)]
+   anndata_nc['All_Dates'][:] = alldate[:]
+#   print alldate
 
    anndata_nc.createVariable('Channels',np.float32,('Nchans'),zlib=False)
 
