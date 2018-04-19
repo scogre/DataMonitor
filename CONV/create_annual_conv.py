@@ -25,7 +25,14 @@ def create_annual_conv(outpath, streamyr, datayr, varb, region, pcutoffs):
    dates = [datetime(datayr,1,1)+i*timedelta(hours=6) for i in range(total_ntime)]
    alldate=[dates[i].strftime('%Y%m%d%H') for i in range(total_ntime)]
    anndata_nc['All_Dates'][:] = alldate[:]
-#   print alldate
+
+######
+#   times = anndata_nc.createVariable('time',np.float64,('Ncycles'),zlib=False)
+#   times.units = "hours since 0001-01-01 00:00:00.0"
+#   times.calendar = "gregorian"
+#   times[:] = date2num(dates,units=times.units,calendar=times.calendar)
+######
+
 
    anndata_nc.createVariable('Plevels',np.float32,('Nlevs'),zlib=False)
    anndata_nc.variables['Plevels'][:] = pcutoffs

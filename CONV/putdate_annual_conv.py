@@ -1,15 +1,30 @@
 from netCDF4 import Dataset
 import numpy as np
 import sys, os
+from netCDF4 import num2date, date2num, date2index
 
 
+## example diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/2003stream/'
+## 
 def putdate_annual_conv(diagpath, date, var, diagpref, latrange, outfile):
-   fname = diagpath+'/diag_conv_'+var+'_ges.'+date+'_control.nc4'
+   fname = diagpath+'/'+str(date)+'/diag_conv_'+var+'_ges.'+str(date)+'_ensmean.nc4'
    diag_ctrl_f = Dataset(fname,'r')
-   fname = diagpath+'/diag_conv_'+var+'_anl.'+date+'_control.nc4'
+   print 'fname 1=',fname
+   fname = diagpath+'/'+str(date)+'/diag_conv_'+var+'_anl.'+str(date)+'_control.nc4'
    diag_ctrl_a = Dataset(fname,'r')
-   fname = diagpath+'/diag_conv_'+var+'_ges.ensmean_spread.nc4'
+   print 'fname 2=',fname
+   fname = diagpath+'/'+str(date)+'/diag_conv_'+var+'_ges.ensmean_spread.nc4'
    diag_ens_sprd = Dataset(fname, 'r')
+   print 'fname 3=',fname
+
+#   controlnc_file = conv_filepath+'diag_conv_'+varb+'_anl.'+rundate+'_control.nc4'
+#   nc_diagdata = Dataset(controlnc_file,'r')
+#   ensmeannc_file = conv_filepath+'diag_conv_'+varb+'_ges.'+rundate+'_ensmean.nc4'
+#   nc_ensdata = Dataset(ensmeannc_file,'r')
+#   enssprdnc_file = conv_filepath+'diag_conv_'+varb+'_ges.ensmean_spread.nc4'
+#   nc_sprddata = Dataset(enssprdnc_file,'r')
+
+
 
 # move to parameters
    if var == 't':
@@ -32,6 +47,7 @@ def putdate_annual_conv(diagpath, date, var, diagpref, latrange, outfile):
    oma_ens  = multvar * diag_ens_sprd['EnKF_fit_anl'][:]
 
    gsi_used  = diag_ctrl_a['Analysis_Use_Flag'][:]
+   print 'lengsiused=',len(gsi_used)
    enkf_used = diag_ens_sprd['EnKF_use_flag'][:]
    sprd_f = multvar * diag_ens_sprd['EnKF_spread_ges'][:]
    sprd_a = multvar * diag_ens_sprd['EnKF_spread_anl'][:]
@@ -41,32 +57,46 @@ def putdate_annual_conv(diagpath, date, var, diagpref, latrange, outfile):
    lat  = diag_ctrl_f['Latitude'][:]
 
    latidx = np.logical_and(lat >= np.min(latrange), lat <= np.max(latrange))
+   print 'lenlatidx=',len(latidx)
+   print 'lenlat=',len(lat)
 
-   anndata_nc = Dataset(outfile, 'a')
-   idate = date2index(date, anndata['time'])
-   levs = [anndata_nc['Plevels'][:],10000]
-   for ilev in range(len(levs)):	
+   anndata = Dataset(outfile, 'a')
+#   idate = date2index(date, anndata['time'])
+   alldate=anndata['All_Dates']
+   idate = np.nonzero(alldate[:]==date)[0][0]
+   anndata['Full_Dates'][idate] = date
+
+   levs = anndata['Plevels'][:].tolist()
+   #levs=np.asarray(levs)
+   print 'lenlevs=',len(levs)
+   levs.append(10000)
+   print 'levs=',levs
+   for ilev in range(len(levs)-1):
+      print 'levs[ilev],levs[ilev+1]=',levs[ilev],levs[ilev+1]	
       presidx = np.logical_and(pres >= levs[ilev], pres <= levs[ilev+1])
       areaidx = np.logical_and(presidx, latidx)
       useidx  = (gsi_used == 1)
+      print 'useidx  =',useidx
+      print 'areaidx  =',areaidx
+      print 'lenuse=',len(useidx)
+      print 'lenarea=',len(areaidx)
       idx = np.logical_and(useidx, areaidx)
       anndata['nobs_all'][idate,ilev]  = len(obs[areaidx])
       anndata['nobs_used'][idate,ilev] = len(obs[idx])
-      anndata['mean_obs_all'][idate,ilev]  = mean(obs[areaidx])
-      anndata['mean_obs_used'][idate,ilev] = mean(obs[idx])
-      anndata['mean_omf_ctrl'][idate,ilev] = mean(omf_ctrl[idx])
-      anndata['mean_oma_ctrl'][idate,ilev] = mean(oma_ctrl[idx])
-      anndata['std_omf_ctrl'][idate,ilev]  = sqrt(mean(omf_ctrl[idx] ** 2))
-      anndata['std_oma_ctrl'][idate,ilev]  = sqrt(mean(oma_ctrl[idx] ** 2))
+      anndata['mean_obs_all'][idate,ilev]  = np.mean(obs[areaidx])
+      anndata['mean_obs_used'][idate,ilev] = np.mean(obs[idx])
+      anndata['mean_omf_ctrl'][idate,ilev] = np.mean(omf_ctrl[idx])
+      anndata['mean_oma_ctrl'][idate,ilev] = np.mean(oma_ctrl[idx])
+      anndata['std_omf_ctrl'][idate,ilev]  = np.sqrt(np.mean(omf_ctrl[idx] ** 2))
+      anndata['std_oma_ctrl'][idate,ilev]  = np.sqrt(np.mean(oma_ctrl[idx] ** 2))
       useidx = (enkf_used == 1)
       idx = np.logical_and(useidx, areaidx)
-      anndata['mean_omf_ens'][idate,ilev] = mean(omf_ens[idx])
-      anndata['mean_oma_ens'][idate,ilev] = mean(oma_ens[idx])
-      anndata['spread_f'][idate,ilev] = sqrt(mean(sprd_f[idx]))
-      anndata['spread_a'][idate,ilev] = sqrt(mean(sprd_a[idx]))
-      anndata['spread_obserr_f'][idate,ilev] = sqrt(mean(sprd_f[idx] + obserr[idx]))
-      anndata['spread_obserr_a'][idate,ilev] = sqrt(mean(sprd_a[idx] + obserr[idx]))
-      anndata['std_omf_ens'][idate,ilev]  = sqrt(mean(omf_ens[idx] ** 2))
-      anndata['std_oma_ens'][idate,ilev]  = sqrt(mean(oma_ens[idx] ** 2))
-
-		
+      anndata['mean_omf_ens'][idate,ilev] = np.mean(omf_ens[idx])
+      anndata['mean_oma_ens'][idate,ilev] = np.mean(oma_ens[idx])
+      anndata['spread_f'][idate,ilev] = np.sqrt(np.mean(sprd_f[idx]))
+      anndata['spread_a'][idate,ilev] = np.sqrt(np.mean(sprd_a[idx]))
+      anndata['spread_obserr_f'][idate,ilev] = np.sqrt(np.mean(sprd_f[idx] + obserr[idx]))
+      anndata['spread_obserr_a'][idate,ilev] = np.sqrt(np.mean(sprd_a[idx] + obserr[idx]))
+      anndata['std_omf_ens'][idate,ilev]  = np.sqrt(np.mean(omf_ens[idx] ** 2))
+      anndata['std_oma_ens'][idate,ilev]  = np.sqrt(np.mean(oma_ens[idx] ** 2))
+   anndata.close()	
