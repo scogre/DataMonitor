@@ -17,16 +17,7 @@ def putdate_annual_conv(diagpath, date, var, diagpref, latrange, outfile):
    diag_ens_sprd = Dataset(fname, 'r')
    print 'fname 3=',fname
 
-#   controlnc_file = conv_filepath+'diag_conv_'+varb+'_anl.'+rundate+'_control.nc4'
-#   nc_diagdata = Dataset(controlnc_file,'r')
-#   ensmeannc_file = conv_filepath+'diag_conv_'+varb+'_ges.'+rundate+'_ensmean.nc4'
-#   nc_ensdata = Dataset(ensmeannc_file,'r')
-#   enssprdnc_file = conv_filepath+'diag_conv_'+varb+'_ges.ensmean_spread.nc4'
-#   nc_sprddata = Dataset(enssprdnc_file,'r')
-
-
-
-# move to parameters
+   # move to parameters
    if var == 't':
      addtovar = -273.15
      multvar = 1.0
@@ -49,8 +40,8 @@ def putdate_annual_conv(diagpath, date, var, diagpref, latrange, outfile):
    gsi_used  = diag_ctrl_a['Analysis_Use_Flag'][:]
    print 'lengsiused=',len(gsi_used)
    enkf_used = diag_ens_sprd['EnKF_use_flag'][:]
-   sprd_f = multvar * diag_ens_sprd['EnKF_spread_ges'][:]
-   sprd_a = multvar * diag_ens_sprd['EnKF_spread_anl'][:]
+   sprd_f = (multvar**2) * diag_ens_sprd['EnKF_spread_ges'][:]
+   sprd_a = (multvar**2) * diag_ens_sprd['EnKF_spread_anl'][:]
    obserr = 1. / ( diag_ctrl_f['Errinv_Input'][:]**2 )
 
    pres = diag_ctrl_f['Pressure'][:]
@@ -92,11 +83,13 @@ def putdate_annual_conv(diagpath, date, var, diagpref, latrange, outfile):
       useidx = (enkf_used == 1)
       idx = np.logical_and(useidx, areaidx)
       anndata['mean_omf_ens'][idate,ilev] = np.mean(omf_ens[idx])
-      anndata['mean_oma_ens'][idate,ilev] = np.mean(oma_ens[idx])
+# LEAVING OUT FOR NOW     anndata['mean_oma_ens'][idate,ilev] = np.mean(oma_ens[idx])
       anndata['spread_f'][idate,ilev] = np.sqrt(np.mean(sprd_f[idx]))
-      anndata['spread_a'][idate,ilev] = np.sqrt(np.mean(sprd_a[idx]))
+# LEAVING OUT FOR NOW     anndata['spread_a'][idate,ilev] = np.sqrt(np.mean(sprd_a[idx]))
       anndata['spread_obserr_f'][idate,ilev] = np.sqrt(np.mean(sprd_f[idx] + obserr[idx]))
-      anndata['spread_obserr_a'][idate,ilev] = np.sqrt(np.mean(sprd_a[idx] + obserr[idx]))
+# LEAVING OUT FOR NOW     anndata['spread_obserr_a'][idate,ilev] = np.sqrt(np.mean(sprd_a[idx] + obserr[idx]))
       anndata['std_omf_ens'][idate,ilev]  = np.sqrt(np.mean(omf_ens[idx] ** 2))
+      print 'oma_ens[idx]=',oma_ens[idx]
+      print 'oma_ens[idx]**2=',(oma_ens[idx] ** 2)
       anndata['std_oma_ens'][idate,ilev]  = np.sqrt(np.mean(oma_ens[idx] ** 2))
    anndata.close()	
