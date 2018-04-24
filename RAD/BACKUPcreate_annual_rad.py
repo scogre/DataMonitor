@@ -7,10 +7,8 @@ from netCDF4 import num2date, date2num
 ## DIMENSIONS
 ## NDAYSperYR X 4 for Ntime
 ## create_annual_rad(outpath, streamyr, datayr, instrmnt, satlite, region).. 2003 2004 'AMSUA' 'n15' 'GLOBL'
-def create_annual_rad(outpath, streamyr, datayr, instrmnt, channels, satlite, region):
+def create_annual_rad(outpath, streamyr, datayr, instrmnt, satlite, region):
    annual_filename = outpath+str(streamyr)+'/FV3s'+str(streamyr)+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
-
-   nchans=len(channels)
    if float(datayr)/4!=datayr/4 or datayr==2000:
       ndays=365
    else:
@@ -20,8 +18,7 @@ def create_annual_rad(outpath, streamyr, datayr, instrmnt, channels, satlite, re
 
    anndata_nc = Dataset(annual_filename,'w',format='NETCDF4')
    anndata_nc.createDimension('Ncycles',total_ntime)
-#   anndata_nc.createDimension('Nchans',None)
-   anndata_nc.createDimension('Nchans',nchans)
+   anndata_nc.createDimension('Nchans',None)
 
    anndata_nc.createVariable('All_Dates',np.int,('Ncycles'),zlib=False)
    anndata_nc.createVariable('Full_Dates',np.int,('Ncycles'),zlib=False)
@@ -32,7 +29,6 @@ def create_annual_rad(outpath, streamyr, datayr, instrmnt, channels, satlite, re
 #   print alldate
 
    anndata_nc.createVariable('Channels',np.float32,('Nchans'),zlib=False)
-   anndata_nc['Channels'][:] = channels
 
    anndata_nc.createVariable('nobs_all',np.int,('Ncycles','Nchans',),zlib=False)
    anndata_nc.createVariable('nobs_used',np.int,('Ncycles','Nchans',),zlib=False)

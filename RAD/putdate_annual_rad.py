@@ -13,19 +13,19 @@ from netCDF4 import num2date, date2num, date2index
 #outfile='/lustre/f1/Scott.Gregory/FV3s2003/FV3s2003_2003_AMSUA_n15_GLOBL.nc'
 
 def putdate_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile):
-   anlcontrolnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_anl.'+date+'_control.nc4'
+   anlcontrolnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_anl.'+str(date)+'_control.nc4'
    diag_ctrl_a = Dataset(anlcontrolnc_file,'r')
-   gescontrolnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+date+'_control.nc4'
+   gescontrolnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+str(date)+'_control.nc4'
    diag_ctrl_f = Dataset(gescontrolnc_file,'r')
-   ensmeannc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+date+'_ensmean.nc4'
+   ensmeannc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+str(date)+'_ensmean.nc4'
    diag_ens_mean = Dataset(ensmeannc_file,'r')
-   enssprdnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+date+'_ensmean_spread.nc4'
+   enssprdnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+str(date)+'_ensmean_spread.nc4'
    diag_ens_sprd = Dataset(enssprdnc_file,'r')
 
    ###############################################################################
-   chanindx_diag = nc_anl_ctrl['Channel_Index'][:]
+   chanindx_diag = diag_ctrl_a['Channel_Index'][:]
    nobs_anl=len(chanindx_diag)
-   chanlist_diag = nc_anl_ctrl['sensor_chan'][:]
+   chanlist_diag = diag_ctrl_a['sensor_chan'][:]
    obs = diag_ctrl_f['Observation'][:]
    
    chan_diag=np.zeros(nobs_anl)
