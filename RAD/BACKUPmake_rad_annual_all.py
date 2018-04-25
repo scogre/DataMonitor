@@ -7,34 +7,19 @@ streamyr = int(sys.argv[1])
 datayr = int(sys.argv[2])
 outpath='/lustre/f1/Scott.Gregory/FV3s'
 regions=['GLOBL','TROPI','NORTH','SOUTH']
-
 #instrmnt='AMSUA'
-#satlite='n15'
-#instrmnts=['hirs2','msu','avhrr3','hirs3','amsua','amsub','hirs4','mhs','ssmis','airs','atms','cris','seviri','iasi']  
-if streamyr==2003:
-   instrmnts=['amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'avhrr', 'avhrr', 'hirs2', 'hirs3', 'hirs3', 'msu', 'sndr']
-   satlites=[ 'n15'  , 'n16'  , 'n15'  , 'n16'  , 'n17'  , 'n16'  , 'n17'  , 'n14'  , 'n16'  , 'n17'  , 'n14', 'g08']
-elif streamyr==2007:
-   instrmnts=['airs', 'amsua', 'amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'hirs3', 'mhs', 'sndr']
-   satlites=[ 'aqua', 'aqua' , 'n15'  , 'n18'  , 'n15'  , 'n16'  , 'n17'  , 'n17'  , 'n18', 'g11']
-elif streamyr==2011:                   
-   instrmnts=['airs', 'amsua',  'amsua', 'amsua', 'amsua', 'amsua', 'avhrr'    , 'avhrr', 'hirs3', 'hirs4'   ,'hirs4', 'iasi'   , 'mhs'    ,'mhs', 'mhs' ]
-   satlites=[ 'aqua', 'aqua' ,'metop-a', 'n15'  , 'n18  ', 'n19'  , 'metop-a'  , 'n18'  , 'n17'  , 'metop-a' , 'n19' , 'metop-a', 'metop-a','n18', 'n19' ]
-elif streamyr==2015:                   
-   instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'atms' , 'avhrr'    , 'avhrr', 'cris', 'hirs4'   , 'iasi'   , 'mhs'    ,    'mhs',     'mhs', 'mhs' , 'mhs','seviri' ]
-   satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n18  ', 'npp'  , 'metop-a'  , 'n18'  , 'npp' , 'metop-a' , 'metop-a', 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'm10' ]
-else:
-   instrmnts=['hirs2','msu','avhrr','hirs3','amsua','amsub' ,'hirs4','sndr', 'mhs','ssmis','airs','atms','cris','seviri','iasi']
-   satlites= [''     ,''   ,''      ,''     ,''     ,''     ,''     ,''    ,''    ,''     ,''    ,''    ,''    ,''      ,''   ]
-    
+satlite='n15'
+
+instrmnts=['hirs2','msu','avhrr3','hirs3','amsua','amsub','hirs4','mhs','ssmis','airs','atms','cris','seviri','iasi']  
+
+
 hirs2_channels  = [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 msu_channels    = [ 1, 2, 3, 4]
-avhrr_channels = [ 3, 4, 5]
+avhrr3_channels = [ 3, 4, 5]
 hirs3_channels  = [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 amsua_channels  = [ 1, 2, 3, 4, 5, 6, 7, 8,  9, 10, 11, 12, 13, 15]
 amsub_channels  = [ 1, 2, 3, 4, 5]
 hirs4_channels  = [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-sndr_channels   = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 mhs_channels    = [ 1, 2, 3, 4, 5]
 ssmis_channels  = [ 1, 2, 3, 4, 5, 6, 7, 24]
 airs_channels   = [   7,  15,  20,  21,  22,  27,  28,  40,  52,  69, \
@@ -79,11 +64,8 @@ iasi_channels   = [  16,  38,  49,  51,  55,  57,  59,  61,  63,  66, \
                    1658,1671,1786,1805,1884,1991,2019,2094,2119,2213, \
                    2239,2271,2321,2398,2701]
 
-numinst=len(instrmnts)
-#for instrmnt in instrmnts:
-for nn in range(numinst):
-   instrmnt=instrmnts[nn]
-   satlite=satlites[nn]
+
+for instrmnt in instrmnts:
    channelsname=instrmnt+'_channels'
    channels=eval(channelsname)
    print 'channels_name,channels=', channelsname,channels
@@ -92,4 +74,76 @@ for nn in range(numinst):
    del channels
 
 
+#FV3s2003
+#amsua_n15
+#amsua_n16
+#amsub_n15
+#amsub_n16
+#amsub_n17
+#avhrr_n16
+#avhrr_n17
+#hirs2_n14
+#hirs3_n16
+#hirs3_n17
+#msu_n14
+#sbuv2_n16
+#sndr_g08
+
+
+#FV3s2007
+#airs_aqua
+#amsua_aqua
+#amsua_n15
+#amsua_n18
+#amsub_n15
+#amsub_n16
+#amsub_n17
+#hirs3_n17
+#mhs_n18
+#sbuv2_n17
+#sbuv2_n18
+#sndr_g11   ??????????
+
+
+#FV3s2011                   
+#airs_aqua
+#amsua_aqua
+#amsua_metop-a
+#amsua_n15
+#amsua_n18
+#amsua_n19
+#avhrr_metop-a
+#avhrr_n18
+#hirs3_n17
+#hirs4_metop-a
+#hirs4_n19
+#iasi_metop-a
+#mhs_metop-a
+#mhs_n18
+#mhs_n19
+#omi_aura
+#sbuv2_n18
+#sbuv2_n19
+
+
+#FV3s2015                   
+#airs_aqua                   
+#amsua_aqua                   
+#amsua_metop-a
+#amsua_metop-b
+#amsua_n15
+#amsua_n18                   
+#atms_npp                   
+#avhrr_metop-a
+#avhrr_n18
+#cris_npp
+#hirs4_metop-a
+#iasi_metop-a
+#mhs_metop-a
+#mhs_metop-b
+#mhs_n18
+#mhs_n19
+#omi_aura
+#sbuv2_n19
+#seviri_m10
 

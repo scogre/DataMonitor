@@ -40,8 +40,9 @@ def putdate_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile):
    omf_ens  = diag_ens_sprd['EnKF_fit_ges'][:]
    oma_ens  = diag_ens_sprd['EnKF_fit_anl'][:]
 
-   gsi_used  = diag_ctrl_a['use_flag'][:] ##dimension nchan... says whether the channel is used in GSI
-   enkf_used = diag_ens_sprd['EnKF_use_flag'][:] ##dimension nobs....
+   gsi_used  = diag_ctrl_a['use_flag'][:]
+   print 'lengsiused=',len(gsi_used)
+   enkf_used = diag_ens_sprd['EnKF_use_flag'][:]
    gsi_qcd  = diag_ctrl_a['QC_Flag'][:]
 
    sprd_f =  diag_ens_sprd['EnKF_spread_ges'][:]
@@ -59,27 +60,26 @@ def putdate_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile):
    chans = anndata['Channels'][:].tolist()
    print 'lenchan=',len(chans)
    for ichan in range(len(chans)):
-      chanidx = (chan_diag==chans[ichan])
-      #chanidx = (chan_diag==chanlist_diag[ichan])
-      print 'lenlatindx,lenchanindx=',len(latidx),len(chanidx)
+      chanidx = (chan_diag==chanlist_diag[ichan])
       chanlatidx = np.logical_and(chanidx, latidx)
+      useidx  = (gsi_used == 1)
       qcdidx  = (gsi_qcd == 0)
+      idx = np.logical_and(useidx, chanlatidx)
       qidx = np.logical_and(qcdidx, chanlatidx)
       anndata['nobs_all'][idate,ichan]  = len(obs[chanlatidx])
-      #anndata['nobs_used'][idate,ichan] = len(obs[idx])
+      anndata['nobs_used'][idate,ichan] = len(obs[idx])
       anndata['nobs_qcd'][idate,ichan] = len(obs[qidx])
       anndata['mean_obs_all'][idate,ichan]  = np.mean(obs[chanlatidx])
-      anndata['mean_obs_used'][idate,ichan] = np.mean(obs[qidx])
+      anndata['mean_obs_used'][idate,ichan] = np.mean(obs[idx])
       anndata['mean_obs_qcd'][idate,ichan] = np.mean(obs[qidx])
-      anndata['mean_omf_ctrl'][idate,ichan] = np.mean(omf_ctrl[qidx])
-      anndata['mean_oma_ctrl'][idate,ichan] = np.mean(oma_ctrl[qidx])
-      anndata['std_omf_ctrl'][idate,ichan]  = np.sqrt(np.mean(omf_ctrl[qidx] ** 2))
-      anndata['std_oma_ctrl'][idate,ichan]  = np.sqrt(np.mean(oma_ctrl[qidx] ** 2))
-      #del idx
-      #del useidx
-      useidx = (enkf_used == 1)  ## for enkf use only
+      anndata['mean_omf_ctrl'][idate,ichan] = np.mean(omf_ctrl[idx])
+      anndata['mean_oma_ctrl'][idate,ichan] = np.mean(oma_ctrl[idx])
+      anndata['std_omf_ctrl'][idate,ichan]  = np.sqrt(np.mean(omf_ctrl[idx] ** 2))
+      anndata['std_oma_ctrl'][idate,ichan]  = np.sqrt(np.mean(oma_ctrl[idx] ** 2))
+      del idx
+      del useidx
+      useidx = (enkf_used == 1)
       idx = np.logical_and(useidx, chanlatidx)
-      anndata['nobs_used'][idate,ichan] = len(obs[idx])
       anndata['mean_omf_ens'][idate,ichan] = np.mean(omf_ens[idx])
       # LEAVING OUT FOR NOW     anndata['mean_oma_ens'][idate,ichan] = np.mean(oma_ens[idx])
       anndata['spread_f'][idate,ichan] = np.sqrt(np.mean(sprd_f[idx]))
