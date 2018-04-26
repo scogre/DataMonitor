@@ -4,14 +4,6 @@ import sys, os
 from netCDF4 import num2date, date2num, date2index
 
 
-## TRANSLATE NORTH SOUTH GLOBL TROPI TO LATRANGES
-#diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/2003stream/'
-#date=2003010206
-#instrmnt='amsua'
-#satlite='n15'
-#latrange=[-90, 90]
-#outfile='/lustre/f1/Scott.Gregory/FV3s2003/FV3s2003_2003_AMSUA_n15_GLOBL.nc'
-
 def putdate_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile):
    anlcontrolnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_anl.'+str(date)+'_control.nc4'
    diag_ctrl_a = Dataset(anlcontrolnc_file,'r')
