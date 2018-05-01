@@ -5,7 +5,8 @@ if len(sys.argv) < 2:
    raise SystemExit('python put_all.py <stream start year> <date>')
 streamyr = int(sys.argv[1])
 date = int(sys.argv[2])
-print 'streamyr,date=',streamyr,date 
+datayr=str(date)[0:4]
+#print 'streamyr,date=',streamyr,date 
 
 if streamyr==2003:
    instrmnts=['amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'avhrr', 'avhrr', 'hirs2', 'hirs3', 'hirs3', 'msu', 'sndr']
@@ -22,19 +23,21 @@ elif streamyr==2015:
 else:
    instrmnts=['hirs2','msu','avhrr','hirs3','amsua','amsub' ,'hirs4','sndr', 'mhs','ssmis','airs','atms','cris','seviri','iasi']
    satlites= [''     ,''   ,''      ,''     ,''     ,''     ,''     ,''    ,''    ,''     ,''    ,''    ,''    ,''      ,''   ]
-print 'intrmnts=',instrmnts
+#print 'intrmnts=',instrmnts
 numinst=len(instrmnts)
 #for instrmnt in instrmnts:
 for nn in range(numinst):
    instrmnt=instrmnts[nn]
    satlite=satlites[nn]
-   print 'call_putdate...=',streamyr, date, instrmnt, satlite
-   call_putdate( streamyr, date, instrmnt, satlite)
+   #print 'call_putdate...=',streamyr, date, instrmnt, satlite
+   #call_putdate( streamyr, date, instrmnt, satlite)
+   try:
+      call_putdate( streamyr, date, instrmnt, satlite)
+   except:
+      print 'unable to putdate...=',streamyr, date, instrmnt, satlite
 
-
-
-
-
+   info='/lustre/f1/Scott.Gregory/FV3s'+str(streamyr)+'/FV3s'+str(streamyr)+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_XXXXX.nc '+str(date)
+   print 'info=',info
 
 
 

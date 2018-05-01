@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ###################################################################
-YEARRUN=2007
+YEARRUN=2003
 STARTMODAHR=032000
 startdate10dig=$YEARRUN$STARTMODAHR
-windowlen_days=10
+windowlen_days=20
 hourincremnt=6
 
 diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
@@ -54,7 +54,8 @@ echo FORWARD ${date10dig[*]}
 putcode='/ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/RAD/put_all.py'
 
 for date in ${date10dig[*]}; do
-   echo python $putcode $YEARRUN $date
+   #echo python $putcode $YEARRUN $date
+   echo 'date='$date
    python $putcode $YEARRUN $date
 done
 

@@ -5,6 +5,7 @@ from netCDF4 import num2date, date2num, date2index
 
 
 def putdate_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile):
+   #print 'putdate_annual_rad:',date
    anlcontrolnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_anl.'+str(date)+'_control.nc4'
    diag_ctrl_a = Dataset(anlcontrolnc_file,'r')
    gescontrolnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+str(date)+'_control.nc4'
@@ -49,11 +50,11 @@ def putdate_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile):
 
    ##### ['Ncycles','Nchans']
    chans = anndata['Channels'][:].tolist()
-   print 'lenchan=',len(chans)
+   #print 'lenchan=',len(chans)
    for ichan in range(len(chans)):
       chanidx = (chan_diag==chans[ichan])
       #chanidx = (chan_diag==chanlist_diag[ichan])
-      print 'lenlatindx,lenchanindx=',len(latidx),len(chanidx)
+      #print 'lenlatindx,lenchanindx=',len(latidx),len(chanidx)
       chanlatidx = np.logical_and(chanidx, latidx)
       qcdidx  = (gsi_qcd == 0)
       qidx = np.logical_and(qcdidx, chanlatidx)

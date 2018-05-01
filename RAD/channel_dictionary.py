@@ -1,32 +1,3 @@
-import sys
-from create_annual_rad import create_annual_rad
-
-if len(sys.argv) < 2:
-    raise SystemExit('python make_rad_annual_all.py <stream start year> <data year>')
-streamyr = int(sys.argv[1])
-datayr = int(sys.argv[2])
-outpath='/lustre/f1/Scott.Gregory/'
-regions=['GLOBL','TROPI','NORTH','SOUTH']
-
-#instrmnt='AMSUA'
-#satlite='n15'
-#instrmnts=['hirs2','msu','avhrr3','hirs3','amsua','amsub','hirs4','mhs','ssmis','airs','atms','cris','seviri','iasi']  
-if streamyr==2003:
-   instrmnts=['amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'avhrr', 'avhrr', 'hirs2', 'hirs3', 'hirs3', 'msu', 'sndr']
-   satlites=[ 'n15'  , 'n16'  , 'n15'  , 'n16'  , 'n17'  , 'n16'  , 'n17'  , 'n14'  , 'n16'  , 'n17'  , 'n14', 'g08']
-elif streamyr==2007:
-   instrmnts=['airs', 'amsua', 'amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'hirs3', 'mhs', 'sndr']
-   satlites=[ 'aqua', 'aqua' , 'n15'  , 'n18'  , 'n15'  , 'n16'  , 'n17'  , 'n17'  , 'n18', 'g11']
-elif streamyr==2011:                   
-   instrmnts=['airs', 'amsua',  'amsua', 'amsua', 'amsua', 'amsua', 'avhrr'    , 'avhrr', 'hirs3', 'hirs4'   ,'hirs4', 'iasi'   , 'mhs'    ,'mhs', 'mhs' ]
-   satlites=[ 'aqua', 'aqua' ,'metop-a', 'n15'  , 'n18  ', 'n19'  , 'metop-a'  , 'n18'  , 'n17'  , 'metop-a' , 'n19' , 'metop-a', 'metop-a','n18', 'n19' ]
-elif streamyr==2015:                   
-   instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'atms' , 'avhrr'    , 'avhrr', 'cris', 'hirs4'   , 'iasi'   , 'mhs'    ,    'mhs',     'mhs', 'mhs' , 'mhs','seviri' ]
-   satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n18  ', 'npp'  , 'metop-a'  , 'n18'  , 'npp' , 'metop-a' , 'metop-a', 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'm10' ]
-else:
-   instrmnts=['hirs2','msu','avhrr','hirs3','amsua','amsub' ,'hirs4','sndr', 'mhs','ssmis','airs','atms','cris','seviri','iasi']
-   satlites= [''     ,''   ,''      ,''     ,''     ,''     ,''     ,''    ,''    ,''     ,''    ,''    ,''    ,''      ,''   ]
-    
 hirs2_channels  = [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 msu_channels    = [ 1, 2, 3, 4]
 avhrr_channels = [ 3, 4, 5]
@@ -78,18 +49,5 @@ iasi_channels   = [  16,  38,  49,  51,  55,  57,  59,  61,  63,  66, \
                    1521,1536,1574,1579,1585,1587,1626,1639,1643,1652, \
                    1658,1671,1786,1805,1884,1991,2019,2094,2119,2213, \
                    2239,2271,2321,2398,2701]
-
-numinst=len(instrmnts)
-#for instrmnt in instrmnts:
-for nn in range(numinst):
-   instrmnt=instrmnts[nn]
-   satlite=satlites[nn]
-   channelsname=instrmnt+'_channels'
-   channels=eval(channelsname)
-   print 'channels_name,channels=', channelsname,channels
-   for reg in regions:
-      create_annual_rad(outpath, streamyr, datayr, instrmnt, channels, satlite, reg)
-   del channels
-
 
 
