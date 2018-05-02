@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###################################################################
-YEARRUN=2003
+YEARRUN=2015
 STARTMODAHR=032000
 startdate10dig=$YEARRUN$STARTMODAHR
 windowlen_days=20
