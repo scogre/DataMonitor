@@ -1,30 +1,24 @@
 #!/bin/bash
-
 ### need to sort out the variable inputs
+yearruns=('2003' '2007' '2011' '2015')
+count=0
+for Y in "${yearruns[@]}"
+do
+   YEARRUN=$Y
+   echo YRRUN=$YEARRUN
+   echo $count
+   echo "$Y"
+   ((count++))
+   ANNFILES=$(ls -1d /lustre/f1/Scott.Gregory/FV3s$YEARRUN/FV3s$YEARRUN*nc)
+   #echo $ANNFILES
+   echo numfile=${#ANNFILES}
+   for ANNFILE in ${ANNFILES[*]}; do
+      echo ANNFILE=$ANNFILE
 
-
-
-
-
-
-
-
-ANNFILE='/lustre/f1/Scott.Gregory/FV3s2015/FV3s2015_2015_amsua_metop-a_GLOBL.nc'
 ###################################################################
-YEARRUN=2015
 diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
 outputpath='/lustre/f1/Scott.Gregory/FV3s'$YEARRUN'/'
 ###################################################################
-
-
-
-
-
-
-
-
-
-
 
 if [ -d $outputpath/ ] #if directory exists
 then
@@ -67,7 +61,6 @@ while [ $endsig -eq $gosig ]; do   ###these will be not equal each other when th
    echo fusestring=$fusestring
 done
 
-
 lenFUSE=${#fusestring}
 echo lenstr=$lenFUSE
 
@@ -106,4 +99,6 @@ echo num unique= ${#date10dig[*]}
 
 ###date10dig is the list of dates for adding to the annual file
 ##### then we feed this list of dates to the PUT
+   done
+done
 

@@ -6,7 +6,8 @@ from netCDF4 import num2date, date2num, date2index
 
 ## example diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/2003stream/'
 ## 
-def putdate_annual_conv(diagpath, date, var, diagpref, latrange, outfile):
+#def putdate_annual_conv(diagpath, date, var, diagpref, latrange, outfile):
+def putdate_annual_conv(diagpath, date, var, latrange, outfile):
    fname = diagpath+'/'+str(date)+'/diag_conv_'+var+'_ges.'+str(date)+'_ensmean.nc4'
    diag_ctrl_f = Dataset(fname,'r')
    print 'fname 1=',fname

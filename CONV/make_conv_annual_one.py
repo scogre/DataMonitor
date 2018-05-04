@@ -10,7 +10,11 @@ datayr = int(sys.argv[2])
 varb = sys.argv[3]
 region = sys.argv[4]
 pcutoffs=range(0,1000,100) ##=[0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
-outpath='/lustre/f1/Scott.Gregory/FV3s'
+outpath='/lustre/f1/Scott.Gregory/'
 
-create_annual_conv(outpath, streamyr, datayr, varb, region, pcutoffs)
+outfile = outpath+'/FV3s'+str(streamyr)+'/FV3s'+str(streamyr)+'_'+str(datayr)+'_'+varb+'_'+region+'.nc'
+
+
+
+create_annual_conv(outfile, streamyr, datayr, varb, region, pcutoffs)
 

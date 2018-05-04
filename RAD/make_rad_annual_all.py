@@ -19,10 +19,10 @@ elif streamyr==2007:
    satlites=[ 'aqua', 'aqua' , 'n15'  , 'n18'  , 'n15'  , 'n16'  , 'n17'  , 'n17'  , 'n18', 'g11']
 elif streamyr==2011:                   
    instrmnts=['airs', 'amsua',  'amsua', 'amsua', 'amsua', 'amsua', 'avhrr'    , 'avhrr', 'hirs3', 'hirs4'   ,'hirs4', 'iasi'   , 'mhs'    ,'mhs', 'mhs' ]
-   satlites=[ 'aqua', 'aqua' ,'metop-a', 'n15'  , 'n18  ', 'n19'  , 'metop-a'  , 'n18'  , 'n17'  , 'metop-a' , 'n19' , 'metop-a', 'metop-a','n18', 'n19' ]
+   satlites=[ 'aqua', 'aqua' ,'metop-a', 'n15'  , 'n18'  , 'n19'  , 'metop-a'  , 'n18'  , 'n17'  , 'metop-a' , 'n19' , 'metop-a', 'metop-a','n18', 'n19' ]
 elif streamyr==2015:                   
    instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'atms' , 'avhrr'    , 'avhrr', 'cris', 'hirs4'   , 'iasi'   , 'mhs'    ,    'mhs',     'mhs', 'mhs' , 'mhs','seviri' ]
-   satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n18  ', 'npp'  , 'metop-a'  , 'n18'  , 'npp' , 'metop-a' , 'metop-a', 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'm10' ]
+   satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n18'  , 'npp'  , 'metop-a'  , 'n18'  , 'npp' , 'metop-a' , 'metop-a', 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'm10' ]
 else:
    instrmnts=['hirs2','msu','avhrr','hirs3','amsua','amsub' ,'hirs4','sndr', 'mhs','ssmis','airs','atms','cris','seviri','iasi']
    satlites= [''     ,''   ,''      ,''     ,''     ,''     ,''     ,''    ,''    ,''     ,''    ,''    ,''    ,''      ,''   ]
@@ -87,8 +87,9 @@ for nn in range(numinst):
    channelsname=instrmnt+'_channels'
    channels=eval(channelsname)
    print 'channels_name,channels=', channelsname,channels
-   for reg in regions:
-      create_annual_rad(outpath, streamyr, datayr, instrmnt, channels, satlite, reg)
+   for region in regions:
+      outfile=outpath+'FV3s'+str(streamyr)+'/RAD_FV3s'+str(streamyr)+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
+      create_annual_rad(outfile, streamyr, datayr, instrmnt, channels, satlite, region)
    del channels
 
 
