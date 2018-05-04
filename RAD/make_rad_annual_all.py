@@ -2,10 +2,11 @@ import sys
 from create_annual_rad import create_annual_rad
 
 if len(sys.argv) < 2:
-    raise SystemExit('python make_rad_annual_all.py <stream start year> <data year>')
+    raise SystemExit('python make_rad_annual_all.py <stream start year> <data year> <output path>')
 streamyr = int(sys.argv[1])
 datayr = int(sys.argv[2])
-outpath='/lustre/f1/Scott.Gregory/'
+outpath = sys.argv[3]
+#outpath='/lustre/f1/Scott.Gregory/'
 regions=['GLOBL','TROPI','NORTH','SOUTH']
 
 #instrmnt='AMSUA'

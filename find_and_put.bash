@@ -10,25 +10,40 @@ do
    echo $count
    echo "$Y"
    ((count++))
-   ANNFILES=$(ls -1d /lustre/f1/Scott.Gregory/FV3s$YEARRUN/*FV3s$YEARRUN*nc)
-   #echo $ANNFILES
-   numfile=${#ANNFILES}
-   echo numfile=${#ANNFILES}
+
+   RAD_ANNFILES=$(ls -1d /lustre/f1/Scott.Gregory/FV3s$YEARRUN/RAD*FV3s$YEARRUN*nc)
+   #echo $RAD_ANNFILES
+   numfile=${#RAD_ANNFILES}
+   echo numfile=${#RAD_ANNFILES}
    if [ "$numfile" == "0" ]
    then
       echo 'making blanks for '$streamyr
-      makeblanks='python RAD/make_rad_annual_all.py '$YEARRUN' '$YEARRUN
+      makeblanks='python RAD/make_rad_annual_all.py '$YEARRUN' '$YEARRUN' '$outpath
       $makeblanks
-      ANNFILES=$(ls -1d /lustre/f1/Scott.Gregory/FV3s$YEARRUN/*FV3s$YEARRUN*nc)
-      #echo $ANNFILES
-      numfile=${#ANNFILES}
-       echo numfile=${#ANNFILES}
+      RAD_ANNFILES=$(ls -1d /lustre/f1/Scott.Gregory/FV3s$YEARRUN/RAD*FV3s$YEARRUN*nc)
+      #echo $RAD_ANNFILES
+      numfile=${#RAD_ANNFILES}
+      echo numfile=${#RAD_ANNFILES}
+   fi
+
+   CONV_ANNFILES=$(ls -1d /lustre/f1/Scott.Gregory/FV3s$YEARRUN/CONV*FV3s$YEARRUN*nc)
+   #echo $CONV_ANNFILES
+   convnumfile=${#CONV_ANNFILES}
+   echo convnumfile=${#CONV_ANNFILES}
+   if [ "$convnumfile" == "0" ]
+   then
+      makeblanks='python CONV/make_conv_annual_all.py '$YEARRUN' '$YEARRUN' '$outpath
+      $makeblanks
+      CONV_ANNFILES=$(ls -1d /lustre/f1/Scott.Gregory/FV3s$YEARRUN/CONV*FV3s$YEARRUN*nc)
+      #echo $CONV_ANNFILES
+      numfile=${#CONV_ANNFILES}
+      echo numfile=${#CONV_ANNFILES}
    fi
 
 
    ###################################################################
    diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
-   outputpath=outpath+'FV3s'$YEARRUN'/'
+   outputpath=$outpath'FV3s'$YEARRUN'/'
    ###################################################################
    if [ -d $outputpath/ ] #if directory exists
    then
@@ -51,8 +66,8 @@ do
 
 
 
-   for ANNFILE in ${ANNFILES[*]}; do
-      echo ANNFILE=$ANNFILE
+   for RAD_ANNFILE in ${RAD_ANNFILES[*]}; do
+      echo RAD_ANNFILE=$RAD_ANNFILE
       ##################################################################
       fusestring=''
       XX=''
@@ -65,7 +80,7 @@ do
       while [ $endsig -eq $gosig ]; do   ###these will be not equal each other when the endpunctuation is found in the ncdump of dates
          ((lines++))
          language="/Full_Dates =/ {nextline=NR+$lines}{if(NR==nextline){print}}"
-         XX=$(ncdump -v Full_Dates $ANNFILE |awk "$language")
+         XX=$(ncdump -v Full_Dates $RAD_ANNFILE |awk "$language")
          fusestring=$fusestring' '$XX
          junkstring=${XX%%$endpunc*}
          endsig=${#XX}
@@ -119,10 +134,12 @@ do
       CONVputcode='/ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/CONV/call_putdate_CONV.py'
       for date in ${date10dig[*]}; do
          #echo python $RADputcode $YEARRUN $date
+         #echo 'date='$date
+         #python $RADputcode $YEARRUN $date $outpath
+
+         echo python $CONVputcode $YEARRUN $date $outpath
          echo 'date='$date
-         python $RADputcode $YEARRUN $date $outpath
-         #outfile=outpath+'FV3s'+str(streamyr)+'/CONV_'+var+'_FV3s'+str(streamyr)+'_'+str(datayr)+'_'+region+'.nc'
-         #python $CONVputcode $YEARRUN $date $outfile
+         python $CONVputcode $YEARRUN $date $outpath
       done
       ## outfile='/lustre/f1/Scott.Gregory/FV3s'+str(streamyr)+'/FV3s'+str(streamyr)+'_'+str(datayr)+'_'+var+'_'+region+'.nc'
       ## call_putdate_CONV( streamyr,  date, var, outfile)
@@ -133,4 +150,3 @@ do
 
    done
 done
-
