@@ -9,11 +9,12 @@ if len(sys.argv) < 2:
 streamyr = int(sys.argv[1])
 date = int(sys.argv[2])
 outpath = sys.argv[3]
+diagpath = sys.argv[4]
 datayr=str(date)[0:4]
 #print 'streamyr,date=',streamyr,date 
 
 datayr=str(date)[0:4]
-diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'+str(streamyr)+'stream/'
+#diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'+str(streamyr)+'stream/'
 regions=['GLOBL','TROPI','NORTH','SOUTH']
 
 variables=['t','u','v','q','ps','gps']

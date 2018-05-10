@@ -1,9 +1,9 @@
 from putdate_annual_rad import putdate_annual_rad
 import os
 
-def call_putdate_RAD( streamyr,  date, instrmnt, satlite, outpath, region):
+def call_putdate_RAD( diagpath, streamyr,  date, instrmnt, satlite, outpath, region):
    datayr=str(date)[0:4]
-   diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'+str(streamyr)+'stream/'
+
    if region=='GLOBL':
       latrange=[-90, 90]
    elif region=='TROPI':

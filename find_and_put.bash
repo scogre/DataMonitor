@@ -1,6 +1,8 @@
 #!/bin/bash
 ### need to sort out the variable inputs
-yearruns=('2003' '2007' '2011' '2015')
+
+#yearruns=('2003' '2007' '2011' '2015')
+yearruns=('2007' '2011' '2015')
 count=0
 outpath='/lustre/f1/Scott.Gregory/'
 for Y in "${yearruns[@]}"
@@ -26,6 +28,12 @@ do
       echo numfile=${#RAD_ANNFILES}
    fi
 
+  
+#   for RAD_ANNFILE in ${RAD_ANNFILES[*]}; do
+#      echo RAD_ANNFILE=$RAD_ANNFILE
+#      break
+#   done
+
    CONV_ANNFILES=$(ls -1d /lustre/f1/Scott.Gregory/FV3s$YEARRUN/CONV*FV3s$YEARRUN*nc)
    #echo $CONV_ANNFILES
    convnumfile=${#CONV_ANNFILES}
@@ -43,6 +51,7 @@ do
 
    ###################################################################
    diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
+   #diagpath=$outpath$YEARRUN'stream/' ### when I download from the hpss
    outputpath=$outpath'FV3s'$YEARRUN'/'
    ###################################################################
    if [ -d $outputpath/ ] #if directory exists
@@ -66,7 +75,8 @@ do
 
 
 
-   for RAD_ANNFILE in ${RAD_ANNFILES[*]}; do
+#   for RAD_ANNFILE in ${RAD_ANNFILES[*]}; do
+   for RAD_ANNFILE in ${RAD_ANNFILES[0]}; do
       echo RAD_ANNFILE=$RAD_ANNFILE
       ##################################################################
       fusestring=''
@@ -133,20 +143,15 @@ do
       RADputcode='/ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/RAD/put_all.py'
       CONVputcode='/ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/CONV/call_putdate_CONV.py'
       for date in ${date10dig[*]}; do
-         #echo python $RADputcode $YEARRUN $date
-         #echo 'date='$date
-         #python $RADputcode $YEARRUN $date $outpath
-
-         echo python $CONVputcode $YEARRUN $date $outpath
+         echo python $RADputcode $YEARRUN $date $outpath $diagpath
          echo 'date='$date
-         python $CONVputcode $YEARRUN $date $outpath
-      done
-      ## outfile='/lustre/f1/Scott.Gregory/FV3s'+str(streamyr)+'/FV3s'+str(streamyr)+'_'+str(datayr)+'_'+var+'_'+region+'.nc'
-      ## call_putdate_CONV( streamyr,  date, var, outfile)
-      ##     put_all.py
-      ###      call_putdate( streamyr, date, instrmnt, satlite)
-      ###         putdate_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile)
-################################################################################################################
+         python $RADputcode $YEARRUN $date $outpath $diagpath
 
+         echo python $CONVputcode $YEARRUN $date $outpath $diagpath
+         echo 'date='$date
+         python $CONVputcode $YEARRUN $date $outpath $diagpath
+      done
+################################################################################################################
+      break #this will break it out of the looping over all RAD_ANNFILES because all of that looping will happen inn the subroutines
    done
 done

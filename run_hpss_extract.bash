@@ -1,14 +1,14 @@
 #!/bin/bash
 #################20070311002015030807##################################################
-YEARRUN=2011
-STARTMODAHR=032100
+YEARRUN=2015
+STARTMODAHR=032000
 startdate10dig=$YEARRUN$STARTMODAHR
-windowlen_days=10
+windowlen_days=40
 hourincremnt=6
 
 exptname=$YEARRUN'stream'
 
-diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
+#diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
 mydatapath='/lustre/f1/Scott.Gregory/'${exptname}
 ###################################################################
 

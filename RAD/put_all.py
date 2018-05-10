@@ -2,10 +2,11 @@ from call_putdate_RAD import call_putdate_RAD
 import sys
 
 if len(sys.argv) < 3:
-   raise SystemExit('python put_all.py <stream start year> <date> <outpath>')
+   raise SystemExit('python put_all.py <stream start year> <date> <outpath> <diagpath>')
 streamyr = int(sys.argv[1])
 date = int(sys.argv[2])
 outpath=sys.argv[3]
+diagpath=sys.argv[4]
 datayr=str(date)[0:4]
 #print 'streamyr,date=',streamyr,date 
 
@@ -37,7 +38,7 @@ for nn in range(numinst):
 
    for region in regions:
       try:
-         call_putdate_RAD( streamyr, date, instrmnt, satlite, outpath, region)
+         call_putdate_RAD( diagpath, streamyr, date, instrmnt, satlite, outpath, region)
       except:
          print 'unable to putdate...=',streamyr, date, instrmnt, satlite, region
 
