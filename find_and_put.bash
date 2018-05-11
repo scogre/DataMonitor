@@ -1,8 +1,8 @@
 #!/bin/bash
 ### need to sort out the variable inputs
 
-#yearruns=('2003' '2007' '2011' '2015')
-yearruns=('2007' '2011' '2015')
+yearruns=('2003' '2007' '2011' '2015')
+#yearruns=('2007' '2011' '2015')
 count=0
 outpath='/lustre/f1/Scott.Gregory/'
 for Y in "${yearruns[@]}"

@@ -2,15 +2,15 @@ from putdate_annual_conv import putdate_annual_conv
 from create_annual_conv import create_annual_conv
 import os
 
-diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/2003stream/'
-date=2003040100
-var='ps'
+diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/2007stream/'
+date=2007041406
+var='u'
 region='GLOBL'
 latrange=[-90, 90]
-outfile='/lustre/f1/Scott.Gregory/FV3s2003/FV3s2003_2003_ps_GLOBL.nc'
-outpath='/lustre/f1/Scott.Gregory/FV3s'
-streamyr=2003
-datayr=2003
+outfile='/lustre/f1/Scott.Gregory/FV3s2007/TESTING_FV3s2007_2007_u_GLOBL.nc'
+#outpath='/lustre/f1/Scott.Gregory/FV3s'
+streamyr=2007
+datayr=2007
 
 if var == 'ps':
    pcutoffs=[0]
@@ -21,7 +21,7 @@ else:
 if os.path.isfile(outfile):
    putdate_annual_conv(diagpath, date, var, latrange, outfile)
 else:
-   create_annual_conv(outpath, streamyr, datayr, var, region, pcutoffs)
+   create_annual_conv(outfile, streamyr, datayr, var, region, pcutoffs)
    putdate_annual_conv(diagpath, date, var, latrange, outfile)
 
 

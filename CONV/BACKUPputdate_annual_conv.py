@@ -8,24 +8,16 @@ from netCDF4 import num2date, date2num, date2index
 ## 
 #def putdate_annual_conv(diagpath, date, var, diagpref, latrange, outfile):
 def putdate_annual_conv(diagpath, date, var, latrange, outfile):
-   if (var == 'u' or var =='v'):
-      vardiag='uv'
-      varprefix=var+'_'
-   else:
-      vardiag=var
-      varprefix=''
 
-
-
-   fname = diagpath+'/'+str(date)+'/diag_conv_'+vardiag+'_ges.'+str(date)+'_ensmean.nc4'
+   fname = diagpath+'/'+str(date)+'/diag_conv_'+var+'_ges.'+str(date)+'_ensmean.nc4'
    print 'fname 1=',fname
    diag_ctrl_f = Dataset(fname,'r')
 
-   fname = diagpath+'/'+str(date)+'/diag_conv_'+vardiag+'_anl.'+str(date)+'_control.nc4'
+   fname = diagpath+'/'+str(date)+'/diag_conv_'+var+'_anl.'+str(date)+'_control.nc4'
    print 'fname 2=',fname
    diag_ctrl_a = Dataset(fname,'r')
 
-   fname = diagpath+'/'+str(date)+'/diag_conv_'+vardiag+'_ges.ensmean_spread.nc4'
+   fname = diagpath+'/'+str(date)+'/diag_conv_'+var+'_ges.ensmean_spread.nc4'
    print 'fname 3=',fname
    diag_ens_sprd = Dataset(fname, 'r')
 
@@ -42,18 +34,18 @@ def putdate_annual_conv(diagpath, date, var, latrange, outfile):
 
    # use diagpref to do u_Observation etc
    nobs = len(diag_ctrl_f.dimensions['nobs'])
-   obs = diag_ctrl_f[varprefix+'Observation'][:] * multvar + addtovar
+   obs = diag_ctrl_f['Observation'][:] * multvar + addtovar
 
-   omf_ctrl = multvar * diag_ctrl_f[varprefix+'Obs_Minus_Forecast_adjusted'][:]
-   oma_ctrl = multvar * diag_ctrl_a[varprefix+'Obs_Minus_Forecast_adjusted'][:]
-   omf_ens  = multvar * diag_ens_sprd[varprefix+'EnKF_fit_ges'][:]
-   oma_ens  = multvar * diag_ens_sprd[varprefix+'EnKF_fit_anl'][:]
+   omf_ctrl = multvar * diag_ctrl_f['Obs_Minus_Forecast_adjusted'][:]
+   oma_ctrl = multvar * diag_ctrl_a['Obs_Minus_Forecast_adjusted'][:]
+   omf_ens  = multvar * diag_ens_sprd['EnKF_fit_ges'][:]
+   oma_ens  = multvar * diag_ens_sprd['EnKF_fit_anl'][:]
 
    gsi_used  = diag_ctrl_a['Analysis_Use_Flag'][:]
    print 'lengsiused=',len(gsi_used)
-   enkf_used = diag_ens_sprd[varprefix+'EnKF_use_flag'][:]
-   sprd_f = (multvar**2) * diag_ens_sprd[varprefix+'EnKF_spread_ges'][:]
-   sprd_a = (multvar**2) * diag_ens_sprd[varprefix+'EnKF_spread_anl'][:]
+   enkf_used = diag_ens_sprd['EnKF_use_flag'][:]
+   sprd_f = (multvar**2) * diag_ens_sprd['EnKF_spread_ges'][:]
+   sprd_a = (multvar**2) * diag_ens_sprd['EnKF_spread_anl'][:]
    obserr = 1. / ( diag_ctrl_f['Errinv_Input'][:]**2 )
 
    pres = diag_ctrl_f['Pressure'][:]
