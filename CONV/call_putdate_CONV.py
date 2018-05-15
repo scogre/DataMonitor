@@ -8,7 +8,7 @@ if len(sys.argv) < 2:
    raise SystemExit('python call_putdate_CONV.py <stream start year> <date> <annual output path>')
 streamyr = int(sys.argv[1])
 date = int(sys.argv[2])
-outpath = sys.argv[3]
+outputpath = sys.argv[3]
 diagpath = sys.argv[4]
 datayr=str(date)[0:4]
 #print 'streamyr,date=',streamyr,date 
@@ -36,12 +36,12 @@ for var in variables:
       else:
          pcutoffs=range(0,1000,100) ##=[0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
    
-      outfile = outpath+'/FV3s'+str(streamyr)+'/CONV_'+var+'_FV3s'+str(streamyr)+'_'+str(datayr)+'_'+region+'.nc'
+      outfile = outputpath+'/CONV_'+var+'_FV3s'+str(streamyr)+'_'+str(datayr)+'_'+region+'.nc'
 
       if os.path.isfile(outfile):
          putdate_annual_conv(diagpath, date, var, latrange, outfile)
       else:
-         create_annual_conv(outfile, streamyr, datayr, var, region, pcutoffs)
+         create_annual_conv(outfile, streamyr, int(datayr), var, region, pcutoffs)
          putdate_annual_conv(diagpath, date, var, latrange, outfile)
 
 

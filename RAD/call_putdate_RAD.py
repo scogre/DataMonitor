@@ -1,7 +1,7 @@
 from putdate_annual_rad import putdate_annual_rad
 import os
 
-def call_putdate_RAD( diagpath, streamyr,  date, instrmnt, satlite, outpath, region):
+def call_putdate_RAD( diagpath, streamyr,  date, instrmnt, satlite, outputpath, region):
    datayr=str(date)[0:4]
 
    if region=='GLOBL':
@@ -13,7 +13,7 @@ def call_putdate_RAD( diagpath, streamyr,  date, instrmnt, satlite, outpath, reg
    elif region=='NORTH':
       latrange=[20,90]
 
-   outfile=outpath+'FV3s'+str(streamyr)+'/RAD_FV3s'+str(streamyr)+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
+   outfile='/RAD_FV3s'+str(streamyr)+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
 
    #print 'outfile=',outfile
    if os.path.isfile(outfile):

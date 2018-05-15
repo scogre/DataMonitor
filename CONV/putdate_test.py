@@ -8,7 +8,6 @@ var='u'
 region='GLOBL'
 latrange=[-90, 90]
 outfile='/lustre/f1/Scott.Gregory/FV3s2007/TESTING_FV3s2007_2007_u_GLOBL.nc'
-#outpath='/lustre/f1/Scott.Gregory/FV3s'
 streamyr=2007
 datayr=2007
 

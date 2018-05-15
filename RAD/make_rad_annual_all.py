@@ -5,8 +5,7 @@ if len(sys.argv) < 2:
     raise SystemExit('python make_rad_annual_all.py <stream start year> <data year> <output path>')
 streamyr = int(sys.argv[1])
 datayr = int(sys.argv[2])
-outpath = sys.argv[3]
-#outpath='/lustre/f1/Scott.Gregory/'
+outputpath = sys.argv[3]
 regions=['GLOBL','TROPI','NORTH','SOUTH']
 
 #instrmnt='AMSUA'
@@ -89,7 +88,7 @@ for nn in range(numinst):
    channels=eval(channelsname)
    print 'channels_name,channels=', channelsname,channels
    for region in regions:
-      outfile=outpath+'FV3s'+str(streamyr)+'/RAD_FV3s'+str(streamyr)+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
+      outfile=outputpath+'/RAD_FV3s'+str(streamyr)+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
       create_annual_rad(outfile, streamyr, datayr, instrmnt, channels, satlite, region)
    del channels
 
