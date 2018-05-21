@@ -37,6 +37,7 @@ for nn in range(numinst):
    satlite=satlites[nn]
 
    for region in regions:
+#      call_putdate_RAD( diagpath, streamyr, date, instrmnt, satlite, outputpath, region)
       try:
          call_putdate_RAD( diagpath, streamyr, date, instrmnt, satlite, outputpath, region)
       except:

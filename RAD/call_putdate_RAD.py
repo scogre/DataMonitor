@@ -1,4 +1,5 @@
 from putdate_annual_rad import putdate_annual_rad
+from create_annual_rad import create_annual_rad
 import os
 
 def call_putdate_RAD( diagpath, streamyr,  date, instrmnt, satlite, outputpath, region):
@@ -13,9 +14,9 @@ def call_putdate_RAD( diagpath, streamyr,  date, instrmnt, satlite, outputpath, 
    elif region=='NORTH':
       latrange=[20,90]
 
-   outfile='/RAD_FV3s'+str(streamyr)+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
+   outfile=outputpath+'/RAD_FV3s'+str(streamyr)+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
 
-   #print 'outfile=',outfile
+   print 'outfile=',outfile
    if os.path.isfile(outfile):
       putdate_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile)
    else:
@@ -23,7 +24,7 @@ def call_putdate_RAD( diagpath, streamyr,  date, instrmnt, satlite, outputpath, 
       chanimport='from channel_dictionary import '+channelsname
       exec(chanimport)
       channels=eval(channelsname)
-      create_annual_rad(outfile, streamyr, datayr, instrmnt, channels, satlite, region)         
+      create_annual_rad(outfile, streamyr, int(datayr), instrmnt, channels, satlite, region)         
       putdate_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile)
 
 
