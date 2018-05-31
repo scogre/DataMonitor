@@ -1,9 +1,9 @@
 #!/bin/bash
 #################20070311002015030807##################################################
-YEARRUN=2015
-STARTMODAHR=032000
+YEARRUN=2003
+STARTMODAHR=052800
 startdate10dig=$YEARRUN$STARTMODAHR
-windowlen_days=40
+windowlen_days=5
 hourincremnt=6
 
 exptname=$YEARRUN'stream'
@@ -81,7 +81,8 @@ for date in ${date10dig[*]}; do
    hr=${hour[$count]}        
    echo date IS $date
    echo HOUR IS $hr
-   MSUB='msub -A nggps_psd -q rdtn -lpartition=es -lsize=1 -lwalltime=5:00:00 -N untar -e sgextract_'$date'.err -o sgextract_'$date'.out -S /bin/csh -venddate10dig='$date',exptname='$exptname',mydatapath='$mydatapath' /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/get_sgextract.sh'
+#   MSUB='msub -A nggps_psd -q rdtn -lpartition=es -lsize=1 -lwalltime=5:00:00 -N untar -e sgextract_'$date'.err -o sgextract_'$date'.out -S /bin/csh -venddate10dig='$date',exptname='$exptname',mydatapath='$mydatapath' /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/get_sgextract.sh'
+   MSUB='msub -A nggps_psd -q urgent -lpartition=c4 -lwalltime=5:00:00 -N untar -e sgextract_'$date'.err -o sgextract_'$date'.out -S /bin/sh -venddate10dig='$date',exptname='$exptname',mydatapath='$mydatapath' /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/get_sgextract.sh'
    echo $MSUB
    $MSUB
 done
