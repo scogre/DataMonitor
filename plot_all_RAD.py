@@ -304,7 +304,7 @@ for modct in range(nummodel):
    Nqcmean= np.nanmean(nobs_qcd_chan[:,modct])
 
    axarr[0].plot(datetime_list, nobs_all_chan[:,modct],'k', datetime_list, nobs_qcd_chan[:,modct],'r')
-   f.suptitle(model+' AMSUA '+satlite+' '+region+' chan '+channum_str, fontsize=20, fontweight='bold')
+   f.suptitle(model+' '+instrmnt+' '+satlite+' '+region+' chan '+channum_str, fontsize=20, fontweight='bold')
    axarr[0].set_ylabel('numobs')
    box = axarr[0].get_position()
    #####################################

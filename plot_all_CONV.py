@@ -108,10 +108,6 @@ elif varb=='gps':
 ##################################
 
 ##################################
-#All_Dates(Ncycles) ;
-#Full_Dates(Ncycles) ;
-#Plevels(Nlevs) ;
-
 nobs_all_plev = nan*np.ones((numquerydates,nummodel))
 nobs_used_plev = nan*np.ones((numquerydates,nummodel))
 mean_obs_all_plev = nan*np.ones((numquerydates,nummodel))
@@ -195,88 +191,308 @@ for modelstream in modelstreams:
    std_oma_ens_plev[:,modct]     = std_oma_ens[dateindcs,plevindex]      
    std_oma_ctrl_plev[:,modct]    = std_oma_ctrl[dateindcs,plevindex]      
    spread_obserr_a_plev[:,modct] = spread_obserr_a[dateindcs,plevindex]  
+   modct += 1
 
 
-
-
-
-
-
-
-
-
-
-Ntotdiag=Ntotdiag.astype(float)
-Nusediag=Nusediag.astype(float)
+Ntotdiag=nobs_all_plev.astype(float)
+Nusediag=nobs_used_plev.astype(float)
 #Nbufr[Nbufr<0]=nan
 Ntotdiag[Ntotdiag<0]=nan
 Nusediag[Nusediag<0]=nan
 
+
 maxy=nan*np.ones(5)
 miny=nan*np.ones(5)
 
+
 ####################################################
-#maxNb     = np.nanmax(Nbufr)
 maxNt     = np.nanmax(Ntotdiag)
 maxNu     = np.nanmax(Nusediag)
-#maxy[0]   = np.nanmax((maxNb,maxNt,maxNu))
 maxy[0]   = np.nanmax((maxNt,maxNu))
 
-#maxbV     = np.nanmax(bufr_avg)
-maxdV     = np.nanmax(diagavg_obs)
-maxuV     = np.nanmax(diagavg_use_obs)
-#maxy[1]   = np.nanmax((maxbV,maxdV,maxuV))
+maxdV     = np.nanmax(mean_obs_all_plev)
+maxuV     = np.nanmax(mean_obs_used_plev)
 maxy[1]   = np.nanmax((maxdV,maxuV))
 
-maxOF     = np.nanmax(OmF_avg)
-maxOA     = np.nanmax(OmA_avg)
+maxOF     = np.nanmax(mean_omf_ctrl_plev)
+maxOA     = np.nanmax(mean_oma_ctrl_plev)
 maxy[2]   = np.nanmax((maxOF,maxOA))
 
-maxFS     = np.nanmax(np.sqrt(Fsprd_avg))
-maxFSE    = np.nanmax(Fsprderr_avg)
-maxOFEstd = np.nanmax(OmFens_std)
-maxOFstd  = np.nanmax(OmF_std)
-#maxy[3]   = np.nanmax((maxFS,maxFSE,maxOFEstd,maxOFstd))
+maxFS     = np.nanmax(np.sqrt(spread_f_plev))
+maxFSE    = np.nanmax(spread_obserr_f_plev)
+maxOFEstd = np.nanmax(std_omf_ens_plev)
+maxOFstd  = np.nanmax(std_omf_ctrl_plev)
 maxy[3]   = np.nanmax((maxFS,maxOFEstd,maxOFstd))
 
-maxAS     = np.nanmax(np.sqrt(Asprd_avg))
-maxASE    = np.nanmax(Asprderr_avg)
-maxOAEstd = np.nanmax(OmAens_std)
-maxOAstd  = np.nanmax(OmA_std)
-#maxy[4]   = np.nanmax((maxAS,maxASE,maxOAEstd,maxOAstd))
+maxAS     = np.nanmax(np.sqrt(spread_a_plev))
+maxASE    = np.nanmax(spread_obserr_a_plev)
+maxOAEstd = np.nanmax(std_oma_ens_plev)
+maxOAstd  = np.nanmax(std_oma_ctrl_plev)
 maxy[4]   = maxOAstd
 ####################################################
 ####################################################
-#minNb     = np.nanmin(Nbufr)
 minNt     = np.nanmin(Ntotdiag)
 minNu     = np.nanmin(Nusediag)
-#miny[0]   = np.nanmin((minNb,minNt,minNu))
 miny[0]   = np.nanmin((minNt,minNu))
 
-#minbV     = np.nanmin(bufr_avg)
-mindV     = np.nanmin(diagavg_obs)
-minuV     = np.nanmin(diagavg_use_obs)
-#miny[1]   = np.nanmin((minbV,mindV,minuV))
+mindV     = np.nanmin(mean_obs_all_plev)
+minuV     = np.nanmin(mean_obs_used_plev)
 miny[1]   = np.nanmin((mindV,minuV))
 
-minOF     = np.nanmin(OmF_avg)
-minOA     = np.nanmin(OmA_avg)
+minOF     = np.nanmin(mean_omf_ctrl_plev)
+minOA     = np.nanmin(mean_oma_ctrl_plev)
 miny[2]   = np.nanmin((minOF,minOA))
 
-minFS     = np.nanmin(np.sqrt(Fsprd_avg))
-minFSE    = np.nanmin(Fsprderr_avg)
-minOFEstd = np.nanmin(OmFens_std)
-minOFstd  = np.nanmin(OmF_std)
-#miny[3]   = np.nanmin((minFS,minFSE,minOFEstd,minOFstd))
+minFS     = np.nanmin(np.sqrt(spread_f_plev))
+minFSE    = np.nanmin(spread_obserr_f_plev)
+minOFEstd = np.nanmin(std_omf_ens_plev)
+minOFstd  = np.nanmin(std_omf_ctrl_plev)
 miny[3]   = np.nanmin((minFS,minOFEstd,minOFstd))
 
-minAS     = np.nanmin(np.sqrt(Asprd_avg))
-minASE    = np.nanmin(Asprderr_avg)
-minOAEstd = np.nanmin(OmAens_std)
-minOAstd  = np.nanmin(OmA_std)
-#miny[4]   = np.nanmin((minAS,minASE,minOAEstd,minOAstd))
+minAS     = np.nanmin(np.sqrt(spread_a_plev))
+minASE    = np.nanmin(spread_obserr_a_plev)
+minOAEstd = np.nanmin(std_oma_ens_plev)
+minOAstd  = np.nanmin(std_oma_ctrl_plev)
 miny[4]   = minOAstd
 ####################################################
+
+
+for modct in range(nummodel):
+   model=modelstreams[modct]
+   ######### PLOTTING
+   modelname = model
+   if region=='SOUTH':
+      geolabelfilename='SOUTH'
+      geolabel='Southern Hemisphere'
+   elif region=='TROPI':
+      geolabelfilename='TROPI'
+      geolabel='Tropical +/-20deg'
+   elif region=='NORTH':
+      geolabelfilename='NORTH'
+      geolabel='Northern Hemisphere'
+   elif region=='GLOBL':
+      geolabelfilename='GLOBL'
+      geolabel='Global'
+   else:
+      geolabelfilename=''
+      geolabel=''
+   yr=np.empty(numquerydates)
+   mo=np.empty(numquerydates)
+   da=np.empty(numquerydates)
+   hr=np.empty(numquerydates)
+   datetime_list=[]
+   date_list_4plot=[]
+   ##############
+   #############
+   for n in range(numquerydates):
+      DATEstring=str(querydates[n])
+      yr[n]=DATEstring[0:4]
+      mo[n]=DATEstring[4:6]
+      da[n]=DATEstring[6:8]
+      hr[n]=DATEstring[8:10]
+      time_dum = "%4d/%02d/%02d %02d:00:00" %(yr[n], mo[n], da[n], hr[n])
+      if n==0:
+         time_start=time_dum
+      timestrp=datetime.strptime(time_dum,"%Y/%m/%d %H:%M:%S")
+      datetime_list.append(timestrp)
+      temp= timestrp.strftime("%d/%m/%Y %H:%M")
+      date_list_4plot.append(temp)
+   timestart_strp=datetime.strptime(time_start,"%Y/%m/%d %H:%M:%S")
+   timediff=timestrp - timestart_strp
+   #############
+   #############
+   font = {'serif' : 'normal','weight' : 'bold','size'   : 12}
+   mpl.rc('font', **font)
+   mpl.rc('axes',titlesize=18)
+   mpl.rc('legend', fontsize=12)
+   #############
+   #############
+   axdays = DayLocator()
+   axweek = WeekdayLocator(byweekday=SU)
+   axsemiweek = WeekdayLocator(byweekday=(SU,WE))
+   axmonth =MonthLocator()
+   axhours = HourLocator((6,12,18))
+   #axhours = HourLocator((0,6,12,18))
+   hr6fmt= DateFormatter("%H:00")
+   #dayFmt = DateFormatter("%m/%d/%y %H:00")
+   #dayFmt = DateFormatter("%b%d.%Y-%Hz")
+   #dayFmt = DateFormatter("%b%d.%Y")
+   dayFmt = DateFormatter("%m.%d.%y")
+   #dayFmt = DateFormatter("%b.%d")
+   locator = AutoDateLocator(tz=None, minticks=5, maxticks=15, interval_multiples=False)
+   #locator.intervald[HOURLY] = [6] # only show every 6 hours
+   if timediff.days<=5:
+      ticklocat=axhours
+      tick_format= DateFormatter("%m.%d.%y---%H:00")
+   elif timediff.days<=15:
+      ticklocat=axdays
+      tick_format= DateFormatter("%m.%d.%y")
+   elif timediff.days<=50:
+      ticklocat=axsemiweek
+      tick_format= DateFormatter("%m.%d.%y")
+   elif timediff.days<=100:
+      ticklocat=axweek
+      tick_format= DateFormatter("%m.%d.%y")
+   elif timediff.days<=365:
+      ticklocat=axmonth
+      tick_format= DateFormatter("%m.%d.%y")
+   else:
+      ticklocat=axdays
+      tick_format= DateFormatter("%m.%y")
+
+
+   PLOTpath =plotpath 
+   os.system("mkdir -p "+PLOTpath)
+   print 'plotpath=',PLOTpath
+   
+   figname=PLOTpath+'/'+model+'_CONV_'+varb+'_'+region+'_'+str(plevel)+'.png'
+   ####
+   zeroline=np.zeros(len(datetime_list))
+   ####
+   
+   f, axarr = plt.subplots(5, sharex=True, figsize=(17, 17))#plt.subplots(figsize=(20, 10))
+   ####
+   diagmean= np.nanmean(Ntotdiag[:,modct])
+   usemean= np.nanmean(Nusediag[:,modct])
+   
+   axarr[0].plot(datetime_list, Ntotdiag[:,modct],'c',datetime_list, Nusediag[:,modct],'r')
+   if varb=='PS' or varb=='PW':
+      f.suptitle(modelname+' CONVENTIONAL OBS '+varb+' '+geolabel+' ', fontsize=20, fontweight='bold')
+   else:
+      f.suptitle(modelname+' CONVENTIONAL OBS '+varb+' '+geolabel+' '+str(plevel)+'_mb to '+str(plevel+100)+'_mb', fontsize=20, fontweight='bold')
+   axarr[0].set_ylabel('numobs')
+   
+   box = axarr[0].get_position()
+   rangey=maxy[0]-miny[0]
+   minax = miny[0] - .05*rangey
+   maxax = maxy[0] + .05*rangey
+   axarr[0].set_ylim((minax,maxax))
+   del minax
+   del maxax
+   del rangey
+   axarr[0].set_position([box.x0, box.y0, box.width * 0.85, box.height])
+   axarr[0].legend(( 'all DA obs, avg='+str(int(round(diagmean))), 'all DA use, avg='+str(int(round(usemean)))),loc='center left', bbox_to_anchor=(1.05, 0.5))
+   axarr[0].grid(True)
+   axarr[0].set_title('Number of Observations', fontsize=14, fontweight='bold')
+   del diagmean
+   del usemean
+   ####            
+   ax2 = axarr[0].twinx()
+   ax2.plot(datetime_list, 100*Nusediag[:,modct]/Ntotdiag[:,modct],'g--', linewidth=3)
+   ax2.set_ylabel('PERCENT', color='g')
+   ax2.set_ylim((-5,105))
+   for tl in ax2.get_yticklabels():
+           tl.set_color('m')
+   
+   box = ax2.get_position()
+   ax2.set_position([box.x0, box.y0, box.width * 0.85, box.height])
+   ax2.legend(('%DAuse/DAobs',), loc='lower left')
+   
+   ####
+   ####
+   diagmean= np.nanmean(mean_obs_all_plev[:,modct])
+   usemean= np.nanmean(mean_obs_used_plev[:,modct])
+   
+   axarr[1].plot(datetime_list, mean_obs_all_plev[:,modct],'g', datetime_list, mean_obs_used_plev[:,modct],'m')
+   axarr[1].set_ylabel('MEAN '+units)
+   box = axarr[1].get_position()
+   rangey=maxy[1]-miny[1]
+   minax = miny[1] - .05*rangey
+   maxax = maxy[1] + .05*rangey
+   axarr[1].set_ylim((minax,maxax))
+   del minax
+   del maxax
+   del rangey
+   axarr[1].set_position([box.x0, box.y0, box.width * 0.85, box.height])
+   axarr[1].legend(('all DA obs, avg='+str(round(diagmean,2)), 'all DA used obs, avg='+str(round(usemean,2))),loc='center left', bbox_to_anchor=(1, 0.5))
+   axarr[1].grid(True)
+   axarr[1].set_title('Mean '+varb+' observation', fontsize=14, fontweight='bold')
+   del diagmean
+   del usemean
+   ####
+   ####
+   fcstmean= np.nanmean(mean_omf_ctrl_plev[:,modct])
+   analmean= np.nanmean(mean_oma_ctrl_plev[:,modct])
+   
+   axarr[2].plot(datetime_list, mean_omf_ctrl_plev[:,modct],'r', datetime_list, mean_oma_ctrl_plev[:,modct],'g')
+   axarr[2].set_ylabel('O-F, O-A mean '+units)
+   box = axarr[2].get_position()
+   rangey=maxy[2]-miny[2]
+   minax = miny[2] - .05*rangey
+   maxax = maxy[2] + .05*rangey
+   axarr[2].set_ylim((minax,maxax))
+   del minax
+   del maxax
+   del rangey
+   axarr[2].set_position([box.x0, box.y0, box.width * 0.85, box.height])
+   axarr[2].legend(('O-F, avg='+str(round(fcstmean,2)), 'O-A, avg='+str(round(analmean,2))),loc='center left', bbox_to_anchor=(1, 0.5))
+   axarr[2].grid(True)
+   axarr[2].plot(datetime_list, zeroline,'k--', linewidth=2)
+   axarr[2].set_title('First Guess and Analysis Biases', fontsize=14, fontweight='bold')
+   del fcstmean
+   del analmean
+   ####
+   ####
+   sprdmean= np.nanmean(spread_f_plev[:,modct])
+   sprderrmean= np.nanmean(spread_obserr_f_plev[:,modct])
+   ensstdmean= np.nanmean(std_omf_ens_plev[:,modct])
+   fcststdmean= np.nanmean(std_omf_ctrl_plev[:,modct])
+   
+   axarr[3].plot( datetime_list, np.sqrt(spread_f_plev[:,modct]),'m',datetime_list, std_omf_ens_plev[:,modct],'k',datetime_list, std_omf_ctrl_plev[:,modct],'r')
+   axarr[3].set_ylabel('O-F '+units)
+   box = axarr[3].get_position()
+   rangey=maxy[3]-miny[3]
+   minax = miny[3] - .05*rangey
+   maxax = maxy[3] + .05*rangey
+   axarr[3].set_ylim((minax,maxax))
+   del minax
+   del maxax
+   del rangey
+   axarr[3].set_position([box.x0, box.y0, box.width * 0.85, box.height])
+   axarr[3].legend(('ensspread F, avg='+str(round(sprdmean,3)), 'ens O-F std, avg='+str(round(ensstdmean,3)),'control O-F std, avg='+str(round(fcststdmean,3))),loc='center left', bbox_to_anchor=(1, 0.5))
+   axarr[3].grid(True)
+   axarr[3].set_title('First Guess spread and errors', fontsize=14, fontweight='bold')
+   
+   del sprdmean
+   del sprderrmean
+   del ensstdmean
+   del fcststdmean
+   ####
+   sprdmean= np.nanmean(spread_a_plev[:,modct])
+   sprderrmean= np.nanmean(spread_obserr_a_plev[:,modct])
+   ensstdmean= np.nanmean(std_oma_ens_plev[:,modct])
+   analstdmean= np.nanmean(std_oma_ctrl_plev[:,modct])
+   
+   axarr[4].plot( datetime_list, std_oma_ctrl_plev[:,modct],'r')
+   axarr[4].set_ylabel('O-A '+units)
+   box = axarr[4].get_position()
+   rangey=maxy[4]-miny[4]
+   minax = miny[4] - .05*rangey
+   maxax = maxy[4] + .05*rangey
+   axarr[4].set_ylim((minax,maxax))
+   del minax
+   del maxax
+   del rangey
+   axarr[4].set_position([box.x0, box.y0, box.width * 0.85, box.height])
+   axarr[4].legend(( 'control O-A std, avg='+str(round(analstdmean,3)),''),loc='center left', bbox_to_anchor=(1, 0.5))
+   axarr[4].grid(True)
+   axarr[4].set_title('Analysis spread and errors', fontsize=14, fontweight='bold')
+   del sprdmean
+   del sprderrmean
+   del ensstdmean
+   del analstdmean
+   ####
+   axarr[4].xaxis.set_major_locator(locator)
+   axarr[4].xaxis.set_major_formatter(tick_format)
+   for tick in axarr[4].get_xticklabels():
+       tick.set_rotation(70)
+   
+   print('figname=',figname)
+   plt.savefig(figname)
+   del modelname
+   del PLOTpath
+
+
 
 
 
