@@ -15,24 +15,6 @@ from matplotlib.ticker import LinearLocator
 import sys, os, os.path, cgi, re
 
 nan=float('nan')
-### begindate and enddate are 10 digits
-#def plot_all_RAD( modelstreams, begindate, enddate, instrmnt, satlite, channel, region):
-##modelfile='/Projects/gefsrr/ANNUAL/RAD_FV3s2003_2003_amsua_n16_GLOBL.nc'
-
-##############################
-#channel=6
-#modelstreams=('FV3s2003','FV3s2003')
-#datapath='/Projects/gefsrr/ANNUAL/'
-#instrmnt='amsua'
-#satlite='n16'
-#region='GLOBL'
-#begindate=2003030300
-#enddate=2003040900
-##############################
-#nummodel=len(modelstreams)
-#plotpath=datapath
-##############################
-##############################
 
 def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate):
    nummodel=len(modelstreams)
