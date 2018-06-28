@@ -1,14 +1,15 @@
 #!/bin/bash
 #################20070311002015030807##################################################
-YEARRUN=2003
-STARTMODAHR=080100
+YEARRUN=1999
+STARTMODAHR=040100
 startdate10dig=$YEARRUN$STARTMODAHR
-windowlen_days=1
+windowlen_days=90
 hourincremnt=6
 
 exptname=$YEARRUN'stream'
 
 #diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
+#mydatapath='/lustre/f1/Scott.Gregory/'${exptname}'_B'
 mydatapath='/lustre/f1/Scott.Gregory/'${exptname}
 ###################################################################
 
@@ -73,6 +74,17 @@ count=0
 ###################################################################
 startdir=${PWD}
 echo starting place $startdir
+
+if [ -d $mydatapath/ ] #if directory exists
+then
+    echo 'out directory '$mydatapath' exists'
+else
+    echo 'making out directory '$mydatapath
+    mkdir -p $mydatapath
+fi
+
+
+
 cd $mydatapath
 echo working place${PWD}
 
@@ -81,8 +93,8 @@ for date in ${date10dig[*]}; do
    hr=${hour[$count]}        
    echo date IS $date
    echo HOUR IS $hr
-#   MSUB='msub -A nggps_psd -q rdtn -lpartition=es -lsize=1 -lwalltime=5:00:00 -N untar -e sgextract_'$date'.err -o sgextract_'$date'.out -S /bin/csh -venddate10dig='$date',exptname='$exptname',mydatapath='$mydatapath' /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/get_sgextract.sh'
-   MSUB='msub -A nggps_psd -q urgent -lpartition=c4 -lwalltime=5:00:00 -N untar -e sgextract_'$date'.err -o sgextract_'$date'.out -S /bin/csh -venddate10dig='$date',exptname='$exptname',mydatapath='$mydatapath' /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/get_sgextract.sh'
+#   MSUB='msub -A nggps_psd -q urgent -lpartition=c4 -lwalltime=5:00:00 -N untar -e sgextract_'$date'.err -o sgextract_'$date'.out -S /bin/csh -venddate10dig='$date',exptname='$exptname',mydatapath='$mydatapath' /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/get_sgextract.sh'
+   MSUB='msub -venddate10dig='$date',exptname='$exptname',mydatapath='$mydatapath' /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/get_sgextract_new.sh'
    echo $MSUB
    $MSUB
 done

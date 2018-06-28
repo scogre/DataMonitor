@@ -1,9 +1,21 @@
 #!/bin/sh
+#PBS -A nggps_psd
+#PBS -l partition=es,size=1,walltime=5:00:00
+#PBS -q rdtn
+#PBS -N untar
+#PBS -e sgextract_2003080100.err
+#PBS -o sgextract_2003080100.out
+#PBS -S /bin/csh
+# need envars:  machine, analdate, datapath2, hsidir, save_hpss_full, save_hpss_subset
 
-echo analdate is $enddate10dig
-analdate=$enddate10dig
-exptname=$exptname
-mydatapath=$mydatapath
+
+
+
+
+
+analdate=2003080100
+exptname='2003stream'
+mydatapath='/lustre/f1/Scott.Gregory/2003stream'
 echo mydatapath is $mydatapath
 
 

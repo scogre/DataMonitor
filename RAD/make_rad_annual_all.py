@@ -8,10 +8,11 @@ datayr = int(sys.argv[2])
 outputpath = sys.argv[3]
 regions=['GLOBL','TROPI','NORTH','SOUTH']
 
-#instrmnt='AMSUA'
-#satlite='n15'
-#instrmnts=['hirs2','msu','avhrr3','hirs3','amsua','amsub','hirs4','mhs','ssmis','airs','atms','cris','seviri','iasi']  
-if streamyr==2003:
+
+if streamyr==1999:
+   instrmnts=['amsua', 'avhrr', 'hirs2', 'msu', 'sndr']
+   satlites=[ 'n15'  , 'n15'  , 'n14'  , 'n14', 'g08' ]
+elif streamyr==2003:
    instrmnts=['amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'avhrr', 'avhrr', 'hirs2', 'hirs3', 'hirs3', 'msu', 'sndr']
    satlites=[ 'n15'  , 'n16'  , 'n15'  , 'n16'  , 'n17'  , 'n16'  , 'n17'  , 'n14'  , 'n16'  , 'n17'  , 'n14', 'g08']
 elif streamyr==2007:
@@ -26,6 +27,8 @@ elif streamyr==2015:
 else:
    instrmnts=['hirs2','msu','avhrr','hirs3','amsua','amsub' ,'hirs4','sndr', 'mhs','ssmis','airs','atms','cris','seviri','iasi']
    satlites= [''     ,''   ,''      ,''     ,''     ,''     ,''     ,''    ,''    ,''     ,''    ,''    ,''    ,''      ,''   ]
+
+
     
 hirs2_channels  = [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 msu_channels    = [ 1, 2, 3, 4]

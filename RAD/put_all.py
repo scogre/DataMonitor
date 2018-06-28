@@ -10,7 +10,10 @@ diagpath=sys.argv[4]
 datayr=str(date)[0:4]
 #print 'streamyr,date=',streamyr,date 
 
-if streamyr==2003:
+if streamyr==1999:
+   instrmnts=['amsua', 'avhrr', 'hirs2', 'msu', 'sndr']
+   satlites=[ 'n15'  , 'n15'  , 'n14'  , 'n14', 'g08' ]
+elif streamyr==2003:
    instrmnts=['amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'avhrr', 'avhrr', 'hirs2', 'hirs3', 'hirs3', 'msu', 'sndr']
    satlites=[ 'n15'  , 'n16'  , 'n15'  , 'n16'  , 'n17'  , 'n16'  , 'n17'  , 'n14'  , 'n16'  , 'n17'  , 'n14', 'g08']
 elif streamyr==2007:
@@ -37,7 +40,6 @@ for nn in range(numinst):
    satlite=satlites[nn]
 
    for region in regions:
-#      call_putdate_RAD( diagpath, streamyr, date, instrmnt, satlite, outputpath, region)
       try:
          call_putdate_RAD( diagpath, streamyr, date, instrmnt, satlite, outputpath, region)
       except:

@@ -1,8 +1,8 @@
 #!/bin/bash
 ### need to sort out the variable inputs
 
-yearruns=('1999' '2003' '2007' '2011' '2015')
-#yearruns=('2007' '2011' '2015')
+#yearruns=('2003' '2007' '2011' '2015')
+yearruns=('2011')
 count=0
 outpath='/lustre/f1/Scott.Gregory/'
 for Y in "${yearruns[@]}"
@@ -15,6 +15,7 @@ do
 
    ###################################################################
    diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
+   #diagpath=$outpath$YEARRUN'stream_B/' ### when I download from the hpss
    #diagpath=$outpath$YEARRUN'stream/' ### when I download from the hpss
    echo diagpath is $diagpath
    ###################################################################
@@ -84,7 +85,7 @@ do
 
 
    for ANNFILE in ${RAD_ANNFILES[*]}; do
-#   for ANNFILE in ${CONV_ANNFILES[*]}; do
+   #for ANNFILE in ${CONV_ANNFILES[*]}; do
       echo ANNFILE=$ANNFILE
       ##################################################################
       fusestring=''
@@ -164,8 +165,6 @@ do
 ################################################################################################################
       break #this will break it out of the looping over all ANNFILES because all of that looping will happen in the subroutines
    done
-   cp $outputpath/RAD*nc /lustre/f1/Scott.Gregory/transferDIR/.
-   cp $outputpath/CONV*nc /lustre/f1/Scott.Gregory/transferDIR/.
    unset outputpath
    unset diagpath
 done
