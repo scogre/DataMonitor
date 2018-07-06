@@ -5,8 +5,8 @@ from netCDF4 import num2date, date2num, date2index
 import read_diag
 
 nan=float('nan')
-
 def putdate_CFSR_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile):
+   print('INSIDE PUT FXN')
    date10dig=str(date)
  
    diaganl_obsfile = diagpath +date10dig+ '/diag_'  +  instrmnt + '_' + satlite + '_anl.' + date10dig
@@ -164,7 +164,7 @@ def putdate_CFSR_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile
       print('GOT HERE end',ichan)
    print('finished loop')
    anndata.close()
-
+   print('leaving putdate function')
 
 
 

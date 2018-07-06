@@ -30,15 +30,16 @@ regions=['GLOBL','TROPI','NORTH','SOUTH']
 for nn in range(numinst):
    instrmnt=instrmnts[nn]
    satlite=satlites[nn]
-
+   print('instrmnt,satlite=', instrmnt,satlite)
    for region in regions:
+      info=outputpath+'RAD_CFSR_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc '+str(date)
+      print 'info=',info
       call_putdate_CFSR_RAD( diagpath, streamyr, date, instrmnt, satlite, outputpath, region)
+      print 'post call_putdate'
       #try:
       #   call_putdate_CFSR_RAD( diagpath, streamyr, date, instrmnt, satlite, outputpath, region)
       #except:
       #   print 'unable to putdate...=',streamyr, date, instrmnt, satlite, region
-      info=outputpath+'RAD_CFSR_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc '+str(date)
-      print 'info=',info
 
 
 

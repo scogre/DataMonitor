@@ -8,9 +8,6 @@ count=0
 outpath='/lfs3/projects/gfsenkf/Scott.Gregory/CFSR/'
 
 
-module load netcdf4
-
-
 for Y in "${yearruns[@]}"
 do
    YEARRUN=$Y
@@ -151,16 +148,16 @@ do
       ###date10dig is the list of dates for adding to the annual file
       ##### then we feed this list of dates to the PUT
 ################################################################################################################
-      #RADputcode='/misc/whome/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/RAD/put_CFSR.py'
-      CONVputcode='/misc/whome/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/CONV/call_putdate_CFSR_CONV.py'
+      RADputcode='/misc/whome/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/RAD/put_CFSR.py'
+#      CONVputcode='/misc/whome/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/CONV/call_putdate_CONV.py'
       for date in ${date10dig[*]}; do
-         #echo python $RADputcode $YEARRUN $date $outputpath $diagpath
-         #echo 'date='$date
-         #python $RADputcode $YEARRUN $date $outputpath $diagpath
-
-         echo python $CONVputcode $YEARRUN $date $outputpath $diagpath
+         echo python $RADputcode $YEARRUN $date $outputpath $diagpath
          echo 'date='$date
-         python $CONVputcode $YEARRUN $date $outputpath $diagpath
+         python $RADputcode $YEARRUN $date $outputpath $diagpath
+
+#         echo python $CONVputcode $YEARRUN $date $outputpath $diagpath
+#         echo 'date='$date
+#         python $CONVputcode $YEARRUN $date $outputpath $diagpath
       done
       unset date10dig
       unset date

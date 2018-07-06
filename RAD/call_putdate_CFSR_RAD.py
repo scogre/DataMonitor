@@ -18,11 +18,13 @@ def call_putdate_CFSR_RAD( diagpath, streamyr,  date, instrmnt, satlite, outputp
    outfile=outputpath+'RAD_CFSR_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
 
    print 'outfile=',outfile
-   runstring='putdate_CFSR_annual_rad('+diagpath+','+str(date)+','+instrmnt+','+satlite+',****LATRANGE****,'+outfile+')'
+   runstring='putdate_CFSR_annual_rad('+diagpath+','+str(date)+','+instrmnt+','+satlite+','+str(latrange)+','+outfile+')'
    print 'runstring=',runstring
 
    if os.path.isfile(outfile):
+      print 'pre putdate'
       putdate_CFSR_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile)
+      print 'post putdate'
       #try:
       #   putdate_CFSR_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile)
       #except:

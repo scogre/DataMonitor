@@ -84,6 +84,7 @@ def putdate_annual_conv(diagpath, date, var, latrange, outfile):
       print 'lenuse=',len(useidx)
       print 'lenarea=',len(areaidx)
       idx = np.logical_and(useidx, areaidx)
+      print 'idx=',idx
       anndata['nobs_all'][idate,ilev]  = len(obs[areaidx])
       anndata['nobs_used'][idate,ilev] = len(obs[idx])
       anndata['mean_obs_all'][idate,ilev]  = np.mean(obs[areaidx])
