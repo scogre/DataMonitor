@@ -92,7 +92,7 @@ for nn in range(numinst):
    channels=eval(channelsname)
    print 'channels_name,channels=', channelsname,channels
    for region in regions:
-      outfile=outputpath+'/RAD_FV3s'+str(streamyr)+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
+      outfile=outputpath+'/RAD_'+modelstream+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
       create_annual_rad(outfile, streamyr, datayr, instrmnt, channels, satlite, region)
    del channels
 

@@ -32,17 +32,15 @@ do
    ###################################################################
 
 
-
-   RAD_ANNFILES=$(ls -1d /lustre/f1/Scott.Gregory/FV3s$YEARRUN/RAD*FV3s$YEARRUN*nc)
-   #echo $RAD_ANNFILES
+   RAD_ANNFILES=$(ls -1d $outputpath/RAD*$modelname*nc)
    numfile=${#RAD_ANNFILES}
    echo numfile=${#RAD_ANNFILES}
    if [ "$numfile" == "0" ]
    then
       echo 'making blanks for '$streamyr
-      makeblanks='python RAD/make_rad_annual_all.py '$YEARRUN' '$YEARRUN' '$outputpath
+      makeblanks='python RAD/make_rad_annual_all.py '$modelname' '$YEARRUN' '$outputpath
       $makeblanks
-      RAD_ANNFILES=$(ls -1d /lustre/f1/Scott.Gregory/FV3s$YEARRUN/RAD*FV3s$YEARRUN*nc)
+      RAD_ANNFILES=$(ls -1d $outputpath/RAD*$modelname*nc)
       #echo $RAD_ANNFILES
       numfile=${#RAD_ANNFILES}
       echo numfile=${#RAD_ANNFILES}
@@ -54,15 +52,14 @@ do
 #      break
 #   done
 
-   CONV_ANNFILES=$(ls -1d /lustre/f1/Scott.Gregory/FV3s$YEARRUN/CONV*FV3s$YEARRUN*nc)
-   #echo $CONV_ANNFILES
+   CONV_ANNFILES= $(ls -1d $outputpath/CONV*$modelname*nc)
    convnumfile=${#CONV_ANNFILES}
    echo convnumfile=${#CONV_ANNFILES}
    if [ "$convnumfile" == "0" ]
    then
-      makeblanks='python CONV/make_conv_annual_all.py '$YEARRUN' '$YEARRUN' '$outputpath
+      makeblanks='python CONV/make_conv_annual_all.py '$modelname' '$YEARRUN' '$outputpath
       $makeblanks
-      CONV_ANNFILES=$(ls -1d /lustre/f1/Scott.Gregory/FV3s$YEARRUN/CONV*FV3s$YEARRUN*nc)
+      CONV_ANNFILES=$(ls -1d $outputpath/CONV*$modelname*nc)
       #echo $CONV_ANNFILES
       numfile=${#CONV_ANNFILES}
       echo numfile=${#CONV_ANNFILES}
@@ -151,17 +148,10 @@ do
       RADputcode='/ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/RAD/put_all.py'
       CONVputcode='/ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/CONV/call_putdate_CONV.py'
       for date in ${date10dig[*]}; do
-         #echo python $RADputcode $YEARRUN $date $outputpath $diagpath
-         #echo 'date='$date
-         #python $RADputcode $YEARRUN $date $outputpath $diagpath
          echo python $RADputcode $modelname $date $outputpath $diagpath
          echo 'date='$date
          python $RADputcode $modelname $date $outputpath $diagpath
 
-
-         #echo python $CONVputcode $YEARRUN $date $outputpath $diagpath
-         #echo 'date='$date
-         #python $CONVputcode $YEARRUN $date $outputpath $diagpath
          echo python $CONVputcode $modelname $date $outputpath $diagpath
          echo 'date='$date
          python $CONVputcode $modelname $date $outputpath $diagpath
