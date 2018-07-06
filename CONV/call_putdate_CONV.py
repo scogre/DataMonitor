@@ -1,4 +1,5 @@
 from putdate_annual_conv import putdate_annual_conv
+from putdate_CFSR_annual_conv import putdate_CFSR_annual_conv
 from create_annual_conv import create_annual_conv
 import os
 import sys
@@ -37,10 +38,16 @@ for var in variables:
       outfile = outputpath+'/CONV_'+var+'_'+modelstream+'_'+str(datayr)+'_'+region+'.nc'
 
       if os.path.isfile(outfile):
-         putdate_annual_conv(diagpath, date, var, latrange, outfile)
+         if modelstream=='CFSR':
+            putdate_CFSR_annual_conv(diagpath, date, var, latrange, outfile)
+         else:
+            putdate_annual_conv(diagpath, date, var, latrange, outfile)
       else:
          create_annual_conv(outfile, modelstream, int(datayr), var, region, pcutoffs)
-         putdate_annual_conv(diagpath, date, var, latrange, outfile)
-
+         if modelstream=='CFSR':
+            putdate_CFSR_annual_conv(diagpath, date, var, latrange, outfile)
+         else:         
+            putdate_annual_conv(diagpath, date, var, latrange, outfile)
+ 
 
 
