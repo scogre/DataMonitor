@@ -1,5 +1,6 @@
 import sys
 from create_annual_conv import create_annual_conv
+from netCDF4 import Dataset
 
 if len(sys.argv) < 3:
     raise SystemExit('python make_conv_annual_all.py <modelstream> <data year> <output path>')
