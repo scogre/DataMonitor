@@ -77,6 +77,7 @@ def putdate_annual_conv(diagpath, date, var, latrange, outfile):
    for ilev in range(len(levs)-1):
       print 'levs[ilev],levs[ilev+1]=',levs[ilev],levs[ilev+1]	
       presidx = np.logical_and(pres >= levs[ilev], pres <= levs[ilev+1])
+      print 'presidx  =',presidx
       areaidx = np.logical_and(presidx, latidx)
       useidx  = (gsi_used == 1)
       print 'useidx  =',useidx
@@ -84,6 +85,7 @@ def putdate_annual_conv(diagpath, date, var, latrange, outfile):
       print 'lenuse=',len(useidx)
       print 'lenarea=',len(areaidx)
       idx = np.logical_and(useidx, areaidx)
+      print 'idx=',idx
       anndata['nobs_all'][idate,ilev]  = len(obs[areaidx])
       anndata['nobs_used'][idate,ilev] = len(obs[idx])
       anndata['mean_obs_all'][idate,ilev]  = np.mean(obs[areaidx])

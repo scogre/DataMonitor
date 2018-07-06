@@ -22,8 +22,8 @@ elif streamyr==2011:
    instrmnts=['airs', 'amsua',  'amsua', 'amsua', 'amsua', 'amsua', 'avhrr'    , 'avhrr', 'hirs3', 'hirs4'   ,'hirs4', 'iasi'   , 'mhs'    ,'mhs', 'mhs' ]
    satlites=[ 'aqua', 'aqua' ,'metop-a', 'n15'  , 'n18'  , 'n19'  , 'metop-a'  , 'n18'  , 'n17'  , 'metop-a' , 'n19' , 'metop-a', 'metop-a','n18', 'n19' ]
 elif streamyr==2015:                   
-   instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'atms' , 'avhrr'    , 'avhrr', 'cris', 'hirs4'   , 'iasi'   , 'mhs'    ,    'mhs',     'mhs', 'mhs' , 'mhs','seviri' ]
-   satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n18'  , 'npp'  , 'metop-a'  , 'n18'  , 'npp' , 'metop-a' , 'metop-a', 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'm10' ]
+   instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'atms' , 'avhrr'    , 'avhrr', 'cris', 'hirs4'   , 'iasi'   ,    'mhs',     'mhs', 'mhs' , 'mhs','seviri' ]
+   satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n18'  , 'npp'  , 'metop-a'  , 'n18'  , 'npp' , 'metop-a' , 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'm10' ]
 else:
    instrmnts=['hirs2','msu','avhrr','hirs3','amsua','amsub' ,'hirs4','sndr', 'mhs','ssmis','airs','atms','cris','seviri','iasi']
    satlites= [''     ,''   ,''      ,''     ,''     ,''     ,''     ,''    ,''    ,''     ,''    ,''    ,''    ,''      ,''   ]
