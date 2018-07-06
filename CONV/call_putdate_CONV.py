@@ -5,16 +5,14 @@ import sys
 
 
 if len(sys.argv) < 2:
-   raise SystemExit('python call_putdate_CONV.py <stream start year> <date> <annual output path>')
-streamyr = int(sys.argv[1])
+   raise SystemExit('python call_putdate_CONV.py <modelstream> <date> <annual output path> <diagpath>')
+modelstream = sys.argv[1]
 date = int(sys.argv[2])
 outputpath = sys.argv[3]
 diagpath = sys.argv[4]
 datayr=str(date)[0:4]
-#print 'streamyr,date=',streamyr,date 
 
 datayr=str(date)[0:4]
-#diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'+str(streamyr)+'stream/'
 regions=['GLOBL','TROPI','NORTH','SOUTH']
 
 variables=['t','u','v','q','ps','gps']
@@ -36,12 +34,12 @@ for var in variables:
       else:
          pcutoffs=range(0,1000,100) ##=[0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
    
-      outfile = outputpath+'/CONV_'+var+'_FV3s'+str(streamyr)+'_'+str(datayr)+'_'+region+'.nc'
+      outfile = outputpath+'/CONV_'+var+'_'+modelstream+'_'+str(datayr)+'_'+region+'.nc'
 
       if os.path.isfile(outfile):
          putdate_annual_conv(diagpath, date, var, latrange, outfile)
       else:
-         create_annual_conv(outfile, streamyr, int(datayr), var, region, pcutoffs)
+         create_annual_conv(outfile, modelstream, int(datayr), var, region, pcutoffs)
          putdate_annual_conv(diagpath, date, var, latrange, outfile)
 
 

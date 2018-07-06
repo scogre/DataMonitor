@@ -7,7 +7,7 @@ import time
 ## DIMENSIONS
 ## NDAYSperYR X 4 for Ntime
 ## Nlevs /lustre/f1/Scott.Gregory/FV3sSTREAMYR 
-def create_annual_conv(outfile, streamyr, datayr, varb, region, pcutoffs):
+def create_annual_conv(outfile, modelstream, datayr, varb, region, pcutoffs):
    annual_filename = outfile
    if float(datayr)/4!=datayr/4 or datayr==2000:
       ndays=365

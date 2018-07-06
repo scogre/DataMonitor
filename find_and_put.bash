@@ -2,11 +2,11 @@
 ### need to sort out the variable inputs
 
 yearruns=('1999' '2003' '2007' '2011' '2015')
-#yearruns=('2007' '2011' '2015')
 count=0
 outpath='/lustre/f1/Scott.Gregory/'
 for Y in "${yearruns[@]}"
 do
+   modelname=FV3s$Y
    YEARRUN=$Y
    echo YRRUN=$YEARRUN
    echo $count
@@ -20,7 +20,7 @@ do
    ###################################################################
 
    ###################################################################
-   outputpath=$outpath'FV3s'$YEARRUN'/'
+   outputpath=$outpath$modelname'/'
    ###################################################################
    if [ -d $outputpath/ ] #if directory exists
    then
@@ -70,7 +70,7 @@ do
 
 
    ###################################################################
-   listfilename='latestlist_FV3s'$YEARRUN'.txt'
+   listfilename='latestlist_'$modelname'.txt'
    dates_in_ann_fname='date_in_ann'$YEARRUN'.txt'
    rm $listfilename
    rm $dates_in_ann_fname
@@ -151,13 +151,21 @@ do
       RADputcode='/ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/RAD/put_all.py'
       CONVputcode='/ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/CONV/call_putdate_CONV.py'
       for date in ${date10dig[*]}; do
-         echo python $RADputcode $YEARRUN $date $outputpath $diagpath
+         #echo python $RADputcode $YEARRUN $date $outputpath $diagpath
+         #echo 'date='$date
+         #python $RADputcode $YEARRUN $date $outputpath $diagpath
+         echo python $RADputcode $modelname $date $outputpath $diagpath
          echo 'date='$date
-         python $RADputcode $YEARRUN $date $outputpath $diagpath
+         python $RADputcode $modelname $date $outputpath $diagpath
 
-         echo python $CONVputcode $YEARRUN $date $outputpath $diagpath
+
+         #echo python $CONVputcode $YEARRUN $date $outputpath $diagpath
+         #echo 'date='$date
+         #python $CONVputcode $YEARRUN $date $outputpath $diagpath
+         echo python $CONVputcode $modelname $date $outputpath $diagpath
          echo 'date='$date
-         python $CONVputcode $YEARRUN $date $outputpath $diagpath
+         python $CONVputcode $modelname $date $outputpath $diagpath
+
       done
       unset date10dig
       unset date

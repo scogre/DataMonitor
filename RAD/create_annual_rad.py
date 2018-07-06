@@ -6,7 +6,7 @@ from netCDF4 import num2date, date2num
 
 ## DIMENSIONS
 ## NDAYSperYR X 4 for Ntime
-def create_annual_rad(outfile, streamyr, datayr, instrmnt, channels, satlite, region):
+def create_annual_rad(outfile, modelstream, datayr, instrmnt, channels, satlite, region):
    annual_filename = outfile
    nchans=len(channels)
    if float(datayr)/4!=datayr/4 or datayr==2000:
