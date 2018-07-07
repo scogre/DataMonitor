@@ -53,32 +53,9 @@ text_file.write(str(enddate)+' end \n')
 text_file.close()
 
 
-IMAGES=[]
-IMAGES.append(imagedir+modelstreams[0]+'_'+instrmnt+'_'+satlite+'_ch'+str(channel)+'_'+region+'_'+str(begindate)+'_'+str(enddate)+'.png')
-IMAGES.append(imagedir+modelstreams[1]+'_'+instrmnt+'_'+satlite+'_ch'+str(channel)+'_'+region+'_'+str(begindate)+'_'+str(enddate)+'.png')
 
+plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate,imagedir)
 
-plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate,IMAGES)
-
-
-
-#########################
-webpathstringindx = IMAGES[0].find("/psd")
-web_image1 = IMAGES[0][webpathstringindx:len(IMAGES[0])]
-webpathstringindx = IMAGES[1].find("/psd")
-web_image2 = IMAGES[1][webpathstringindx:len(IMAGES[1])]
-#########################
-
-#------ Create web page -----------------------------------
-print "Content-Type: text/html\n\n"
-print "<center>"
-print "<table><tr>"
-print "<tr>"
-print "<td><a href=\"" +web_image1+ "\" target=\"new\"><IMG src="+web_image1+"></a></td>"
-print "<td><a href=\"" +web_image2+ "\" target=\"new\"><IMG src="+web_image2+"></a></td>"
-print "</tr>"
-print "</tr></table>"
-print "</center>"
 
 
 

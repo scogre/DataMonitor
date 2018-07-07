@@ -17,10 +17,13 @@ import sys, os, os.path, cgi, re
 
 nan=float('nan')
 
+import random, string
+
 ##############################
-def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IMAGES):
+def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,imagedir):
 
    nummodel=len(modelstreams)
+   plotpath=imagedir
    enddate=str(enddate)
    begindate=str(begindate)
    ##############################
@@ -79,6 +82,8 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
       del anndataB
       del modelfile
    
+
+
    
    ##variables=['t','u','v','q','gps']
    
@@ -243,6 +248,7 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
    ####################################################
   
  
+   IMAGES=[]   
    for modct in range(nummodel):
       model=modelstreams[modct]
       ######### PLOTTING
@@ -327,8 +333,12 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
          tick_format= DateFormatter("%m.%y")
    
    
-      figname=IMAGES[modct] 
-      
+      PLOTpath =plotpath
+      os.system("mkdir -p "+PLOTpath)
+      #print 'plotpath=',PLOTpath
+   
+      figname=PLOTpath+'/'+model+'_CONV_'+varb+'_'+region+'_'+str(plevel)+'.png'
+
       ####
       zeroline=np.zeros(len(datetime_list))
       ####
@@ -476,7 +486,37 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
       #print('figname=',figname)
       plt.savefig(figname)
       del modelname
+      del PLOTpath
+      IMAGES.append(figname)
       del figname
+
+
+
+
+
+
+
+   #########################
+   webpathstringindx = IMAGES[0].find("/psd")
+   web_image1 = IMAGES[0][webpathstringindx:len(IMAGES[0])]
+   webpathstringindx = IMAGES[1].find("/psd")
+   web_image2 = IMAGES[1][webpathstringindx:len(IMAGES[1])]
+   #########################
+
+
+
+
+   #------ Create web page -----------------------------------
+   print "Content-Type: text/html\n\n"
+   print "<center>"
+   print "<table><tr>"
+   print "<tr>"
+   print "<td><a href=\"" +web_image1+ "\" target=\"new\"><IMG src="+web_image1+"></a></td>"
+   print "<td><a href=\"" +web_image2+ "\" target=\"new\"><IMG src="+web_image2+"></a></td>"
+   print "</tr>"
+   print "</tr></table>"
+   print "</center>"
+
 
    #########################
    #########################

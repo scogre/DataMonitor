@@ -45,30 +45,6 @@ text_file.close()
 
 
 
-IMAGES=[]
-IMAGES.append(imagedir+modelstreams[0]+'_CONV_'+varb+'_'+region+'_'+str(plevel)+'_'+str(begindate)+'_'+str(enddate)+'.png')
-IMAGES.append(imagedir+modelstreams[1]+'_CONV_'+varb+'_'+region+'_'+str(plevel)+'_'+str(begindate)+'_'+str(enddate)+'.png')
-
-plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IMAGES)
-
-
-#########################
-webpathstringindx = IMAGES[0].find("/psd")
-web_image1 = IMAGES[0][webpathstringindx:len(IMAGES[0])]
-webpathstringindx = IMAGES[1].find("/psd")
-web_image2 = IMAGES[1][webpathstringindx:len(IMAGES[1])]
-#########################
-
-#------ Create web page -----------------------------------
-print "Content-Type: text/html\n\n"
-print "<center>"
-print "<table><tr>"
-print "<tr>"
-print "<td><a href=\"" +web_image1+ "\" target=\"new\"><IMG src="+web_image1+"></a></td>"
-print "<td><a href=\"" +web_image2+ "\" target=\"new\"><IMG src="+web_image2+"></a></td>"
-print "</tr>"
-print "</tr></table>"
-print "</center>"
-
+plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,imagedir)
 
 

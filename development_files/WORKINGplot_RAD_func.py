@@ -17,13 +17,19 @@ import sys, os, os.path, cgi, re
 
 nan=float('nan')
 
+import random, string
 
-def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate,IMAGES):
+
+
+def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate,imagedir):
    channel=int(channel)
    enddate=str(enddate)
    begindate=str(begindate)
 
    nummodel=len(modelstreams)
+
+   plotpath=imagedir
+
 
    ##############################
    ##############################
@@ -188,6 +194,7 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
    maxENSsprederrF_mean =np.nanmax(spread_obserr_f_chan);     minENSsprederrF_mean=np.nanmin(spread_obserr_f_chan);
    
    
+   IMAGES=[]   
    for modct in range(nummodel):
       model=modelstreams[modct]
       ######### PLOTTING
@@ -276,7 +283,12 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       #############
    
       #############
-      figname=IMAGES[modct] 
+      PLOTpath = plotpath
+      os.system("mkdir -p "+PLOTpath)
+      #print 'plotpath=',PLOTpath
+   
+      figname=PLOTpath+model+'_'+instrmnt+'_'+satlite+'_ch'+channum_str+'_'+region+'_'+str(begindate)+'_'+str(enddate)+'.png'
+      #print('figname=',figname)
       #############
       f, axarr = plt.subplots(6, sharex=True, figsize=(17, 17))#plt.subplots(figsize=(20, 10))
       #############
@@ -465,8 +477,37 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       os.system("rm "+figname)
       plt.savefig(figname)
       del model
+      del PLOTpath
+      IMAGES.append(figname)
       del figname
    ##############################
+
+   #########################
+   webpathstringindx = IMAGES[0].find("/psd")
+   web_image1 = IMAGES[0][webpathstringindx:len(IMAGES[0])]
+   webpathstringindx = IMAGES[1].find("/psd")
+   web_image2 = IMAGES[1][webpathstringindx:len(IMAGES[1])]
+   #########################
+
+
+
+
+   #------ Create web page -----------------------------------
+   print "Content-Type: text/html\n\n"
+   print "<center>"
+   print "<table><tr>"
+   print "<tr>"
+   print "<td><a href=\"" +web_image1+ "\" target=\"new\"><IMG src="+web_image1+"></a></td>"
+   print "<td><a href=\"" +web_image2+ "\" target=\"new\"><IMG src="+web_image2+"></a></td>"
+   print "</tr>"
+   print "</tr></table>"
+   print "</center>"
+
+
+   #########################
+   #########################
+   #########################
+   #########################
 
 
 

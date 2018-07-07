@@ -1,4 +1,3 @@
-#!/usr/local/bin/python2.7
 import numpy as np
 from netCDF4 import Dataset
 import datetime
@@ -17,20 +16,28 @@ import sys, os, os.path, cgi, re
 
 nan=float('nan')
 
+import random, string
 
-def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate,IMAGES):
-   channel=int(channel)
-   enddate=str(enddate)
-   begindate=str(begindate)
+def plot_RAD_func_TEST(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate):
+
+   #length=10
+   #randdir=''.join(random.choice(string.lowercase) for i in range(length))
+   #tmpdir='/httpd-test/psd/tmp/gefsrr_data_assim/'
+   ##tmpdir='/psd/tmp/gefsrr_data_assim/'
+   #writedir=tmpdir+randdir+'/'
+   #imagedir=writedir+'images/'
+   #os.system("mkdir -p "+writedir)
+   #os.system("mkdir -p "+imagedir)
 
    nummodel=len(modelstreams)
+   plotpath=datapath
+   #plotpath=imagedir
 
    ##############################
    ##############################
-   modelstream=modelstreams[0]
+   modelstream=modelstreams[1]
    beginyr=str(begindate)[0:4]
    endyr=str(enddate)[0:4]
-
    if beginyr==endyr:
       numyearfiles=1
       modelfile=['']*numyearfiles
@@ -38,10 +45,8 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       #print modelfile[0]
       anndataA  = Dataset(modelfile[0], 'r')
       alldatesA = anndataA['All_Dates'][:].tolist()
-
-      startindx=alldatesA.index(int(begindate))
-      endindx=alldatesA.index(int(enddate))
-
+      startindx=alldatesA.index(begindate)
+      endindx=alldatesA.index(enddate)
       dateindcsA=np.arange(startindx,endindx+1,1).tolist()
       dateindcs = dateindcsA
       querydates=[]
@@ -57,7 +62,7 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       modelfile[0]=datapath+'RAD_'+modelstream+'_'+str(beginyr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
       anndataA  = Dataset(modelfile[0], 'r')
       alldatesA = anndataA['All_Dates'][:].tolist()
-      startindx=alldatesA.index(int(begindate))
+      startindx=alldatesA.index(begindate)
       dateindcsA=np.arange(startindx,len(alldatesA),1).tolist()
       querydatesA=[]
       for diA in dateindcsA:
@@ -68,7 +73,7 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       modelfile[1]=datapath+'RAD_'+modelstream+'_'+str(endyr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
       anndataB  = Dataset(modelfile[1], 'r')
       alldatesB = anndataB['All_Dates'][:].tolist()
-      endindx=alldatesB.index(int(enddate))
+      endindx=alldatesB.index(enddate)
       dateindcsB=np.arange(0,endindx+1,1).tolist()
       querydatesB=[]
       for diB in dateindcsB:
@@ -83,8 +88,6 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       del anndataA
       del anndataB
       del modelfile
-
-
    channum_str=str(channel)
    nobs_all_chan = nan*np.ones((numquerydates,nummodel))
    nobs_qcd_chan = nan*np.ones((numquerydates,nummodel))
@@ -187,7 +190,11 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
    maxENSspredF_mean    =np.nanmax(spread_f_chan);            minENSspredF_mean   =np.nanmin(spread_f_chan);
    maxENSsprederrF_mean =np.nanmax(spread_obserr_f_chan);     minENSsprederrF_mean=np.nanmin(spread_obserr_f_chan);
    
+   #print('querydates=',querydates)
+   #print('mean_omf_ctrl_chan.shape=',mean_omf_ctrl_chan.shape)
+   #print('FINISHED')
    
+   IMAGES=[]   
    for modct in range(nummodel):
       model=modelstreams[modct]
       ######### PLOTTING
@@ -276,7 +283,12 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       #############
    
       #############
-      figname=IMAGES[modct] 
+      PLOTpath = plotpath
+      os.system("mkdir -p "+PLOTpath)
+      #print 'plotpath=',PLOTpath
+   
+      figname=PLOTpath+model+'_'+instrmnt+'_'+satlite+'_ch'+channum_str+'_'+region+'_'+str(begindate)+'_'+str(enddate)+'.png'
+      #print('figname=',figname)
       #############
       f, axarr = plt.subplots(6, sharex=True, figsize=(17, 17))#plt.subplots(figsize=(20, 10))
       #############
@@ -465,8 +477,38 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       os.system("rm "+figname)
       plt.savefig(figname)
       del model
+      del PLOTpath
+      IMAGES.append(figname)
       del figname
    ##############################
+
+
+   #########################
+   webpathstringindx = IMAGES[0].find("/psd")
+   web_image1 = IMAGES[0][webpathstringindx:len(IMAGES[0])]
+   webpathstringindx = IMAGES[1].find("/psd")
+   web_image2 = IMAGES[1][webpathstringindx:len(IMAGES[1])]
+   #########################
+
+
+
+
+   #------ Create web page -----------------------------------
+   print "Content-Type: text/html\n\n"
+   print "<center>"
+   print "<table><tr>"
+   print "<tr>"
+   print "<td><a href=\"" +web_image1+ "\" target=\"new\"><IMG src="+web_image1+"></a></td>"
+   print "<td><a href=\"" +web_image2+ "\" target=\"new\"><IMG src="+web_image2+"></a></td>"
+   print "</tr>"
+   print "</tr></table>"
+   print "</center>"
+
+
+   #########################
+   #########################
+   #########################
+   #########################
 
 
 

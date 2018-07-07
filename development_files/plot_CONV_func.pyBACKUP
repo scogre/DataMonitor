@@ -1,4 +1,3 @@
-#!/usr/local/bin/python2.7
 import numpy as np
 from netCDF4 import Dataset
 import datetime
@@ -17,26 +16,23 @@ import sys, os, os.path, cgi, re
 
 nan=float('nan')
 
-##############################
-def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IMAGES):
 
+##############################
+def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate):
    nummodel=len(modelstreams)
-   enddate=str(enddate)
-   begindate=str(begindate)
+   plotpath=datapath
    ##############################
-   modelstream=modelstreams[0]
+   modelstream=modelstreams[1]
    beginyr=str(begindate)[0:4]
    endyr=str(enddate)[0:4]
-
-
    if beginyr==endyr:
       numyearfiles=1
       modelfile=['']*numyearfiles
       modelfile[0]=datapath+'CONV_'+varb+'_'+modelstream+'_'+str(beginyr)+'_'+region+'.nc'
       anndataA  = Dataset(modelfile[0], 'r')
       alldatesA = anndataA['All_Dates'][:].tolist()
-      startindx=alldatesA.index(int(begindate))
-      endindx=alldatesA.index(int(enddate))
+      startindx=alldatesA.index(begindate)
+      endindx=alldatesA.index(enddate)
       dateindcsA=np.arange(startindx,endindx+1,1).tolist()
       dateindcs = dateindcsA
       querydates=[]
@@ -52,7 +48,7 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
       modelfile[0]=datapath+'CONV_'+varb+'_'+modelstream+'_'+str(beginyr)+'_'+region+'.nc'
       anndataA  = Dataset(modelfile[0], 'r')
       alldatesA = anndataA['All_Dates'][:].tolist()
-      startindx=alldatesA.index(int(begindate))
+      startindx=alldatesA.index(begindate)
       dateindcsA=np.arange(startindx,len(alldatesA),1).tolist()
       querydatesA=[]
       for diA in dateindcsA:
@@ -63,7 +59,7 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
       modelfile[1]=datapath+'CONV_'+varb+'_'+modelstream+'_'+str(endyr)+'_'+region+'.nc'
       anndataB  = Dataset(modelfile[1], 'r')
       alldatesB = anndataB['All_Dates'][:].tolist()
-      endindx=alldatesB.index(int(enddate))
+      endindx=alldatesB.index(enddate)
       dateindcsB=np.arange(0,endindx+1,1).tolist()
       querydatesB=[]
       for diB in dateindcsB:
@@ -113,16 +109,17 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
    spread_obserr_a_plev = nan*np.ones((numquerydates,nummodel))
    ##################################
    
+   
    modct=0
    for modelstream in modelstreams:
-      #print('modelstream=',modelstream)
+      print('modelstream=',modelstream)
       modelfile=datapath+'CONV_'+varb+'_'+modelstream+'_'+str(beginyr)+'_'+region+'.nc'
       anndataA  = Dataset(modelfile, 'r')
       del modelfile
       #chans = anndataA['Channels'][:].tolist()
       #chanindx=chans.index(channel)
       plevs = anndataA['Plevels'][:].tolist()
-      plevindex = plevs.index(int(plevel))
+      plevindex = plevs.index(plevel)
       ################
       nobs_all = anndataA['nobs_all'][:][:]
       nobs_used = anndataA['nobs_used'][:][:]
@@ -178,7 +175,7 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
       std_oma_ctrl_plev[:,modct]    = std_oma_ctrl[dateindcs,plevindex]
       spread_obserr_a_plev[:,modct] = spread_obserr_a[dateindcs,plevindex]
       modct += 1
-
+   
    
    Ntotdiag=nobs_all_plev.astype(float)
    Nusediag=nobs_used_plev.astype(float)
@@ -241,8 +238,8 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
    minOAstd  = np.nanmin(std_oma_ctrl_plev)
    miny[4]   = minOAstd
    ####################################################
-  
- 
+   
+   
    for modct in range(nummodel):
       model=modelstreams[modct]
       ######### PLOTTING
@@ -327,8 +324,11 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
          tick_format= DateFormatter("%m.%y")
    
    
-      figname=IMAGES[modct] 
-      
+      PLOTpath =plotpath
+      os.system("mkdir -p "+PLOTpath)
+      print 'plotpath=',PLOTpath
+   
+      figname=PLOTpath+'/'+model+'_CONV_'+varb+'_'+region+'_'+str(plevel)+'.png'
       ####
       zeroline=np.zeros(len(datetime_list))
       ####
@@ -342,7 +342,7 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
       if varb=='PS' or varb=='PW':
          f.suptitle(modelname+' CONVENTIONAL OBS '+varb+' '+geolabel+' ', fontsize=20, fontweight='bold')
       else:
-         f.suptitle(modelname+' CONVENTIONAL OBS '+varb+' '+geolabel+' '+str(plevel)+'_mb to '+str(int(plevel)+100)+'_mb', fontsize=20, fontweight='bold')
+         f.suptitle(modelname+' CONVENTIONAL OBS '+varb+' '+geolabel+' '+str(plevel)+'_mb to '+str(plevel+100)+'_mb', fontsize=20, fontweight='bold')
       axarr[0].set_ylabel('numobs')
    
       box = axarr[0].get_position()
@@ -372,8 +372,6 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
       ax2.legend(('%DAuse/DAobs',), loc='lower left')
    
       ####
-
-
       ####
       diagmean= np.nanmean(mean_obs_all_plev[:,modct])
       usemean= np.nanmean(mean_obs_used_plev[:,modct])
@@ -471,17 +469,12 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
       axarr[4].xaxis.set_major_formatter(tick_format)
       for tick in axarr[4].get_xticklabels():
           tick.set_rotation(70)
-
- 
-      #print('figname=',figname)
+   
+      print('figname=',figname)
       plt.savefig(figname)
       del modelname
-      del figname
+      del PLOTpath
 
-   #########################
-   #########################
-   #########################
-   #########################
 
 
 
