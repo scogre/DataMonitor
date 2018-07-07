@@ -1,4 +1,3 @@
-#!/usr/local/bin/python2.7
 import numpy as np
 from netCDF4 import Dataset
 import datetime
@@ -19,67 +18,26 @@ nan=float('nan')
 
 import random, string
 
+def plot_RAD_func_TEST(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate):
 
-
-def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate):
-   channel=int(channel)
-   enddate=str(enddate)
-   begindate=str(begindate)
+   #length=10
+   #randdir=''.join(random.choice(string.lowercase) for i in range(length))
+   #tmpdir='/httpd-test/psd/tmp/gefsrr_data_assim/'
+   ##tmpdir='/psd/tmp/gefsrr_data_assim/'
+   #writedir=tmpdir+randdir+'/'
+   #imagedir=writedir+'images/'
+   #os.system("mkdir -p "+writedir)
+   #os.system("mkdir -p "+imagedir)
 
    nummodel=len(modelstreams)
-
-
-
-
-   randlength=10
-   randdir=''.join(random.choice(string.lowercase) for i in range(randlength))
-   tmpdir='/httpd-test/psd/tmp/gefsrr_data_assim/'
-   #tmpdir='/psd/tmp/gefsrr_data_assim/'
-   writedir=tmpdir+randdir+'/'
-   imagedir=writedir+'images/'
-   os.system("mkdir -p "+writedir)
-   os.system("mkdir -p "+imagedir)
-   #plotpath=datapath
-   plotpath=imagedir
-
-
-   listjunk_filename=writedir+'plottest.txt'
-   text_file = open(listjunk_filename, "w")
-   text_file.write(str(channel)+' channel \n')
-   text_file.write(modelstreams[0]+' models \n')
-   text_file.write(modelstreams[1]+' models \n')
-   text_file.write(instrmnt+' instrmnt \n')
-   text_file.write(str(nummodel)+' nummodel \n')
-   text_file.write(instrmnt+'_'+satlite+'\n')
-   text_file.write(region+' region \n')
-   text_file.write(str(begindate)+' begin \n')
-   text_file.write(str(enddate)+' end \n')
-   text_file.close()
-
-
-
-
+   plotpath=datapath
+   #plotpath=imagedir
 
    ##############################
    ##############################
-   modelstream=modelstreams[0]
+   modelstream=modelstreams[1]
    beginyr=str(begindate)[0:4]
    endyr=str(enddate)[0:4]
-   
-
-
-
-
-   listjunk_filename=writedir+'PREDATEplottest.txt'
-   text_file = open(listjunk_filename, "w")
-   text_file.write(str(channel)+' channel \n')
-   text_file.write(modelstream+' modelstream \n')
-   text_file.write(beginyr+' beginyr \n')
-   text_file.write(datapath+'RAD_'+modelstream+'_'+str(beginyr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'+' modelfile \n')
-   text_file.close()
-
-
-
    if beginyr==endyr:
       numyearfiles=1
       modelfile=['']*numyearfiles
@@ -87,29 +45,8 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       #print modelfile[0]
       anndataA  = Dataset(modelfile[0], 'r')
       alldatesA = anndataA['All_Dates'][:].tolist()
-
-
-      listjunk_filename=writedir+'startDATEplottest.txt'
-      text_file = open(listjunk_filename, "w")
-      text_file.write(modelfile[0]+' model \n')
-      text_file.write(str(alldatesA[22])+' date22 \n')
-      text_file.close()
-
-
-
-      startindx=alldatesA.index(int(begindate))
-      endindx=alldatesA.index(int(enddate))
-
-
-      listjunk_filename=writedir+'POSTINDXplottest.txt'
-      text_file = open(listjunk_filename, "w")
-      text_file.write(str(startindx)+' startindx \n')
-      text_file.write(str(endindx)+' endindx \n')
-      text_file.write(datapath+'RAD_'+modelstream+'_'+str(beginyr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'+' modelfile \n')
-      text_file.close()
-
-
-
+      startindx=alldatesA.index(begindate)
+      endindx=alldatesA.index(enddate)
       dateindcsA=np.arange(startindx,endindx+1,1).tolist()
       dateindcs = dateindcsA
       querydates=[]
@@ -119,22 +56,13 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       numquerydates=len(querydates)
       del anndataA
       del modelfile
-
-      listjunk_filename=writedir+'MIDDATEplottest.txt'
-      text_file = open(listjunk_filename, "w")
-      text_file.write(str(numquerydates)+' numquerydate \n')
-      text_file.close()
-
-
-
-
    else:
       numyearfiles=2
       modelfile=['']*numyearfiles
       modelfile[0]=datapath+'RAD_'+modelstream+'_'+str(beginyr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
       anndataA  = Dataset(modelfile[0], 'r')
       alldatesA = anndataA['All_Dates'][:].tolist()
-      startindx=alldatesA.index(int(begindate))
+      startindx=alldatesA.index(begindate)
       dateindcsA=np.arange(startindx,len(alldatesA),1).tolist()
       querydatesA=[]
       for diA in dateindcsA:
@@ -145,7 +73,7 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       modelfile[1]=datapath+'RAD_'+modelstream+'_'+str(endyr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
       anndataB  = Dataset(modelfile[1], 'r')
       alldatesB = anndataB['All_Dates'][:].tolist()
-      endindx=alldatesB.index(int(enddate))
+      endindx=alldatesB.index(enddate)
       dateindcsB=np.arange(0,endindx+1,1).tolist()
       querydatesB=[]
       for diB in dateindcsB:
@@ -160,23 +88,6 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       del anndataA
       del anndataB
       del modelfile
-
-
-
-   listjunk_filename=writedir+'POSTDATEplottest.txt'
-   text_file = open(listjunk_filename, "w")
-   text_file.write(str(numquerydates)+' numquerydates \n')
-   text_file.write(instrmnt+' instrmnt \n')
-   text_file.write(instrmnt+'_'+satlite+'\n')
-   text_file.write(region+' region \n')
-   text_file.write(str(begindate)+' begin \n')
-   text_file.write(str(enddate)+' end \n')
-   text_file.close()
-
-
-
-
-
    channum_str=str(channel)
    nobs_all_chan = nan*np.ones((numquerydates,nummodel))
    nobs_qcd_chan = nan*np.ones((numquerydates,nummodel))
@@ -282,16 +193,6 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
    #print('querydates=',querydates)
    #print('mean_omf_ctrl_chan.shape=',mean_omf_ctrl_chan.shape)
    #print('FINISHED')
-
-   listjunk_filename=writedir+'PREplottest.txt'
-   text_file = open(listjunk_filename, "w")
-   text_file.write(str(channel)+' channel \n')
-   text_file.write(instrmnt+' instrmnt \n')
-   text_file.write(instrmnt+'_'+satlite+'\n')
-   text_file.write(region+' region \n')
-   text_file.write(str(begindate)+' begin \n')
-   text_file.write(str(enddate)+' end \n')
-   text_file.close()
    
    IMAGES=[]   
    for modct in range(nummodel):
@@ -580,22 +481,6 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       IMAGES.append(figname)
       del figname
    ##############################
-
-   listjunk_filename=writedir+'ENDplottest.txt'
-   text_file = open(listjunk_filename, "w")
-   text_file.write(str(channel)+' channel \n')
-   text_file.write(IMAGES[0]+' image0 \n')
-   text_file.write(IMAGES[1]+' image1 \n')
-   text_file.write(instrmnt+' instrmnt \n')
-   text_file.write(instrmnt+'_'+satlite+'\n')
-   text_file.write(region+' region \n')
-   text_file.write(str(begindate)+' begin \n')
-   text_file.write(str(enddate)+' end \n')
-   text_file.close()
-
-
-
-
 
 
    #########################

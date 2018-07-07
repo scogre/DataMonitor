@@ -1,15 +1,16 @@
-from plot_RAD_func import plot_RAD_func
+from plot_RAD_func_TEST import plot_RAD_func_TEST
+#from plot_RAD_func import plot_RAD_func
 
 ##############################
 channel=6
-modelstreams=('FV3s2003','FV3s2003')
+modelstreams=('FV3s2003','CFSR')
 datapath='/Projects/gefsrr/ANNUAL/'
 instrmnt='amsua'
-satlite='n16'
+satlite='n15'
 region='GLOBL'
 begindate=2003030300
 enddate=2003040900
 
 
-plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate)
+plot_RAD_func_TEST(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate)
 

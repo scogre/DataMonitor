@@ -1,4 +1,3 @@
-#!/usr/local/bin/python2.7
 import numpy as np
 from netCDF4 import Dataset
 import datetime
@@ -17,77 +16,23 @@ import sys, os, os.path, cgi, re
 
 nan=float('nan')
 
-import random, string
 
 ##############################
 def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate):
-
    nummodel=len(modelstreams)
-
-
-   randlength=10
-   randdir=''.join(random.choice(string.lowercase) for i in range(randlength))
-   tmpdir='/httpd-test/psd/tmp/gefsrr_data_assim/'
-   #tmpdir='/psd/tmp/gefsrr_data_assim/'
-   writedir=tmpdir+randdir+'/'
-   imagedir=writedir+'images/'
-   os.system("mkdir -p "+writedir)
-   os.system("mkdir -p "+imagedir)
-   plotpath=imagedir
-
-
-   enddate=str(enddate)
-   begindate=str(begindate)
-#   plevel=int(plevel)
-
-
-   listjunk_filename=writedir+'plottest.txt'
-   text_file = open(listjunk_filename, "w")
-   text_file.write(modelstreams[0]+' models \n')
-   text_file.write(modelstreams[1]+' models \n')
-   text_file.write(str(nummodel)+' nummodel \n')
-   text_file.write(varb+' varb \n')
-   text_file.write(region+' region \n')
-   text_file.write(plevel+' plevel \n')
-   text_file.write(str(begindate)+' begin \n')
-   text_file.write(str(enddate)+' end \n')
-   text_file.close()
-
-
-
-
-
-
-   #plotpath=datapath
+   plotpath=datapath
    ##############################
-   modelstream=modelstreams[0]
+   modelstream=modelstreams[1]
    beginyr=str(begindate)[0:4]
    endyr=str(enddate)[0:4]
-
-
-
-
-
-
-   listjunk_filename=writedir+'PREDATEplottest.txt'
-   text_file = open(listjunk_filename, "w")
-   text_file.write(modelstream+' modelstream \n')
-   text_file.write(beginyr+' beginyr \n')
-   text_file.write(datapath+'CONV_'+varb+'_'+modelstream+'_'+str(beginyr)+'_'+region+'.nc'+' modelfile \n')
-   text_file.close()
-
-
-
-
-
    if beginyr==endyr:
       numyearfiles=1
       modelfile=['']*numyearfiles
       modelfile[0]=datapath+'CONV_'+varb+'_'+modelstream+'_'+str(beginyr)+'_'+region+'.nc'
       anndataA  = Dataset(modelfile[0], 'r')
       alldatesA = anndataA['All_Dates'][:].tolist()
-      startindx=alldatesA.index(int(begindate))
-      endindx=alldatesA.index(int(enddate))
+      startindx=alldatesA.index(begindate)
+      endindx=alldatesA.index(enddate)
       dateindcsA=np.arange(startindx,endindx+1,1).tolist()
       dateindcs = dateindcsA
       querydates=[]
@@ -103,7 +48,7 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate):
       modelfile[0]=datapath+'CONV_'+varb+'_'+modelstream+'_'+str(beginyr)+'_'+region+'.nc'
       anndataA  = Dataset(modelfile[0], 'r')
       alldatesA = anndataA['All_Dates'][:].tolist()
-      startindx=alldatesA.index(int(begindate))
+      startindx=alldatesA.index(begindate)
       dateindcsA=np.arange(startindx,len(alldatesA),1).tolist()
       querydatesA=[]
       for diA in dateindcsA:
@@ -114,7 +59,7 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate):
       modelfile[1]=datapath+'CONV_'+varb+'_'+modelstream+'_'+str(endyr)+'_'+region+'.nc'
       anndataB  = Dataset(modelfile[1], 'r')
       alldatesB = anndataB['All_Dates'][:].tolist()
-      endindx=alldatesB.index(int(enddate))
+      endindx=alldatesB.index(enddate)
       dateindcsB=np.arange(0,endindx+1,1).tolist()
       querydatesB=[]
       for diB in dateindcsB:
@@ -130,15 +75,6 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate):
       del anndataB
       del modelfile
    
-
-   listjunk_filename=writedir+'POSTDATEplottest.txt'
-   text_file = open(listjunk_filename, "w")
-   text_file.write(str(numquerydates)+' numquerydates \n')
-   text_file.write(region+' region \n')
-   text_file.write(str(begindate)+' begin \n')
-   text_file.write(str(enddate)+' end \n')
-   text_file.close()
-
    
    ##variables=['t','u','v','q','gps']
    
@@ -172,28 +108,18 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate):
    std_oma_ctrl_plev = nan*np.ones((numquerydates,nummodel))
    spread_obserr_a_plev = nan*np.ones((numquerydates,nummodel))
    ##################################
-
-
-   listjunk_filename=writedir+'PREGATHERplottest.txt'
-   text_file = open(listjunk_filename, "w")
-   text_file.write(str(numquerydates)+' numquerydates \n')
-   text_file.write(region+' region \n')
-   text_file.write(str(begindate)+' begin \n')
-   text_file.write(str(enddate)+' end \n')
-   text_file.close()
-
-
+   
    
    modct=0
    for modelstream in modelstreams:
-      #print('modelstream=',modelstream)
+      print('modelstream=',modelstream)
       modelfile=datapath+'CONV_'+varb+'_'+modelstream+'_'+str(beginyr)+'_'+region+'.nc'
       anndataA  = Dataset(modelfile, 'r')
       del modelfile
       #chans = anndataA['Channels'][:].tolist()
       #chanindx=chans.index(channel)
       plevs = anndataA['Plevels'][:].tolist()
-      plevindex = plevs.index(int(plevel))
+      plevindex = plevs.index(plevel)
       ################
       nobs_all = anndataA['nobs_all'][:][:]
       nobs_used = anndataA['nobs_used'][:][:]
@@ -249,16 +175,6 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate):
       std_oma_ctrl_plev[:,modct]    = std_oma_ctrl[dateindcs,plevindex]
       spread_obserr_a_plev[:,modct] = spread_obserr_a[dateindcs,plevindex]
       modct += 1
-
-
-   listjunk_filename=writedir+'POSTGATHERplottest.txt'
-   text_file = open(listjunk_filename, "w")
-   text_file.write(str(numquerydates)+' numquerydates \n')
-   text_file.write(region+' region \n')
-   text_file.write(str(begindate)+' begin \n')
-   text_file.write(str(enddate)+' end \n')
-   text_file.close()
-
    
    
    Ntotdiag=nobs_all_plev.astype(float)
@@ -322,26 +238,8 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate):
    minOAstd  = np.nanmin(std_oma_ctrl_plev)
    miny[4]   = minOAstd
    ####################################################
-  
-
-
-
-   listjunk_filename=writedir+'PREPLOTplottest.txt'
-   text_file = open(listjunk_filename, "w")
-   text_file.write(str(numquerydates)+' numquerydates \n')
-   text_file.write(region+' region \n')
-   text_file.write(str(begindate)+' begin \n')
-   text_file.write(str(enddate)+' end \n')
-   text_file.close()
-
-
-
-
-
-
-
- 
-   IMAGES=[]   
+   
+   
    for modct in range(nummodel):
       model=modelstreams[modct]
       ######### PLOTTING
@@ -428,28 +326,9 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate):
    
       PLOTpath =plotpath
       os.system("mkdir -p "+PLOTpath)
-      #print 'plotpath=',PLOTpath
+      print 'plotpath=',PLOTpath
    
       figname=PLOTpath+'/'+model+'_CONV_'+varb+'_'+region+'_'+str(plevel)+'.png'
-
-
-
-
-      listjunk_filename=writedir+'MID'+str(modct)+'_PLOTplottest.txt'
-      text_file = open(listjunk_filename, "w")
-      text_file.write(str(numquerydates)+' numquerydates \n')
-      text_file.write(figname+' figname \n')
-      text_file.write(str(begindate)+' begin \n')
-      text_file.write(str(enddate)+' end \n')
-      text_file.close()
-
-
-
-
-
-
-
-
       ####
       zeroline=np.zeros(len(datetime_list))
       ####
@@ -463,7 +342,7 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate):
       if varb=='PS' or varb=='PW':
          f.suptitle(modelname+' CONVENTIONAL OBS '+varb+' '+geolabel+' ', fontsize=20, fontweight='bold')
       else:
-         f.suptitle(modelname+' CONVENTIONAL OBS '+varb+' '+geolabel+' '+str(plevel)+'_mb to '+str(int(plevel)+100)+'_mb', fontsize=20, fontweight='bold')
+         f.suptitle(modelname+' CONVENTIONAL OBS '+varb+' '+geolabel+' '+str(plevel)+'_mb to '+str(plevel+100)+'_mb', fontsize=20, fontweight='bold')
       axarr[0].set_ylabel('numobs')
    
       box = axarr[0].get_position()
@@ -493,23 +372,6 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate):
       ax2.legend(('%DAuse/DAobs',), loc='lower left')
    
       ####
-
-
-
-
-      listjunk_filename=writedir+'POSTplot1_'+str(modct)+'_PLOTplottest.txt'
-      text_file = open(listjunk_filename, "w")
-      text_file.write(str(numquerydates)+' numquerydates \n')
-      text_file.write(figname+' figname \n')
-      text_file.write(str(begindate)+' begin \n')
-      text_file.write(str(enddate)+' end \n')
-      text_file.close()
-
-
-
-
-
-
       ####
       diagmean= np.nanmean(mean_obs_all_plev[:,modct])
       usemean= np.nanmean(mean_obs_used_plev[:,modct])
@@ -607,47 +469,12 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate):
       axarr[4].xaxis.set_major_formatter(tick_format)
       for tick in axarr[4].get_xticklabels():
           tick.set_rotation(70)
-
- 
-      #print('figname=',figname)
+   
+      print('figname=',figname)
       plt.savefig(figname)
       del modelname
       del PLOTpath
-      IMAGES.append(figname)
-      del figname
 
-
-
-
-
-
-
-   #########################
-   webpathstringindx = IMAGES[0].find("/psd")
-   web_image1 = IMAGES[0][webpathstringindx:len(IMAGES[0])]
-   webpathstringindx = IMAGES[1].find("/psd")
-   web_image2 = IMAGES[1][webpathstringindx:len(IMAGES[1])]
-   #########################
-
-
-
-
-   #------ Create web page -----------------------------------
-   print "Content-Type: text/html\n\n"
-   print "<center>"
-   print "<table><tr>"
-   print "<tr>"
-   print "<td><a href=\"" +web_image1+ "\" target=\"new\"><IMG src="+web_image1+"></a></td>"
-   print "<td><a href=\"" +web_image2+ "\" target=\"new\"><IMG src="+web_image2+"></a></td>"
-   print "</tr>"
-   print "</tr></table>"
-   print "</center>"
-
-
-   #########################
-   #########################
-   #########################
-   #########################
 
 
 
