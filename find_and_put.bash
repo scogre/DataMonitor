@@ -45,12 +45,7 @@ do
       numfile=${#RAD_ANNFILES}
       echo numfile=${#RAD_ANNFILES}
    fi
-
   
-#   for RAD_ANNFILE in ${RAD_ANNFILES[*]}; do
-#      echo RAD_ANNFILE=$RAD_ANNFILE
-#      break
-#   done
 
    CONV_ANNFILES= $(ls -1d $outputpath/CONV*$modelname*nc)
    convnumfile=${#CONV_ANNFILES}

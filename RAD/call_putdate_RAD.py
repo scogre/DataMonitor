@@ -1,5 +1,4 @@
 from putdate_annual_rad import putdate_annual_rad
-from putdate_CFSR_annual_rad import putdate_CFSR_annual_rad
 from create_annual_rad import create_annual_rad
 import os
 
@@ -20,6 +19,7 @@ def call_putdate_RAD( diagpath, modelstream,  date, instrmnt, satlite, outputpat
    print 'outfile=',outfile
    if os.path.isfile(outfile):
       if modelstream=='CFSR':
+         from putdate_CFSR_annual_rad import putdate_CFSR_annual_rad
          putdate_CFSR_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile)
       else:
          putdate_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile)
@@ -30,6 +30,7 @@ def call_putdate_RAD( diagpath, modelstream,  date, instrmnt, satlite, outputpat
       channels=eval(channelsname)
       create_annual_rad(outfile, modelstream, int(datayr), instrmnt, channels, satlite, region)         
       if modelstream=='CFSR':
+         from putdate_CFSR_annual_rad import putdate_CFSR_annual_rad
          putdate_CFSR_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile)
       else:
          putdate_annual_rad(diagpath, date, instrmnt, satlite, latrange, outfile)
