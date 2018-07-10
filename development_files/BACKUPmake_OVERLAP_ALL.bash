@@ -150,49 +150,39 @@ for model in ${models[*]}; do
 
    for modelB in ${models[*]}; do
 
-      if [ "$modelB" != "$model" ];then
-         listindxB=0
-         dates_in_ann_fname='date_in_'$obtype'_ann'$modelB'.txt'
-         while read -r line
-         do
-            temptext="$line"
-            date8B[$listindxB]=${temptext:0:8}
-            #echo date8B=${date8B[$listindxB]}
-            ((listindxB++))
-         done < "$dates_in_ann_fname"
 
-         rmold='rm /httpd-test/psd/forecast-modeling/gefsrr/data_assim/ANNUAL/datelist_'$obtype'_OVERLAP_'$model'_'$modelB'.txt'
-         $rmold
-         datecount=0
-         dummydate=0
-         for dateA in ${date8[*]}; do
-            #echo dateA=$dateA
-            for dateB in ${date8B[*]}; do
-               if [ $dateB -eq $dateA ]; then
-                  result+=($dateA)
-                  if [ $dateB -ne $dummydate ]; then
-                     echo $dateA >> '/httpd-test/psd/forecast-modeling/gefsrr/data_assim/ANNUAL/datelist_'$obtype'_OVERLAP_'$model'_'$modelB'.txt'
-                     #echo MATCH=$dateA
-                     dummydate=$dateB
-                  fi
+      listindxB=0
+      dates_in_ann_fname='date_in_'$obtype'_ann'$modelB'.txt'
+      while read -r line
+      do
+         temptext="$line"
+         date8B[$listindxB]=${temptext:0:8}
+         #echo date8B=${date8B[$listindxB]}
+         ((listindxB++))
+      done < "$dates_in_ann_fname"
+
+      rmold='rm /httpd-test/psd/forecast-modeling/gefsrr/data_assim/ANNUAL/datelist_'$obtype'_OVERLAP_'$model'_'$modelB'.txt'
+      $rmold
+      datecount=0
+      dummydate=0
+      for dateA in ${date8[*]}; do
+         #echo dateA=$dateA
+         for dateB in ${date8B[*]}; do
+            if [ $dateB -eq $dateA ]; then
+               result+=($dateA)
+               if [ $dateB -ne $dummydate ]; then
+                  echo $dateA >> '/httpd-test/psd/forecast-modeling/gefsrr/data_assim/ANNUAL/datelist_'$obtype'_OVERLAP_'$model'_'$modelB'.txt'
+                  #echo MATCH=$dateA
+                  dummydate=$dateB
                fi
-            done
-           ((datecount++))
-         done
-         unset date8B
-         echo 'updated datelists /httpd-test/psd/forecast-modeling/gefsrr/data_assim/ANNUAL/datelist_'$obtype'_OVERLAP_'$model'_'$modelB'.txt'
-      else
-         dummydate=0
-         for dateA in ${date8[*]}; do
-            if [ $dateA -ne $dummydate ]; then
-               echo $dateA >> '/httpd-test/psd/forecast-modeling/gefsrr/data_assim/ANNUAL/datelist_'$obtype'_OVERLAP_'$model'_'$model'.txt'
-               dummydate=$dateA
             fi
          done
-      fi
-
-
+        ((datecount++))
+      done
+      unset date8B
+      echo 'updated datelists /httpd-test/psd/forecast-modeling/gefsrr/data_assim/ANNUAL/datelist_'$obtype'_OVERLAP_'$model'_'$modelB'.txt'
    done
+
 
    unset date8
    unset lastdate
