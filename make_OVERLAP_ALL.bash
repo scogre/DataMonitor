@@ -105,6 +105,7 @@ for model in ${models[*]}; do
          dates_in_ann=$(echo $fs5 |awk -F '}' '{for(i=1; i <= NF; ++i) print $i}') #eliminates }
          echo dates_in_ann=$dates_in_ann
          printf '%s\n' $dates_in_ann > $dates_in_ann_fname
+         echo dates_in_ann_fname=$dates_in_ann_fname
          ################# MATCHING DATES FROM FULL LIST ###############
          break
          lendates=${#dates_in_ann}

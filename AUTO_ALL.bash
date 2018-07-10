@@ -19,7 +19,7 @@ for model in ${models[*]}; do
    lastdatefile='/httpd-test/psd/forecast-modeling/gefsrr/data_assim/ANNUAL/lastdate_CONV_t_'$model'.txt'
    python /httpd-test/external/cgi-bin/forecast-modeling/gefsrr/data_assim/ANNUAL/DataMonitor/make_auto_CONV.py $lastdatefile $model
 
-   cp /Projects/gefsrr/AUTOPLOTS/autoplotdir/images/$model/*png /httpd-test/psd/forecast-modeling/gefsrr/data_assim/AUTOPLOTS/$model/.
+   cp /Projects/gefsrr/AUTOPLOTS/$model/*png /httpd-test/psd/forecast-modeling/gefsrr/data_assim/AUTOPLOTS/$model/.
 done
 
 
