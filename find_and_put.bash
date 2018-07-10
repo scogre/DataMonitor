@@ -1,7 +1,15 @@
 #!/bin/bash
 ### need to sort out the variable inputs
+module load PythonEnv-noaa
+module load cray-hdf5
+module load cray-netcdf
+module load gcp
+module load hpcrpt
+module load alcrpt
 
 yearruns=('1999' '2003' '2007' '2011' '2015')
+datayrs=('1999' '2003' '2007' '2011' '2015')
+
 count=0
 outpath='/lustre/f1/Scott.Gregory/'
 for Y in "${yearruns[@]}"
@@ -11,7 +19,6 @@ do
    echo YRRUN=$YEARRUN
    echo $count
    echo "$Y"
-   ((count++))
 
    ###################################################################
    diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
@@ -32,29 +39,29 @@ do
    ###################################################################
 
 
-   RAD_ANNFILES=$(ls -1d $outputpath/RAD*$modelname*nc)
+   RAD_ANNFILES=$(ls -1d $outputpath/RAD*$modelname*${datayrs[$count]}*nc)
    numfile=${#RAD_ANNFILES}
    echo numfile=${#RAD_ANNFILES}
    if [ "$numfile" == "0" ]
    then
       echo 'making blanks for '$streamyr
-      makeblanks='python RAD/make_rad_annual_all.py '$modelname' '$YEARRUN' '$outputpath
+      makeblanks='python RAD/make_rad_annual_all.py '$modelname' '${datayrs[$count]}' '$outputpath
       $makeblanks
-      RAD_ANNFILES=$(ls -1d $outputpath/RAD*$modelname*nc)
+      RAD_ANNFILES=$(ls -1d $outputpath/RAD*$modelname*${datayrs[$count]}*nc)
       #echo $RAD_ANNFILES
       numfile=${#RAD_ANNFILES}
       echo numfile=${#RAD_ANNFILES}
    fi
   
 
-   CONV_ANNFILES= $(ls -1d $outputpath/CONV*$modelname*nc)
+   CONV_ANNFILES=$(ls -1d $outputpath/CONV_t*$modelname*${datayrs[$count]}*nc)   ## Temperature is reliably available
    convnumfile=${#CONV_ANNFILES}
    echo convnumfile=${#CONV_ANNFILES}
    if [ "$convnumfile" == "0" ]
    then
-      makeblanks='python CONV/make_conv_annual_all.py '$modelname' '$YEARRUN' '$outputpath
+      makeblanks='python CONV/make_conv_annual_all.py '$modelname' '${datayrs[$count]}' '$outputpath
       $makeblanks
-      CONV_ANNFILES=$(ls -1d $outputpath/CONV*$modelname*nc)
+      CONV_ANNFILES=$(ls -1d $outputpath/CONV*$modelname*${datayrs[$count]}*nc)
       #echo $CONV_ANNFILES
       numfile=${#CONV_ANNFILES}
       echo numfile=${#CONV_ANNFILES}
@@ -75,8 +82,8 @@ do
 
 
 
-   for ANNFILE in ${RAD_ANNFILES[*]}; do
-#   for ANNFILE in ${CONV_ANNFILES[*]}; do
+#   for ANNFILE in ${RAD_ANNFILES[*]}; do
+   for ANNFILE in ${CONV_ANNFILES[*]}; do
       echo ANNFILE=$ANNFILE
       ##################################################################
       fusestring=''
@@ -161,4 +168,7 @@ do
    cp $outputpath/CONV*nc /lustre/f1/Scott.Gregory/transferDIR/.
    unset outputpath
    unset diagpath
+   unset RAD_ANNFILES
+   unset CONV_ANNFILES
+   ((count++))
 done

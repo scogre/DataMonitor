@@ -1,0 +1,1 @@
+30 15 * * * /bin/bash/ /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/cronrun.bash  >> /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/cronjob_cronlog
