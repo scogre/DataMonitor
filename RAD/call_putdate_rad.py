@@ -1,16 +1,15 @@
 from putdate_annual_rad import putdate_annual_rad
-from putdate_CFSR_annual_rad import putdate_CFSR_annual_rad
 from create_annual_rad import create_annual_rad
 import sys
 import os
 
 print('python call_putdate_rad.py <modelstream> <date>')
-print('This python scripts processes diag files for modelstream (CFSR or year of fv3reanl stream)')
+print('This python scripts processes diag files for modelstream ')
 print(' for date <date>. ')
 print('NOTE: The paths to diags and to output are hardcoded in the script.')
 
 if len(sys.argv) < 2:
-    raise SystemExit('python call_putdate_rad.py <modelstream name> <data year> <output path>')
+    raise SystemExit('python call_putdate_rad.py <modelstream name> <data year>')
 modelstream = sys.argv[1]
 date = int(sys.argv[2])
 
@@ -23,8 +22,8 @@ instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'amsua', 'amsua
 satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n16'  , 'n18'  , 'n19'  , 'n15'  , 'n16'  , 'n17'  , 'npp'  , 'metop-a', 'n15'  , 'n16'  , 'n17'  , 'n18'  , 'npp' , 'n14'   , 'n16'  , 'n17'  , 'metop-a' , 'n19'   , 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'n14',  'm10'  , 'g08' , 'g11' ]
 
 
-diagpath = '/lfs3/projects/gfsenkf/Scott.Gregory/CFSR/'
-outputpath = '/lfs3/projects/gfsenkf/ashlyaeva/monitor/CFSR/'
+diagpath = '/lustre/f1/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
+outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/fv3_reanl/'
 numinst=len(instrmnts)
 #for instrmnt in instrmnts:
 for nn in range(numinst):
@@ -42,9 +41,5 @@ for nn in range(numinst):
       if (not os.path.isfile(outfile)):
         print('file ', outfile, ' doesnt exist; creating the file.')
         create_annual_rad(outfile, modelstream, int(datayr), instrmnt, channels, satlite, region)
-   if modelstream=='CFSR':
-      print ('filling in CFSR data')
-      putdate_CFSR_annual_rad(diagpath, date, instrmnt, satlite, outputpath)
-   else:
-      print('filling in reanalysis data')
-      putdate_annual_rad(diagpath, date, modelstream, instrmnt, satlite, outputpath)
+   print('filling in reanalysis data')
+   putdate_annual_rad(diagpath, date, modelstream, instrmnt, satlite, outputpath)

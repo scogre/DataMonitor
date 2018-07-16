@@ -7,6 +7,10 @@ from netCDF4 import num2date, date2num, date2index
 def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath): 
    #print 'putdate_annual_rad:',date
    anlcontrolnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_anl.'+str(date)+'_control.nc4'
+   if (not os.path.isfile(anlcontrolnc_file)):
+      print instrmnt, satlite, ' not available for ', date
+      return
+   print anlcontrolnc_file
    diag_ctrl_a = Dataset(anlcontrolnc_file,'r')
    gescontrolnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+str(date)+'_control.nc4'
    diag_ctrl_f = Dataset(gescontrolnc_file,'r')
@@ -21,9 +25,13 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
    chanlist_diag = diag_ctrl_a['sensor_chan'][:]
    obs = diag_ctrl_f['Observation'][:]
    
+   obserr_diag = diag_ctrl_f['error_variance'][:]
+
    chan_diag=np.zeros(nobs_anl)
+   obserr = np.zeros(nobs_anl)
    for m in range(nobs_anl):
       chan_diag[m]=chanlist_diag[chanindx_diag[m]-1]
+      obserr[m] = obserr_diag[chanindx_diag[m]-1]**2
 
    lat  = diag_ctrl_f['Latitude'][:]
 
@@ -38,7 +46,6 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
 
    sprd_f =  diag_ens_sprd['EnKF_spread_ges'][:]
    sprd_a =  diag_ens_sprd['EnKF_spread_anl'][:]
-   obserr = 1. / ( diag_ctrl_f['Inverse_Observation_Error'][:]**2 )
 
    biascorr = diag_ctrl_f['Obs_Minus_Forecast_unadjusted'][:] - diag_ctrl_f['Obs_Minus_Forecast_adjusted'][:]
 
@@ -54,7 +61,8 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
      elif region=='NORTH':
         latrange=[20,90]
 
-     outfile=outputpath+'/RAD_'+stream+'_'+str(datayr)+'_'+instrmnt+'_'+sat+'_'+region+'.nc'
+     datayr = date / 1000000
+     outfile=outputpath+'/RAD_'+stream+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
      print outfile
      latidx = np.logical_and(lat >= np.min(latrange), lat <= np.max(latrange))
 
@@ -87,7 +95,7 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
         # LEAVING OUT FOR NOW     anndata['mean_oma_ens'][idate,ichan] = np.mean(oma_ens[idx])
         anndata['spread_f'][idate,ichan] = np.sqrt(np.mean(sprd_f[idx]))
         # LEAVING OUT FOR NOW     anndata['spread_a'][idate,ichan] = np.sqrt(np.mean(sprd_a[idx]))
-        anndata['spread_obserr_f'][idate,ichan] = np.sqrt(np.mean(sprd_f[idx] + obserr[idx]))
+        anndata['spread_obserr_f'][idate,ichan] = np.sqrt(np.mean(sprd_f[idx]) + np.mean(obserr[idx]))
         # LEAVING OUT FOR NOW     anndata['spread_obserr_a'][idate,ichan] = np.sqrt(np.mean(sprd_a[idx] + obserr[idx]))
         anndata['std_omf_ens'][idate,ichan]  = np.sqrt(np.mean(omf_ens[idx] ** 2))
         anndata['mean_biascor'][idate,ichan] = np.mean(biascorr[idx])
