@@ -35,7 +35,7 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       numyearfiles=1
       modelfile=['']*numyearfiles
       modelfile[0]=datapath+'RAD_'+modelstream+'_'+str(beginyr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
-      #print modelfile[0]
+      print modelfile[0]
       anndataA  = Dataset(modelfile[0], 'r')
       alldatesA = anndataA['All_Dates'][:].tolist()
 
@@ -66,6 +66,7 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
       numquerydatesA = len(querydatesA)
       ######################################################
       modelfile[1]=datapath+'RAD_'+modelstream+'_'+str(endyr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
+      print modelfile[1]
       anndataB  = Dataset(modelfile[1], 'r')
       alldatesB = anndataB['All_Dates'][:].tolist()
       endindx=alldatesB.index(int(enddate))
@@ -107,6 +108,7 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
    for modelstream in modelstreams:
       #print('modelstream=',modelstream)
       modelfile=datapath+'/RAD_'+modelstream+'_'+str(beginyr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
+      print modelfile
       anndataA  = Dataset(modelfile, 'r')
       del modelfile
       chans = anndataA['Channels'][:].tolist()
