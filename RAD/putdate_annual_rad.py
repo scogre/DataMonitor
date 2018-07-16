@@ -81,7 +81,7 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
         qidx    = np.logical_and(qcdidx, chanlatidx)
         anndata['nobs_all'][idate,ichan]  = len(obs[chanlatidx])
         anndata['nobs_qcd'][idate,ichan] = len(obs[qidx])
-        anndata['mean_obs_all'][idate,ichan]  = np.mean(obs[chanlatidx])
+        anndata['mean_obs_all'][idate,ichan]  = np.nan 
         anndata['mean_obs_used'][idate,ichan] = np.mean(obs[qidx])
         anndata['mean_obs_qcd'][idate,ichan] = np.mean(obs[qidx])
         anndata['mean_omf_ctrl'][idate,ichan] = np.mean(omf_ctrl[qidx])
