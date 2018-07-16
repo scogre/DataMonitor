@@ -9,7 +9,7 @@ instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'amsua', 'amsua
 satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n16'  , 'n18'  , 'n19'  , 'n15'  , 'n16'  , 'n17'  , 'npp'  , 'metop-a', 'n15'  , 'n16'  , 'n17'  , 'n18'  , 'npp' , 'n14'   , 'n16'  , 'n17'  , 'metop-a' , 'n19'   , 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'n14',  'm10'  , 'g08' , 'g11' ]
 
 diagpath = '/lfs3/projects/gfsenkf/Scott.Gregory/CFSR/'
-outputpath = '/lfs3/projects/gfsenkf/ashlyaeva/monitor/CFSR/'
+outputpath = '/lfs3/projects/gfsenkf/ashlyaeva/monitor/'
 numinst=len(instrmnts)
 #for instrmnt in instrmnts:
 for nn in range(numinst):
