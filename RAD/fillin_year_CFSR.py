@@ -26,8 +26,8 @@ for nn in range(numinst):
    for region in regions:
       outfile=outputpath+'/RAD_CFSR_'+str(year)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
       create_annual_rad(outfile, year, year, instrmnt, channels, satlite, region)
-   for month in range(12):
-     for day in range(1):
+   for month in [7]:
+     for day in range(31):
        for hour in [0, 6, 12, 18]:
          date = year*1000000 + (month+1)*10000 + (day+1)*100 + hour
          print date

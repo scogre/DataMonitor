@@ -21,7 +21,7 @@ def putdate_CFSR_annual_rad(diagpath, date, instrmnt, sat, outputpath):
    lat  = diaganl_rad.lat
    chan = diaganl_rad.channel
    obs  = diaganl_rad.obs
-   obserr = diaganl_rad.oberr
+   obserr = diaganl_rad.oberr_orig
    gsi_used = diaganl_rad.used
    gsi_qcd  = diaganl_rad.qcmark
    oma_ctrl = obs - diaganl_rad.hx
