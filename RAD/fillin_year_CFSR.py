@@ -10,19 +10,19 @@ print('NOTE: The paths to diags and to output are hardcoded in the script.')
 
 if len(sys.argv) < 1:
     raise SystemExit('python fillin_year_CFSR.py <year>')
-year = int(sys.argv[1])
+year = sys.argv[1]
 
 regions=['GLOBL','TROPI','NORTH','SOUTH']
 
 instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'atms' , 'avhrr'  , 'avhrr', 'avhrr', 'avhrr', 'avhrr', 'cris', 'hirs2' , 'hirs3', 'hirs3', 'hirs4'   , 'hirs4' , 'iasi'   ,    'mhs',     'mhs', 'mhs' , 'mhs', 'msu', 'seviri', 'sndr', 'sndr']
 satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n16'  , 'n18'  , 'n19'  , 'n15'  , 'n16'  , 'n17'  , 'npp'  , 'metop-a', 'n15'  , 'n16'  , 'n17'  , 'n18'  , 'npp' , 'n14'   , 'n16'  , 'n17'  , 'metop-a' , 'n19'   , 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'n14',  'm10'  , 'g08' , 'g11' ]
+numinst=len(instrmnts)
 
 diagpath = '/lfs3/projects/gfsenkf/Scott.Gregory/CFSR/'
 outputpath = '/lfs3/projects/gfsenkf/ashlyaeva/monitor/'
-numinst=len(instrmnts)
 
 # dates requested by user
-dates = dateutils.daterange(date1,date2,6)
+dates = dateutils.daterange(year+'010100',year+'123118',6)
 
 for nn in range(numinst):
    instrmnt=instrmnts[nn]
