@@ -19,19 +19,18 @@ regions=['GLOBL','TROPI','NORTH','SOUTH']
 varnames=['t','u','v','q','ps','gps']
 
 diagpath = '/lustre/f1/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
-outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/fv3_reanl/'
+outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
 for var in varnames:
    for region in regions:
       if var == 'ps':
          pcutoffs=[0]
       else:
          pcutoffs=range(0,1000,100) ##=[0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
-   
       outfile = outputpath+'/CONV_'+modelstream+'_'+str(datayr)+'_'+var+'_'+region+'.nc'
-
       if (not os.path.isfile(outfile)):
-         print('file ', outfile, ' doesnt exist; creating the file.')
+         print('file ' + outfile +' doesnt exist; creating the file.')
          create_annual_conv(outfile, modelstream, int(datayr), var, region, pcutoffs)
-      print('filling in reanalysis data')
-      putdate_annual_conv(diagpath, date, var, latrange, outfile)
+
+   print('filling in reanalysis data')
+   putdate_annual_conv(diagpath, date, modelstream, var, outputpath)
 

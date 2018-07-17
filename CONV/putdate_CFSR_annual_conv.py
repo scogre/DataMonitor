@@ -23,7 +23,7 @@ def putdate_CFSR_annual_conv(diagpath, date, outputpath):
    addtovar = [ -273.15,   0,     0,     0,     0,     0]
    multvar  = [       1,   1,     1,  1.e6,     1,     1]
    
-   regions=['GLOBL','TROPI','NORTH','SOUTH']
+   regions=['GLOBL','TROPI','SOUTH','NORTH']
    minlat =[    -90,    -20,    -90,    20]
    maxlat =[     90,     20,    -20,    90]
 
