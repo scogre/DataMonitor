@@ -17,7 +17,6 @@ def putdate_CFSR_annual_conv(diagpath, date, outputpath):
    diag_ctrl_a.read_obs()
    
    nobs_all = diag_ctrl_f.nobs
-   print('nobs=',nobs_all)
 
    varnames = ['  t',  '  u', '  v', '  q', ' ps', 'gps']
    addtovar = [ -273.15,   0,     0,     0,     0,     0]
@@ -45,8 +44,8 @@ def putdate_CFSR_annual_conv(diagpath, date, outputpath):
        anndata = Dataset(outfile, 'a')
 
        alldate=anndata['All_Dates']
-       idate = np.nonzero(alldate[:]==date)[0][0]
-       anndata['Full_Dates'][idate] = date
+       idate = np.nonzero(alldate[:]==int(date))[0][0]
+       anndata['Full_Dates'][idate] = int(date)
    
        levs = anndata['Plevels'][:].tolist()
        levs.append(10000)

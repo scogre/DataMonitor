@@ -9,7 +9,7 @@ import time
 ## Nlevs  
 def create_annual_conv(outfile, modelstream, datayr, varb, region, pcutoffs):
    annual_filename = outfile
-   if float(datayr)/4!=datayr/4 or datayr==2000:
+   if float(datayr)/4!=int(datayr)/4 or int(datayr)==2000:
       ndays=365
    else:
       ndays=366
@@ -22,7 +22,7 @@ def create_annual_conv(outfile, modelstream, datayr, varb, region, pcutoffs):
    anndata_nc.createVariable('All_Dates',np.int,('Ncycles'),zlib=False)
    anndata_nc.createVariable('Full_Dates',np.int,('Ncycles'),zlib=False)
 
-   dates = [datetime(datayr,1,1)+i*timedelta(hours=6) for i in range(total_ntime)]
+   dates = [datetime(int(datayr),1,1)+i*timedelta(hours=6) for i in range(total_ntime)]
    alldate=[dates[i].strftime('%Y%m%d%H') for i in range(total_ntime)]
    anndata_nc['All_Dates'][:] = alldate[:]
 

@@ -5,7 +5,6 @@ import read_diag
 
 def putdate_CFSR_annual_rad(diagpath, date, instrmnt, sat, outputpath):
    date10dig=str(date)
-   datayr = date / 1000000
 
    diaganl_obsfile = diagpath + '/' + date10dig + '/diag_'  +  instrmnt + '_' + sat + '_anl.' + date10dig
    if (not os.path.isfile(diaganl_obsfile)):
@@ -46,14 +45,14 @@ def putdate_CFSR_annual_rad(diagpath, date, instrmnt, sat, outputpath):
      elif region=='NORTH':
         latrange=[20,90]
   
-     outfile=outputpath+'/RAD_CFSR_'+str(datayr)+'_'+instrmnt+'_'+sat+'_'+region+'.nc'
+     outfile=outputpath+'/RAD_CFSR_'+str(date)[0:4]+'_'+instrmnt+'_'+sat+'_'+region+'.nc'
      latidx = np.logical_and(lat >= np.min(latrange), lat <= np.max(latrange))
      ############################################
   
      anndata = Dataset(outfile, 'a')
      alldate=anndata['All_Dates']
-     idate = np.nonzero(alldate[:]==date)[0][0]
-     anndata['Full_Dates'][idate] = date
+     idate = np.nonzero(alldate[:]==int(date))[0][0]
+     anndata['Full_Dates'][idate] = int(date)
      ##### ['Ncycles','Nchans']
      chans = anndata['Channels'][:].tolist()
      for ichan in range(len(chans)):

@@ -29,7 +29,7 @@ for var in varnames:
    for region in regions:
       outfile = outputpath+'/CONV_CFSR_'+str(year)+'_'+var+'_'+region+'.nc'
       if (not os.path.isfile(outfile)):
-         print('file ', outfile, ' doesnt exist; creating the file.')
+         print 'file ', outfile, ' doesnt exist; creating the file.'
          create_annual_conv(outfile, year, year, var, region, pcutoffs)
 
 # read the dates already in the file
