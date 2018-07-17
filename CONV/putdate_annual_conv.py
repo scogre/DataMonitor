@@ -10,18 +10,6 @@ def putdate_annual_conv(diagpath, date, stream, var, outputpath):
       vardiag=var
       varprefix=''
 
-   fname = diagpath+'/'+str(date)+'/diag_conv_'+vardiag+'_ges.'+str(date)+'_ensmean.nc4'
-   if (not os.path.isfile(fname)):
-      print var, ' not available for ', date
-      return
-   diag_ctrl_f = Dataset(fname,'r')
-
-   fname = diagpath+'/'+str(date)+'/diag_conv_'+vardiag+'_anl.'+str(date)+'_control.nc4'
-   diag_ctrl_a = Dataset(fname,'r')
-
-   fname = diagpath+'/'+str(date)+'/diag_conv_'+vardiag+'_ges.ensmean_spread.nc4'
-   diag_ens_sprd = Dataset(fname, 'r')
-
    # move to parameters
    if var == 't':
      addtovar = -273.15
@@ -33,6 +21,31 @@ def putdate_annual_conv(diagpath, date, stream, var, outputpath):
      addtovar = 0
      multvar =1.0
 
+
+   fname = diagpath+'/'+str(date)+'/diag_conv_'+vardiag+'_ges.'+str(date)+'_ensmean.nc4'
+   if (not os.path.isfile(fname)):
+      print '---', var, ' not available for ', date
+      return
+   diag_ctrl_f = Dataset(fname,'r')
+
+   fname = diagpath+'/'+str(date)+'/diag_conv_'+vardiag+'_anl.'+str(date)+'_control.nc4'
+   diag_ctrl_a = Dataset(fname,'r')
+
+   ensavail = True
+   fname = diagpath+'/'+str(date)+'/diag_conv_'+vardiag+'_ges.ensmean_spread.nc4'
+   if (not os.path.isfile(fname)):
+     print '---', var, ' ENSSPRD not available for ', date
+     ensavail = False
+   else:
+     diag_ens_sprd = Dataset(fname, 'r')
+     omf_ens  = multvar * diag_ens_sprd[varprefix+'EnKF_fit_ges'][:]
+     enkf_used = diag_ens_sprd[varprefix+'EnKF_use_flag'][:]
+     sprd_f = (multvar**2) * diag_ens_sprd[varprefix+'EnKF_spread_ges'][:]
+     sprd_a = (multvar**2) * diag_ens_sprd[varprefix+'EnKF_spread_anl'][:]
+
+     
+   print 'Filling in ', var , ' for ', date
+
    # use diagpref to do u_Observation etc
    nobs = len(diag_ctrl_f.dimensions['nobs'])
    obs = diag_ctrl_f[varprefix+'Observation'][:] * multvar + addtovar
@@ -40,17 +53,7 @@ def putdate_annual_conv(diagpath, date, stream, var, outputpath):
    omf_ctrl = multvar * diag_ctrl_f[varprefix+'Obs_Minus_Forecast_adjusted'][:]
    oma_ctrl = multvar * diag_ctrl_a[varprefix+'Obs_Minus_Forecast_adjusted'][:]
 
-   print varprefix+'EnKF_fit_ges'
-   print multvar
-   print diag_ens_sprd[varprefix+'EnKF_fit_ges'][:]
-   print np.min(diag_ens_sprd[varprefix+'EnKF_fit_ges'][:]), np.max(diag_ens_sprd[varprefix+'EnKF_fit_ges'][:])
-   omf_ens  = multvar * diag_ens_sprd[varprefix+'EnKF_fit_ges'][:]
-
    gsi_used  = diag_ctrl_a['Analysis_Use_Flag'][:]
-   print 'lengsiused=',len(gsi_used)
-   enkf_used = diag_ens_sprd[varprefix+'EnKF_use_flag'][:]
-   sprd_f = (multvar**2) * diag_ens_sprd[varprefix+'EnKF_spread_ges'][:]
-   sprd_a = (multvar**2) * diag_ens_sprd[varprefix+'EnKF_spread_anl'][:]
    obserr = 1. / ( diag_ctrl_f['Errinv_Input'][:]**2 )
 
    pres = diag_ctrl_f['Pressure'][:]
@@ -64,11 +67,11 @@ def putdate_annual_conv(diagpath, date, stream, var, outputpath):
      latidx = np.logical_and(lat >= minlat[ireg], lat <= maxlat[ireg])
 
      outfile=outputpath+'/CONV_'+stream+'_'+str(date)[0:4]+'_'+var+'_'+regions[ireg]+'.nc'
-     print outfile
      anndata = Dataset(outfile, 'a')
      alldate=anndata['All_Dates']
-     idate = np.nonzero(alldate[:]==date)[0][0]
-     anndata['Full_Dates'][idate] = date
+     idate = np.nonzero(alldate[:]==int(date))[0][0]
+     anndata['Full_Dates'][idate] = int(date)
+
      levs = anndata['Plevels'][:].tolist()
      levs.append(10000)
      for ilev in range(len(levs)-1):
@@ -84,10 +87,16 @@ def putdate_annual_conv(diagpath, date, stream, var, outputpath):
        anndata['mean_oma_ctrl'][idate,ilev] = np.mean(oma_ctrl[idx])
        anndata['std_omf_ctrl'][idate,ilev]  = np.sqrt(np.mean(omf_ctrl[idx] ** 2))
        anndata['std_oma_ctrl'][idate,ilev]  = np.sqrt(np.mean(oma_ctrl[idx] ** 2))
-       useidx = (enkf_used == 1)
-       idx = np.logical_and(useidx, areaidx)
-       anndata['mean_omf_ens'][idate,ilev] = np.mean(omf_ens[idx])
-       anndata['spread_f'][idate,ilev] = np.sqrt(np.mean(sprd_f[idx]))
-       anndata['spread_obserr_f'][idate,ilev] = np.sqrt(np.mean(sprd_f[idx] + obserr[idx]))
-       anndata['std_omf_ens'][idate,ilev]  = np.sqrt(np.mean(omf_ens[idx] ** 2))
+       if (ensavail):
+         useidx = (enkf_used == 1)
+         idx = np.logical_and(useidx, areaidx)
+         anndata['mean_omf_ens'][idate,ilev] = np.mean(omf_ens[idx])
+         anndata['spread_f'][idate,ilev] = np.sqrt(np.mean(sprd_f[idx]))
+         anndata['spread_obserr_f'][idate,ilev] = np.sqrt(np.mean(sprd_f[idx] + obserr[idx]))
+         anndata['std_omf_ens'][idate,ilev]  = np.sqrt(np.mean(omf_ens[idx] ** 2))
+       else:
+         anndata['mean_omf_ens'][idate,ilev] = np.nan
+         anndata['spread_f'][idate,ilev] = np.nan
+         anndata['spread_obserr_f'][idate,ilev] = np.nan
+         anndata['std_omf_ens'][idate,ilev]  = np.nan
      anndata.close()	

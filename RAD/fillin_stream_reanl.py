@@ -26,6 +26,8 @@ numinst=len(instrmnts)
 # dates requested by user
 dates = dateutils.daterange(date1,date2,6)
 
+years = range(int(date1[0:4]), int(date2[0:4])+1)
+
 for nn in range(numinst):
    instrmnt=instrmnts[nn]
    satlite=satlites[nn]
@@ -35,22 +37,25 @@ for nn in range(numinst):
    exec(chanimport)
    channels=eval(channelsname)
 
-   # check if annual files are created; create them (note: only for the first year now!)
+   # check if annual files are created; create them 
    for region in regions:
-      outfile=outputpath+'/RAD_'+modelstream+'_'+date1[0:4]+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
-      if (not os.path.isfile(outfile)):
-        print('file ', outfile, ' doesnt exist; creating the file.')
-        create_annual_rad(outfile, modelstream, date[0:4], instrmnt, channels, satlite, region)
+      for year in years:
+        outfile = outputpath+'/RAD_'+modelstream+'_'+str(year)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
+        if (not os.path.isfile(outfile)):
+          print 'file ', outfile, ' doesnt exist; creating the file.'
+          create_annual_rad(outfile, modelstream, str(year), instrmnt, channels, satlite, region)
 
    # check which dates are filled in the global file already
-   outfile=outputpath+'/RAD_'+modelstream+'_'+date1[0:4]+'_'+instrmnt+'_'+satlite+'_GLOBL.nc'
-   anndata = Dataset(outfile, 'r')
-   # dates already filled in the file
-   fulldates=anndata['Full_Dates'][:]
-   anndata.close()
-   # set differences between user-specified dates and filled-in dates (so we don't fill in twice)
-   notfilled=np.setdiff1d(dates, fulldates)
-   for date in notfilled:
+   for year in years:
+     outfile=outputpath+'/RAD_'+modelstream+'_'+str(year)+'_'+instrmnt+'_'+satlite+'_GLOBL.nc'
+     anndata = Dataset(outfile, 'r')
+     # dates already filled in the file
+     fulldates=anndata['Full_Dates'][:]
+     anndata.close()
+     # set differences between user-specified dates and filled-in dates (so we don't fill in twice)
+     dates = np.setdiff1d(dates, fulldates)
+
+   for date in dates:
       putdate_annual_rad(diagpath, date, modelstream, instrmnt, satlite, outputpath)
    del channels
 
