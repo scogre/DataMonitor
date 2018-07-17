@@ -8,9 +8,8 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
    #print 'putdate_annual_rad:',date
    anlcontrolnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_anl.'+str(date)+'_control.nc4'
    if (not os.path.isfile(anlcontrolnc_file)):
-      print instrmnt, satlite, ' not available for ', date
+      print '---', instrmnt, satlite, ' not available for ', date
       return
-   print anlcontrolnc_file
    diag_ctrl_a = Dataset(anlcontrolnc_file,'r')
    gescontrolnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+str(date)+'_control.nc4'
    diag_ctrl_f = Dataset(gescontrolnc_file,'r')
@@ -18,6 +17,7 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
    diag_ens_mean = Dataset(ensmeannc_file,'r')
    enssprdnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+str(date)+'_ensmean_spread.nc4'
    diag_ens_sprd = Dataset(enssprdnc_file,'r')
+   print 'Filling in ', instrmnt, satlite, ' for ', date
 
    ###############################################################################
    chanindx_diag = diag_ctrl_a['Channel_Index'][:]
@@ -49,31 +49,21 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
 
    biascorr = diag_ctrl_f['Obs_Minus_Forecast_adjusted'][:] - diag_ctrl_f['Obs_Minus_Forecast_unadjusted'][:]
 
-   regions=['GLOBL','TROPI','NORTH','SOUTH']
+   regions=['GLOBL','TROPI','SOUTH','NORTH']
+   minlat =[    -90,    -20,    -90,    20]
+   maxlat =[     90,     20,    -20,    90]
 
-   for region in regions:
-     if region=='GLOBL':
-        latrange=[-90, 90]
-     elif region=='TROPI':
-        latrange=[-20,20]
-     elif region=='SOUTH':
-        latrange=[-90,-20]
-     elif region=='NORTH':
-        latrange=[20,90]
-
-     datayr = date / 1000000
-     outfile=outputpath+'/RAD_'+stream+'_'+str(datayr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
-     print outfile
-     latidx = np.logical_and(lat >= np.min(latrange), lat <= np.max(latrange))
+   for ireg in range(len(regions)):
+     outfile=outputpath+'/RAD_'+stream+'_'+str(date)[0:4]+'_'+instrmnt+'_'+satlite+'_'+regions[ireg]+'.nc'
+     latidx = np.logical_and(lat >= minlat[ireg], lat <= maxlat[ireg])
 
      anndata = Dataset(outfile, 'a')
      alldate=anndata['All_Dates']
-     idate = np.nonzero(alldate[:]==date)[0][0]
-     anndata['Full_Dates'][idate] = date
+     idate = np.nonzero(alldate[:]==int(date))[0][0]
+     anndata['Full_Dates'][idate] = int(date)
   
      ##### ['Ncycles','Nchans']
      chans = anndata['Channels'][:].tolist()
-     #print 'lenchan=',len(chans)
      for ichan in range(len(chans)):
         chanidx    = (chan_diag==chans[ichan])
         chanlatidx = np.logical_and(chanidx, latidx)
