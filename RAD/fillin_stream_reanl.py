@@ -4,12 +4,12 @@ from create_annual_rad import create_annual_rad
 import sys, os, dateutils
 import numpy as np
 
-print('python fillin_year_reanl.py <stream> <start date> <end date>')
+print('python fillin_stream_reanl.py <stream> <start date> <end date>')
 print('This python scripts processes diag files for reanalysis from start to end date')
 print('NOTE: The paths to diags and to output are hardcoded in the script.')
 
 if len(sys.argv) < 3:
-    raise SystemExit('python fillin_year_reanl.py <stream> <start date> <end date>')
+    raise SystemExit('python fillin_stream_reanl.py <stream> <start date> <end date>')
 modelstream = sys.argv[1]
 date1  = sys.argv[2]
 date2  = sys.argv[3]

@@ -9,9 +9,9 @@ def putdate_CFSR_annual_rad(diagpath, date, instrmnt, sat, outputpath):
 
    diaganl_obsfile = diagpath + '/' + date10dig + '/diag_'  +  instrmnt + '_' + sat + '_anl.' + date10dig
    if (not os.path.isfile(diaganl_obsfile)):
-      print instrmnt, sat, ' not available for ', date
+      print '---', instrmnt, sat, ' not available for ', date
       return
-   print 'diag anl file=', diaganl_obsfile
+   print 'Filling in ', instrmnt, satlite, ' for ', date
 
    diaganl_rad = read_diag.diag_rad(diaganl_obsfile,endian='big')
    diaganl_rad.read_obs()
@@ -29,7 +29,6 @@ def putdate_CFSR_annual_rad(diagpath, date, instrmnt, sat, outputpath):
    diagges_obsfile = diagpath +date10dig+ '/diag_'  +  instrmnt + '_' + sat + '_ges.' + date10dig
    diagges_rad = read_diag.diag_rad(diagges_obsfile,endian='big')
    diagges_rad.read_obs()
-   print 'ges file=',diagges_obsfile
 
    omf_ctrl = obs - diagges_rad.hx
    biascorr = diagges_rad.biascorr
@@ -48,7 +47,6 @@ def putdate_CFSR_annual_rad(diagpath, date, instrmnt, sat, outputpath):
         latrange=[20,90]
   
      outfile=outputpath+'/RAD_CFSR_'+str(datayr)+'_'+instrmnt+'_'+sat+'_'+region+'.nc'
-     print outfile
      latidx = np.logical_and(lat >= np.min(latrange), lat <= np.max(latrange))
      ############################################
   
@@ -58,7 +56,6 @@ def putdate_CFSR_annual_rad(diagpath, date, instrmnt, sat, outputpath):
      anndata['Full_Dates'][idate] = date
      ##### ['Ncycles','Nchans']
      chans = anndata['Channels'][:].tolist()
-     print 'lenannhan=',len(chans)
      for ichan in range(len(chans)):
         chanidx    = (chan==chans[ichan])
         chanlatidx = np.logical_and(chanidx, latidx)
