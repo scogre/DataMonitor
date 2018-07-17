@@ -38,7 +38,6 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
    omf_ctrl = diag_ctrl_f['Obs_Minus_Forecast_adjusted'][:]
    oma_ctrl = diag_ctrl_a['Obs_Minus_Forecast_adjusted'][:]
    omf_ens  = diag_ens_sprd['EnKF_fit_ges'][:]
-   oma_ens  = diag_ens_sprd['EnKF_fit_anl'][:]
 
    gsi_used  = diag_ctrl_a['use_flag'][:] ##dimension nchan... says whether the channel is used in GSI
    enkf_used = diag_ens_sprd['EnKF_use_flag'][:] ##dimension nobs....
