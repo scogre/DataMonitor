@@ -466,6 +466,7 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
          tick.set_rotation(70)
       os.system("rm "+figname)
       plt.savefig(figname)
+      plt.close()
       del model
       del figname
    ##############################

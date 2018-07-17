@@ -47,7 +47,7 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
    sprd_f =  diag_ens_sprd['EnKF_spread_ges'][:]
    sprd_a =  diag_ens_sprd['EnKF_spread_anl'][:]
 
-   biascorr = diag_ctrl_f['Obs_Minus_Forecast_unadjusted'][:] - diag_ctrl_f['Obs_Minus_Forecast_adjusted'][:]
+   biascorr = diag_ctrl_f['Obs_Minus_Forecast_adjusted'][:] - diag_ctrl_f['Obs_Minus_Forecast_unadjusted'][:]
 
    regions=['GLOBL','TROPI','NORTH','SOUTH']
 

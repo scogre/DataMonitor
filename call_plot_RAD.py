@@ -8,20 +8,31 @@ datapath='/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
 intr_sat='amsua_n15'
 
 modelstreams=('1999','CFSR')
-instrmnt='amsua'
-satlite='n15'
-channel=9
 
 region='GLOBL'
 
 begindate='1999080100'
 enddate='1999083118'
 
+instrmnts=['amsua']
+satlites=[ 'n15']
 
-IMAGES=[]
-IMAGES.append(imagedir+modelstreams[0]+'_'+instrmnt+'_'+satlite+'_ch'+str(channel)+'_'+region+'_'+str(begindate)+'_'+str(enddate)+'.png')
-IMAGES.append(imagedir+modelstreams[1]+'_'+instrmnt+'_'+satlite+'_ch'+str(channel)+'_'+region+'_'+str(begindate)+'_'+str(enddate)+'.png')
+numinst=len(instrmnts)
+#for instrmnt in instrmnts:
+for nn in range(numinst):
+   instrmnt=instrmnts[nn]
+   satlite=satlites[nn]
 
+   channelsname=instrmnt+'_channels'
+   chanimport='from channel_dictionary import '+channelsname
+   exec(chanimport)
+   channels=eval(channelsname)
 
-plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate,IMAGES)
+   print 'channels_name,channels=', channelsname,channels
+   year = 1999
+   for channel in channels:
+     IMAGES=[]
+     IMAGES.append(imagedir+modelstreams[0]+'_'+instrmnt+'_'+satlite+'_ch'+str(channel)+'_'+region+'_'+str(begindate)+'_'+str(enddate)+'.png')
+     IMAGES.append(imagedir+modelstreams[1]+'_'+instrmnt+'_'+satlite+'_ch'+str(channel)+'_'+region+'_'+str(begindate)+'_'+str(enddate)+'.png')
+     plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindate,enddate,IMAGES)
 
