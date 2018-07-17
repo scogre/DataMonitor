@@ -1,7 +1,6 @@
 from netCDF4 import Dataset
 import numpy as np
-import sys, os
-from netCDF4 import num2date, date2num, date2index
+import os
 import read_diag
 
 def putdate_CFSR_annual_rad(diagpath, date, instrmnt, sat, outputpath):
