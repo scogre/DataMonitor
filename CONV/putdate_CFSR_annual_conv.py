@@ -63,13 +63,5 @@ def putdate_CFSR_annual_conv(diagpath, date, outputpath):
          anndata['std_omf_ctrl'][idate,ilev]  = np.sqrt(np.mean(omf_ctrl[idx] ** 2))*multvar[ivar]
          anndata['std_oma_ctrl'][idate,ilev]  = np.sqrt(np.mean(oma_ctrl[idx] ** 2))*multvar[ivar]
          # no info from ensemble in CFSR
-         anndata['mean_omf_ens'][idate,ilev] = np.nan
-         anndata['mean_oma_ens'][idate,ilev] = np.nan
-         anndata['std_omf_ens'][idate,ilev]  = np.nan
-         anndata['std_oma_ens'][idate,ilev]  = np.nan
-         anndata['spread_f'][idate,ilev] = np.nan
-         anndata['spread_a'][idate,ilev] = np.nan
-         anndata['spread_obserr_f'][idate,ilev] = np.nan
-         anndata['spread_obserr_a'][idate,ilev] = np.nan
        anndata.close()
 

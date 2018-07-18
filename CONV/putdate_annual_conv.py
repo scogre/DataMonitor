@@ -94,9 +94,4 @@ def putdate_annual_conv(diagpath, date, stream, var, outputpath):
          anndata['spread_f'][idate,ilev] = np.sqrt(np.mean(sprd_f[idx]))
          anndata['spread_obserr_f'][idate,ilev] = np.sqrt(np.mean(sprd_f[idx] + obserr[idx]))
          anndata['std_omf_ens'][idate,ilev]  = np.sqrt(np.mean(omf_ens[idx] ** 2))
-       else:
-         anndata['mean_omf_ens'][idate,ilev] = np.nan
-         anndata['spread_f'][idate,ilev] = np.nan
-         anndata['spread_obserr_f'][idate,ilev] = np.nan
-         anndata['std_omf_ens'][idate,ilev]  = np.nan
      anndata.close()	
