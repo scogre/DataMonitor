@@ -53,7 +53,7 @@ for nn in range(numinst):
      fulldates=anndata['Full_Dates'][:]
      anndata.close()
      # set differences between user-specified dates and filled-in dates (so we don't fill in twice)
-     dates = np.setdiff1d(dates, fulldates)
+#     dates = np.setdiff1d(dates, fulldates)
 
    for date in dates:
       putdate_annual_rad(diagpath, date, modelstream, instrmnt, satlite, outputpath)

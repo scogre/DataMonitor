@@ -6,6 +6,10 @@
 #PBS -N fillreanlrad
 #PBS -S /bin/sh
 
+module load PythonEnv-noaa/1.4.0
+module load netcdf/4.3.0
+module load pnetcdf
+
 echo 'fillin_reanl.sh <stream> <startdate> <enddate>'
 echo 'if <enddate> is not provided, its taken from analdate in the stream'
 echo 'if <startdate> is also not provided, its assumed to be the first date of the stream'
@@ -31,4 +35,4 @@ fi
 
 echo 'Processing dates from ' $analdate_start ' to ' $analdate_end ' in stream ' $streamyr
 
-python /lustre/f1/unswept/Anna.V.Shlyaeva/DataMonitor/RAD/fillin_year_reanl.py ${streamyr} ${analdate_start} ${analdate_end}
+python /lustre/f1/unswept/Anna.V.Shlyaeva/DataMonitor/RAD/fillin_stream_reanl.py ${streamyr} ${analdate_start} ${analdate_end}
