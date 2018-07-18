@@ -10,7 +10,7 @@ def putdate_CFSR_annual_rad(diagpath, date, instrmnt, sat, outputpath):
    if (not os.path.isfile(diaganl_obsfile)):
       print '---', instrmnt, sat, ' not available for ', date
       return
-   print 'Filling in ', instrmnt, satlite, ' for ', date
+   print 'Filling in ', instrmnt, sat, ' for ', date
 
    diaganl_rad = read_diag.diag_rad(diaganl_obsfile,endian='big')
    diaganl_rad.read_obs()
