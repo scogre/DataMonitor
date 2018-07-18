@@ -73,14 +73,6 @@ def putdate_CFSR_annual_rad(diagpath, date, instrmnt, sat, outputpath):
         anndata['mean_biascor'][idate,ichan]=np.mean(biascorr[qidx])
         anndata['std_biascor'][idate,ichan]=np.std(biascorr[qidx])
         # no info from ensemble in CFSR:
-        anndata['mean_omf_ens'][idate,ichan]    = np.nan
-        anndata['mean_oma_ens'][idate,ichan]    = np.nan
-        anndata['spread_f'][idate,ichan]        = np.nan
-        anndata['spread_a'][idate,ichan]        = np.nan
-        anndata['spread_obserr_f'][idate,ichan] = np.nan
-        anndata['spread_obserr_a'][idate,ichan] = np.nan
-        anndata['std_omf_ens'][idate,ichan]     = np.nan
-        anndata['std_oma_ens'][idate,ichan]     = np.nan
      anndata.close()
 
 

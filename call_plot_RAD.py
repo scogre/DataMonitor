@@ -11,8 +11,8 @@ modelstreams=('1999','CFSR')
 
 region='GLOBL'
 
-begindate='1999080100'
-enddate='1999083118'
+begindate='1999010100'
+enddate='1999093018'
 
 instrmnts=['amsua']
 satlites=[ 'n15']
