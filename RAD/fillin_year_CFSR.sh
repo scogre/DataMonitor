@@ -1,7 +1,7 @@
 #!/bin/sh
 #PBS -l partition=sjet:vjet
 #PBS -l procs=1
-#PBS -l walltime=6:00:00
+#PBS -l walltime=8:00:00
 #PBS -A gfsenkf
 #PBS -N fillcfsr
 
