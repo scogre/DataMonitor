@@ -42,6 +42,8 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
       units='mg/kg'
    elif varb=='gps':
       units='--'
+   elif varb=='ps':
+      units=''
    
    ##################################
    ##################################
