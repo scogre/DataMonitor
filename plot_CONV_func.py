@@ -63,7 +63,7 @@ def plot_CONV_func(modelstreams,datapath,varb,plevel,region,begindate,enddate,IM
    for modct in range(nummodel):
       for year in years:
         #print('modelstream=',modelstream)
-        modelfile=datapath+'CONV_'+modelstreams[modct]+'_'+str(beginyr)+'_'+varb+'_'+region+'.nc'
+        modelfile=datapath+'CONV_'+modelstreams[modct]+'_'+str(year)+'_'+varb+'_'+region+'.nc'
         anndata  = Dataset(modelfile, 'r')
         plevs = anndata['Plevels'][:].tolist()
         plevindex = plevs.index(int(plevel))

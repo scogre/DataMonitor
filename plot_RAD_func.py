@@ -55,7 +55,7 @@ def plot_RAD_func(modelstreams,datapath,instrmnt,satlite,channel,region,begindat
    for modct in range(nummodel):
       for year in years:
         #print('modelstream=',modelstream)
-        modelfile=datapath+'/RAD_'+modelstreams[modct]+'_'+str(beginyr)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
+        modelfile=datapath+'/RAD_'+modelstreams[modct]+'_'+str(year)+'_'+instrmnt+'_'+satlite+'_'+region+'.nc'
         print modelfile
         anndata  = Dataset(modelfile, 'r')
         chans = anndata['Channels'][:].tolist()
