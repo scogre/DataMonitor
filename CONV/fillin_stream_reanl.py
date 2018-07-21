@@ -15,7 +15,7 @@ date1  = sys.argv[2]
 date2  = sys.argv[3]
 
 regions=['GLOBL','TROPI','NORTH','SOUTH']
-varnames=['t','u','v','q','ps','gps']
+varnames=['t','u','v','q','ps']
 
 diagpath = '/lustre/f1/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
 outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'

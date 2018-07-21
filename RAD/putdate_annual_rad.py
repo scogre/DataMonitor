@@ -13,10 +13,15 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
    diag_ctrl_a = Dataset(anlcontrolnc_file,'r')
    gescontrolnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+str(date)+'_control.nc4'
    diag_ctrl_f = Dataset(gescontrolnc_file,'r')
-   ensmeannc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+str(date)+'_ensmean.nc4'
-   diag_ens_mean = Dataset(ensmeannc_file,'r')
    enssprdnc_file =  diagpath+'/'+str(date)+'/diag_'+instrmnt+'_'+satlite+'_ges.'+str(date)+'_ensmean_spread.nc4'
-   diag_ens_sprd = Dataset(enssprdnc_file,'r')
+   sprdavail = False
+   if (os.path.isfile(enssprdnc_file)):
+     sprdavail = True
+     diag_ens_sprd = Dataset(enssprdnc_file,'r')
+     enkf_used = diag_ens_sprd['EnKF_use_flag'][:] ##dimension nobs....
+     sprd_f =  diag_ens_sprd['EnKF_spread_ges'][:]
+     omf_ens  = diag_ens_sprd['EnKF_fit_ges'][:]
+
    print 'Filling in ', instrmnt, satlite, ' for ', date
 
    ###############################################################################
@@ -37,14 +42,9 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
 
    omf_ctrl = diag_ctrl_f['Obs_Minus_Forecast_adjusted'][:]
    oma_ctrl = diag_ctrl_a['Obs_Minus_Forecast_adjusted'][:]
-   omf_ens  = diag_ens_sprd['EnKF_fit_ges'][:]
 
    gsi_used  = diag_ctrl_a['use_flag'][:] ##dimension nchan... says whether the channel is used in GSI
-   enkf_used = diag_ens_sprd['EnKF_use_flag'][:] ##dimension nobs....
    gsi_qcd  = diag_ctrl_a['QC_Flag'][:]
-
-   sprd_f =  diag_ens_sprd['EnKF_spread_ges'][:]
-   sprd_a =  diag_ens_sprd['EnKF_spread_anl'][:]
 
    biascorr = diag_ctrl_f['Obs_Minus_Forecast_adjusted'][:] - diag_ctrl_f['Obs_Minus_Forecast_unadjusted'][:]
 
@@ -78,18 +78,16 @@ def putdate_annual_rad(diagpath, date, stream, instrmnt, satlite, outputpath):
         anndata['mean_oma_ctrl'][idate,ichan] = np.mean(oma_ctrl[qidx])
         anndata['std_omf_ctrl'][idate,ichan]  = np.sqrt(np.mean(omf_ctrl[qidx] ** 2))
         anndata['std_oma_ctrl'][idate,ichan]  = np.sqrt(np.mean(oma_ctrl[qidx] ** 2))
-        useidx = (enkf_used == 1)  ## for enkf use only
-        idx    = np.logical_and(useidx, chanlatidx)
-        anndata['nobs_used'][idate,ichan] = len(obs[idx])
-        anndata['mean_omf_ens'][idate,ichan] = np.mean(omf_ens[idx])
-        # LEAVING OUT FOR NOW     anndata['mean_oma_ens'][idate,ichan] = np.mean(oma_ens[idx])
-        anndata['spread_f'][idate,ichan] = np.sqrt(np.mean(sprd_f[idx]))
-        # LEAVING OUT FOR NOW     anndata['spread_a'][idate,ichan] = np.sqrt(np.mean(sprd_a[idx]))
-        anndata['spread_obserr_f'][idate,ichan] = np.sqrt(np.mean(sprd_f[idx]) + np.mean(obserr[idx]))
-        # LEAVING OUT FOR NOW     anndata['spread_obserr_a'][idate,ichan] = np.sqrt(np.mean(sprd_a[idx] + obserr[idx]))
-        anndata['std_omf_ens'][idate,ichan]  = np.sqrt(np.mean(omf_ens[idx] ** 2))
-        anndata['mean_biascor'][idate,ichan] = np.mean(biascorr[idx])
-        anndata['std_biascor'][idate,ichan]  = np.std(biascorr[idx])
+        if (sprdavail):
+          useidx = (enkf_used == 1)  ## for enkf use only
+          idx    = np.logical_and(useidx, chanlatidx)
+          anndata['nobs_used'][idate,ichan] = len(obs[idx])
+          anndata['mean_omf_ens'][idate,ichan] = np.mean(omf_ens[idx])
+          anndata['spread_f'][idate,ichan] = np.sqrt(np.mean(sprd_f[idx]))
+          anndata['spread_obserr_f'][idate,ichan] = np.sqrt(np.mean(sprd_f[idx]) + np.mean(obserr[idx]))
+          anndata['std_omf_ens'][idate,ichan]  = np.sqrt(np.mean(omf_ens[idx] ** 2))
+        anndata['mean_biascor'][idate,ichan] = np.mean(biascorr[qidx])
+        anndata['std_biascor'][idate,ichan]  = np.std(biascorr[qidx])
      anndata.close()
    
 

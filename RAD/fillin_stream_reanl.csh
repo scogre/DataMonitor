@@ -1,7 +1,7 @@
 #!/bin/csh
 #PBS -A nggps_psd
 #PBS -l partition=c4
-#PBS -l walltime=3:00:00
+#PBS -l walltime=16:00:00
 #PBS -l nodes=1
 #PBS -N fillreanlrad
 #PBS -S /bin/csh
