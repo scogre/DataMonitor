@@ -4,14 +4,14 @@ from plot_CONV_func import plot_CONV_func
 imagedir='/lustre/f1/unswept/Anna.V.Shlyaeva/images/'
 datapath='/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
 
-modelstreams=('2003','CFSR')
+modelstreams=('2015','CFSR')
 
 region='GLOBL'
 
-begindate='2003010100'
-enddate='2004050100'
+begindate='2015010100'
+enddate='2016120100'
 
-varnames=['t','u','v','q']
+varnames=['u'] #['t','u','v','q']
 plevels=range(0,1000,100)
 
 for var in varnames:

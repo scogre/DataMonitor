@@ -19,7 +19,7 @@ regions=['GLOBL','TROPI','NORTH','SOUTH']
 instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'atms' , 'avhrr'  , 'avhrr', 'avhrr', 'avhrr', 'avhrr', 'cris', 'hirs2' , 'hirs3', 'hirs3', 'hirs4'   , 'hirs4' , 'iasi'   ,    'mhs',     'mhs', 'mhs' , 'mhs', 'msu', 'seviri', 'sndr', 'sndr']
 satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n16'  , 'n18'  , 'n19'  , 'n15'  , 'n16'  , 'n17'  , 'npp'  , 'metop-a', 'n15'  , 'n16'  , 'n17'  , 'n18'  , 'npp' , 'n14'   , 'n16'  , 'n17'  , 'metop-a' , 'n19'   , 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'n14',  'm10'  , 'g08' , 'g11' ]
 
-diagpath = '/lustre/f1/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
+diagpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/fv3reanl_diag/'
 outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
 numinst=len(instrmnts)
 
