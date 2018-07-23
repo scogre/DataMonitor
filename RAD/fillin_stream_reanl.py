@@ -23,9 +23,6 @@ diagpath = '/lustre/f1/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
 outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
 numinst=len(instrmnts)
 
-# dates requested by user
-dates = dateutils.daterange(date1,date2,6)
-
 years = range(int(date1[0:4]), int(date2[0:4])+1)
 
 for nn in range(numinst):
@@ -45,6 +42,8 @@ for nn in range(numinst):
           print 'file ', outfile, ' doesnt exist; creating the file.'
           create_annual_rad(outfile, modelstream, str(year), instrmnt, channels, satlite, region)
 
+   # dates requested by user
+   dates = dateutils.daterange(date1,date2,6)
    # check which dates are filled in the global file already
    for year in years:
      outfile=outputpath+'/RAD_'+modelstream+'_'+str(year)+'_'+instrmnt+'_'+satlite+'_GLOBL.nc'

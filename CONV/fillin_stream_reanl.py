@@ -20,9 +20,6 @@ varnames=['t','u','v','q','ps']
 diagpath = '/lustre/f1/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
 outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
 
-# dates requested by user
-dates = dateutils.daterange(date1,date2,6)
-
 years = range(int(date1[0:4]), int(date2[0:4])+1)
 
 for var in varnames:
@@ -37,6 +34,9 @@ for var in varnames:
         if (not os.path.isfile(outfile)):
           print('file ' + outfile +' doesnt exist; creating the file.')
           create_annual_conv(outfile, modelstream, str(year), var, region, pcutoffs)
+
+   # dates requested by user
+   dates = dateutils.daterange(date1,date2,6)
 
    # check which dates are filled in the global file already
    for year in years:

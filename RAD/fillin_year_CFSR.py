@@ -21,9 +21,6 @@ numinst=len(instrmnts)
 diagpath = '/lfs3/projects/gfsenkf/Scott.Gregory/CFSR/'
 outputpath = '/lfs3/projects/gfsenkf/ashlyaeva/monitor/'
 
-# dates requested by user
-dates = dateutils.daterange(year+'010100',year+'123118',6)
-
 for nn in range(numinst):
    instrmnt=instrmnts[nn]
    satlite=satlites[nn]
@@ -39,6 +36,9 @@ for nn in range(numinst):
       if (not os.path.isfile(outfile)):
         print 'file ', outfile, ' doesnt exist; creating the file.'
         create_annual_rad(outfile, year, year, instrmnt, channels, satlite, region)
+
+   # dates requested by user
+   dates = dateutils.daterange(year+'010100',year+'123118',6)
 
    # check which dates are filled in the global file already
    outfile=outputpath+'/RAD_CFSR_'+str(year)+'_'+instrmnt+'_'+satlite+'_GLOBL.nc'
