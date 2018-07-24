@@ -22,7 +22,7 @@ def putdate_annual_conv(diagpath, date, stream, var, outputpath):
      multvar =1.0
 
 
-   fname = diagpath+'/'+str(date)+'/diag_conv_'+vardiag+'_ges.'+str(date)+'_ensmean.nc4'
+   fname = diagpath+'/'+str(date)+'/diag_conv_'+vardiag+'_ges.'+str(date)+'_control.nc4'
    if (not os.path.isfile(fname)):
       print '---', var, ' not available for ', date
       return
