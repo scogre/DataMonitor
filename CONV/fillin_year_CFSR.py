@@ -13,7 +13,7 @@ if len(sys.argv) < 1:
 year = sys.argv[1]
 
 regions=['GLOBL','TROPI','NORTH','SOUTH']
-varnames=['t','u','v','q','ps','gps']
+varnames=['t','u','v','q','ps']
 
 diagpath = '/lfs3/projects/gfsenkf/Scott.Gregory/CFSR/'
 outputpath = '/lfs3/projects/gfsenkf/ashlyaeva/monitor/'
