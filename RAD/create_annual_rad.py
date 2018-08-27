@@ -9,7 +9,7 @@ from netCDF4 import num2date, date2num
 def create_annual_rad(outfile, modelstream, datayr, instrmnt, channels, satlite, region):
    annual_filename = outfile
    nchans=len(channels)
-   if float(datayr)/4!=int(datayr)/4 or int(datayr)==2000:
+   if float(datayr)/4!=int(datayr)/4:
       ndays=365
    else:
       ndays=366
