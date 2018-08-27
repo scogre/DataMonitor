@@ -16,8 +16,36 @@ date2  = sys.argv[3]
 
 regions=['GLOBL','TROPI','NORTH','SOUTH']
 
-instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'atms' , 'avhrr'  , 'avhrr', 'avhrr', 'avhrr', 'avhrr', 'cris', 'hirs2' , 'hirs3', 'hirs3', 'hirs4'   , 'hirs4' , 'iasi'   ,    'mhs',     'mhs', 'mhs' , 'mhs', 'msu', 'seviri', 'sndr', 'sndr']
-satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n16'  , 'n18'  , 'n19'  , 'n15'  , 'n16'  , 'n17'  , 'npp'  , 'metop-a', 'n15'  , 'n16'  , 'n17'  , 'n18'  , 'npp' , 'n14'   , 'n16'  , 'n17'  , 'metop-a' , 'n19'   , 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'n14',  'm10'  , 'g08' , 'g11' ]
+instrmnts=[ 'airs',  \
+            'amsua', 'amsua', 'amsua', 'amsua', 'amsua', 'amsua', 'amsua',   \
+            'amsub', 'amsub', 'amsub', \
+            'atms',  \
+            'avhrr', 'avhrr', 'avhrr', 'avhrr', 'avhrr', \
+            'cris', \
+            'hirs2', 'hirs2',  \
+            'hirs3', 'hirs3', 'hirs3',   \
+            'hirs4', 'hirs4',   \
+            'iasi', 'iasi',  \
+            'mhs', 'mhs', 'mhs', 'mhs',  \
+            'msu', 'msu', \
+            'seviri', 'seviri', \
+            'sndr', 'sndr', 'sndr','sndr','sndr','sndr','sndr', \
+            'ssmis', 'ssmis' ]
+satlites= [ 'aqua', \
+            'aqua', 'metop-a', 'metop-b', 'n15', 'n16', 'n18', 'n19', \
+            'n15', 'n16', 'n17',  \
+            'npp', \
+            'metop-a', 'n15', 'n16', 'n17', 'n18',  \
+            'npp', \
+            'n11', 'n14',  \
+            'n15', 'n16', 'n17',  \
+            'metop-a', 'n19', \
+            'metop-a', 'metop-b', \
+            'metop-a', 'metop-b', 'n18', 'n19',  \
+            'n11', 'n14',  \
+            'm09', 'm10',  \
+            'g08', 'g10', 'g11', 'g12', 'g13', 'g14', 'g15', \
+            'f17', 'f18' ]
 
 diagpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/fv3reanl_diag/'
 outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
