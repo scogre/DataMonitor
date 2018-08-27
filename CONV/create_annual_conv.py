@@ -9,7 +9,7 @@ import time
 ## Nlevs  
 def create_annual_conv(outfile, modelstream, datayr, varb, region, pcutoffs):
    annual_filename = outfile
-   if float(datayr)/4!=int(datayr)/4 or int(datayr)==2000:
+   if float(datayr)/4!=int(datayr)/4:
       ndays=365
    else:
       ndays=366
