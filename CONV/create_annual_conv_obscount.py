@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 ## DIMENSIONS
 ## NDAYSperYR X 4 for Ntime
 def create_annual_conv_obscount(outfile, datayr):
-   if float(datayr)/4!=int(datayr)/4 or int(datayr)==2000:
+   if float(datayr)/4!=int(datayr)/4:
       ndays=365
    else:
       ndays=366
