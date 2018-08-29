@@ -1,20 +1,15 @@
 #!/usr/local/bin/python2.7
-from plot_conv_obscount_func import plot_conv_obscount_func
+from plot_conv_obscount_splitwind_func import plot_conv_obscount_splitwind_func
+import sys
 
-imagedir='/lustre/f1/unswept/Anna.V.Shlyaeva/images/'
+imagepath='/lustre/f1/unswept/Anna.V.Shlyaeva/images/'
 datapath='/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
 
-modelstreams=('2015', '2015')
+if len(sys.argv) < 3:
+    raise SystemExit('python call_plot.py <modelstream> <begindate> <enddate>')
+modelstream = sys.argv[1]
+begindate=sys.argv[2]
+enddate=sys.argv[3]
 
-
-begindate='2015010100'
-enddate='2016123118'
-
-varnames=['t','uv','ps']
-
-for var in varnames:
-  IMAGES=[]
-  IMAGES.append(imagedir+modelstreams[0]+'_'+var+'_obscount.png')
-  IMAGES.append(imagedir+modelstreams[1]+'_'+var+'_obscount.png')
-  plot_conv_obscount_func(modelstreams,datapath,var,begindate,enddate,IMAGES)
+plot_conv_obscount_func(modelstream,datapath,begindate,enddate,imagepath)
 
