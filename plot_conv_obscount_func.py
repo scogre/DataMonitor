@@ -26,14 +26,12 @@ def plot_conv_obscount_func(stream,datapath,begindate,enddate,imagepath):
 
    years = range(int(beginyr), int(endyr)+1)
 
-   print years 
    strdates = dateutils.daterange(begindate,enddate,12)
    dates = np.zeros(len(strdates))
    datetime_list = []
    for i in range(len(dates)):
       dates[i] = int(strdates[i])
       datetime_list.append(datetime.strptime(strdates[i], "%Y%m%d%H"))
-   print len(datetime_list)
    timediff = datetime_list[len(dates)-1] - datetime_list[0]
 
    varnames = ['t', 'uv', 'ps']
@@ -50,7 +48,6 @@ def plot_conv_obscount_func(stream,datapath,begindate,enddate,imagepath):
    nobs_scatw = ma.zeros((len(dates), numvars, nummodel));     nobs_scatw.mask = True
    nobs_wind = ma.zeros((len(dates), numvars, nummodel));      nobs_wind.mask = True
    nobs_other = ma.zeros((len(dates), numvars, nummodel));     nobs_other.mask = True
-   print len(dates)
    ##################################
    
    for modct in range(nummodel):
@@ -58,7 +55,7 @@ def plot_conv_obscount_func(stream,datapath,begindate,enddate,imagepath):
         for ivar in range(numvars):
           #print('modelstream=',modelstream)
           modelfile=datapath+'CONV_'+modelstreams[modct]+'_'+str(year)+'_'+varnames[ivar]+'_obscounts.nc'
-          print modelfile
+          #print modelfile
           anndata  = Dataset(modelfile, 'r')
           thisdates = anndata['All_Dates'][:]
           indx_in = np.where(np.in1d(thisdates, dates)) [0]
