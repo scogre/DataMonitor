@@ -1,8 +1,8 @@
 #!/usr/local/bin/python2.7
-from plot_conv_obscount_splitwind_func import plot_conv_obscount_splitwind_func
+from plot_conv_obscount_func import plot_conv_obscount_func
 import sys
 
-imagepath='/lustre/f1/unswept/Anna.V.Shlyaeva/images/'
+imagepath='/lustre/f1/unswept/Anna.V.Shlyaeva/images/obscounts/'
 datapath='/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
 
 if len(sys.argv) < 3:

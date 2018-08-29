@@ -11,8 +11,9 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import MonthLocator, WeekdayLocator, DateFormatter, DayLocator, HourLocator, AutoDateLocator
 from matplotlib.dates import MO, TU, WE, TH, FR, SA, SU
 import os
+from time import gmtime, strftime
 
-def plot_conv_obscount_splitwind_func(stream,datapath,begindate,enddate,imagepath):
+def plot_conv_obscount_func(stream,datapath,begindate,enddate,imagepath):
    modelstreams = [str(stream), 'CFSR']
    modelstreamnames = [str(stream)+" stream", "CFSR"]
    nummodel = len(modelstreams)
@@ -148,7 +149,8 @@ def plot_conv_obscount_splitwind_func(stream,datapath,begindate,enddate,imagepat
         ax[ivar,modct].xaxis.set_major_locator(locator)
         ax[ivar,modct].xaxis.set_major_formatter(tick_format)
 
-   fig.tight_layout(rect=[0, 0, 0.9, 1])
+   fig.tight_layout(rect=[0, 0.05, 0.9, 0.95],h_pad=5)
+   plt.text(0.05, 0.02, "Generated "+strftime("%Y-%m-%d %H:%M:%S", gmtime())+"UTC", fontsize=12, color='grey',transform=fig.transFigure)
    plt.savefig(imagepath+"/"+stream+"_obscounts.png")
    plt.close()
    #########################
