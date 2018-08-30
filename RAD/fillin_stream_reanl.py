@@ -29,7 +29,11 @@ instrmnts=[ 'airs',  \
             'mhs', 'mhs', 'mhs', 'mhs',  \
             'msu', 'msu', \
             'seviri', 'seviri', \
-            'sndr', 'sndr', 'sndr','sndr','sndr','sndr','sndr', \
+            'sndr', 'sndr', 'sndr','sndr', \
+            'sndrd1', 'sndrd1','sndrd1','sndrd1','sndrd1',\
+            'sndrd2', 'sndrd2','sndrd2','sndrd2','sndrd2',\
+            'sndrd3', 'sndrd3','sndrd3','sndrd3','sndrd3',\
+            'sndrd4', 'sndrd4','sndrd4','sndrd4','sndrd4',\
             'ssmis', 'ssmis' ]
 satlites= [ 'aqua', \
             'aqua', 'metop-a', 'metop-b', 'n15', 'n16', 'n18', 'n19', \
@@ -44,7 +48,11 @@ satlites= [ 'aqua', \
             'metop-a', 'metop-b', 'n18', 'n19',  \
             'n11', 'n14',  \
             'm09', 'm10',  \
-            'g08', 'g10', 'g11', 'g12', 'g13', 'g14', 'g15', \
+            'g08', 'g10', 'g11', 'g12', \
+            'g11', 'g12', 'g13', 'g14', 'g15', \
+            'g11', 'g12', 'g13', 'g14', 'g15', \
+            'g11', 'g12', 'g13', 'g14', 'g15', \
+            'g11', 'g12', 'g13', 'g14', 'g15', \
             'f17', 'f18' ]
 
 diagpath = '/lustre/f1/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
