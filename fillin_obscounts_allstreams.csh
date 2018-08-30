@@ -9,6 +9,7 @@
 module load PythonEnv-noaa/1.4.0
 module load cray-hdf5
 module load cray-netcdf
+module load gcp
 
 set scriptdir=/lustre/f1/unswept/Anna.V.Shlyaeva/DataMonitor/
 
@@ -22,5 +23,5 @@ foreach streamyr (1999 2003 2007 2011 2015)
   python ${scriptdir}/CONV/fillin_stream_reanl_obscount.py ${streamyr} ${analdate_start} ${analdate_end}
   python ${scriptdir}/call_plot_conv_obscount.py           ${streamyr} ${analdate_start} ${analdate_end}
 end
-gcp -v gaea:/lustre/f1/unswept/Anna.V.Shlyaeva/images/obscounts/*png   theia:/scratch3/BMC/gsienkf/ashlyaeva/reanalysis/obscounts/
+#gcp -v gaea:/lustre/f1/unswept/Anna.V.Shlyaeva/images/obscounts/*png   theia:/scratch3/BMC/gsienkf/ashlyaeva/reanalysis/obscounts/
 
