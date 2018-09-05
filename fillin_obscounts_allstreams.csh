@@ -22,6 +22,7 @@ foreach streamyr (1999 2003 2007 2011 2015)
 
   python ${scriptdir}/CONV/fillin_stream_reanl_obscount.py ${streamyr} ${analdate_start} ${analdate_end}
   python ${scriptdir}/call_plot_conv_obscount.py           ${streamyr} ${analdate_start} ${analdate_end}
+  python ${scriptdir}/call_plot_rad_obscount.py            ${streamyr} ${analdate_start} ${analdate_end}
 end
 #gcp -v gaea:/lustre/f1/unswept/Anna.V.Shlyaeva/images/obscounts/*png   theia:/scratch3/BMC/gsienkf/ashlyaeva/reanalysis/obscounts/
 

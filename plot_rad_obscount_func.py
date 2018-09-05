@@ -38,7 +38,7 @@ def plot_rad_obscount_func(stream,datapath,begindate,enddate,imagepath):
       datetime_list.append(datetime.strptime(strdates[i], "%Y%m%d%H"))
 
    instrmnts = [ ('amsua','msu'), ('amsub', 'mhs'), ('hirs2', 'hirs3', 'hirs4'), ('iasi',), ('airs',), ('atms',), ('cris',), \
-                 ('avhrr',), ('seviri',), ('sndr',), ('ssmis',)]
+                 ('avhrr',), ('seviri',), ('sndr','sndrd1'), ('ssmis',)]
    numinstr = len(instrmnts)
 
    instnames = [""] * numinstr
@@ -68,24 +68,35 @@ def plot_rad_obscount_func(stream,datapath,begindate,enddate,imagepath):
        for instropt in range(len(instrmnts[iinstr])):
          for isat in range(len(satlites[iinstr])):
            for year in years:
-             #print('modelstream=',modelstream)
              modelfile=datapath+'/RAD_'+modelstreams[modct]+'_'+str(year)+'_'+instrmnts[iinstr][instropt]+'_'+satlites[iinstr][isat]+'_GLOBL.nc'
-             print modelfile
              if (os.path.isfile(modelfile)):
                anndata  = Dataset(modelfile, 'r')
                thisdates = anndata['All_Dates'][:]
                indx_in = np.where(np.in1d(thisdates, dates)) [0]
                indx_out = np.where(np.in1d(dates, thisdates)) [0]
                ################
-               nobs_used[indx_out,modct,iinstr,isat] = anndata['nobs_used'][indx_in,:].sum(axis=1)
+               nobs_used[indx_out,modct,iinstr,isat] = anndata['nobs_used'][indx_in,:].sum(axis=1) # addition for sndrd1-d4
                anndata.close()
+       if instrmnts[iinstr][0] == 'sndr':
+         for instropt in ['sndrd2', 'sndrd3', 'sndrd4']:
+           for isat in range(len(satlites[iinstr])):
+             for year in years:
+               modelfile=datapath+'/RAD_'+modelstreams[modct]+'_'+str(year)+'_'+instropt+'_'+satlites[iinstr][isat]+'_GLOBL.nc'
+               if (os.path.isfile(modelfile)):
+                 anndata  = Dataset(modelfile, 'r')
+                 thisdates = anndata['All_Dates'][:]
+                 indx_in = np.where(np.in1d(thisdates, dates)) [0]
+                 indx_out = np.where(np.in1d(dates, thisdates)) [0]
+                 ################
+                 nobs_used[indx_out,modct,iinstr,isat] += anndata['nobs_used'][indx_in,:].sum(axis=1) # addition for sndrd1-d4
+                 anndata.close()
 
    font = {'serif' : 'normal','weight' : 'bold','size'   : 12}
    mpl.rc('font', **font)
    mpl.rc('axes',titlesize=18)
    mpl.rc('legend', fontsize=12)
-#   locator = AutoDateLocator(tz=None, minticks=5, maxticks=15, interval_multiples=False)
-#   tick_format= DateFormatter("%m.%y")
+   locator = AutoDateLocator(tz=None, minticks=5, maxticks=15, interval_multiples=False)
+   tick_format= DateFormatter("%m.%y")
 
    #############
    fig, ax = plt.subplots(numinstr, nummodel, figsize = (10*nummodel, 4*numinstr), sharey='row')
@@ -107,10 +118,10 @@ def plot_rad_obscount_func(stream,datapath,begindate,enddate,imagepath):
          ax[iinstr,modct].grid(True)
          ax[iinstr,modct].set_title('Number of '+instnames[iinstr]+' observations used in '+modelstreamnames[modct], fontsize=14, fontweight='bold')
    
-#         ax[iinstr,modct].xaxis.set_major_locator(locator)
-#         ax[iinstr,modct].xaxis.set_major_formatter(tick_format)
+         ax[iinstr,modct].xaxis.set_major_locator(locator)
+         ax[iinstr,modct].xaxis.set_major_formatter(tick_format)
    
-   fig.tight_layout(rect=[0, 0.05, 0.9, 0.98],h_pad=2)
+   fig.tight_layout(rect=[0, 0.05, 0.9, 0.99],h_pad=2)
    plt.text(0.05, 0.02, "Generated "+strftime("%Y-%m-%d %H:%M:%S", gmtime())+"UTC", fontsize=12, color='grey',transform=fig.transFigure)
    plt.savefig(imagepath+"/"+stream+"_rad_obscounts.png")
    plt.close()

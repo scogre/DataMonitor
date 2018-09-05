@@ -2,7 +2,7 @@
 from plot_rad_obscount_func import plot_rad_obscount_func
 import sys
 
-imagedir='/lustre/f1/unswept/Anna.V.Shlyaeva/images/'
+imagedir='/lustre/f1/unswept/Anna.V.Shlyaeva/images/obscounts/'
 datapath='/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
 
 if len(sys.argv) < 3:

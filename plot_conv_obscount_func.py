@@ -32,8 +32,6 @@ def plot_conv_obscount_func(stream,datapath,begindate,enddate,imagepath):
    for i in range(len(dates)):
       dates[i] = int(strdates[i])
       datetime_list.append(datetime.strptime(strdates[i], "%Y%m%d%H"))
-   timediff = datetime_list[len(dates)-1] - datetime_list[0]
-
    varnames = ['t', 'uv', 'ps']
    numvars = len(varnames)
 
@@ -80,32 +78,8 @@ def plot_conv_obscount_func(stream,datapath,begindate,enddate,imagepath):
    mpl.rc('axes',titlesize=18)
    mpl.rc('legend', fontsize=12)
    #############
-   axdays = DayLocator()
-   axweek = WeekdayLocator(byweekday=SU)
-   axsemiweek = WeekdayLocator(byweekday=(SU,WE))
-   axmonth =MonthLocator()
-   axhours = HourLocator((6,12,18))
-   hr6fmt= DateFormatter("%H:00")
-   dayFmt = DateFormatter("%m.%d.%y")
    locator = AutoDateLocator(tz=None, minticks=5, maxticks=15, interval_multiples=False)
-   if timediff.days<=5:
-      ticklocat=axhours
-      tick_format= DateFormatter("%m.%d.%y---%H:00")
-   elif timediff.days<=15:
-      ticklocat=axdays
-      tick_format= DateFormatter("%m.%d.%y")
-   elif timediff.days<=50:
-      ticklocat=axsemiweek
-      tick_format= DateFormatter("%m.%d.%y")
-   elif timediff.days<=100:
-      ticklocat=axweek
-      tick_format= DateFormatter("%m.%d.%y")
-   elif timediff.days<=365:
-      ticklocat=axmonth
-      tick_format= DateFormatter("%m.%d.%y")
-   else:
-      ticklocat=axdays
-      tick_format= DateFormatter("%m.%y")
+   tick_format= DateFormatter("%m.%y")
    fig, ax = plt.subplots(numvars, nummodel, figsize=(10*nummodel,6*numvars),sharey='row')
 
    for modct in range(nummodel):
