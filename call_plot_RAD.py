@@ -6,15 +6,15 @@ import sys, os, os.path, cgi, re
 imagedir='/lustre/f1/unswept/Anna.V.Shlyaeva/images/'
 datapath='/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
 
-modelstreams=('2011','CFSR')
+modelstreams=('1999','CFSR')
 
 region='GLOBL'
 
-begindate='2011010100'
-enddate='2012123018'
+begindate='1999120100'
+enddate='2000020500'
 
 instrmnts=['amsua']
-satlites=[ 'n18']
+satlites=[ 'n15']
 
 numinst=len(instrmnts)
 #for instrmnt in instrmnts:

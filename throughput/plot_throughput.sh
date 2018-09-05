@@ -19,4 +19,4 @@ do
   rm ${stream}stream_time
 done
 
-python plot_throughput.py  ${ndates}
+#python plot_throughput.py  ${ndates}

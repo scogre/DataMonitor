@@ -1,5 +1,7 @@
 import numpy as np
 import datetime as dt
+import matplotlib as mpl
+mpl.use('Agg') #for web 
 import matplotlib.pyplot as plt
 import matplotlib.dates as dates
 from time import gmtime, strftime
