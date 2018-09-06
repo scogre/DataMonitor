@@ -21,5 +21,7 @@ foreach streamyr (1999 2003 2007 2011 2015)
 
   python ${scriptdir}/CONV/fillin_stream_reanl.py          ${streamyr} ${analdate_start} ${analdate_end}
   python ${scriptdir}/RAD/fillin_stream_reanl.py           ${streamyr} ${analdate_start} ${analdate_end}
+  python ${scriptdir}/call_plot_conv.py  ${streamyr} ${analdate_start} ${analdate_end}
+  python ${scriptdir}/call_plot_rad.py   ${streamyr} ${analdate_start} ${analdate_end}
 end
 
