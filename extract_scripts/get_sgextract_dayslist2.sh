@@ -1,0 +1,48 @@
+#!/bin/sh
+#PBS -A nggps_psd
+#PBS -l partition=es,size=1,walltime=5:00:00
+#PBS -q rdtn
+#PBS -N untar
+###############PBS -e $mydatapath/sgextract_$enddate10dig.err
+###############PBS -o $mydatapath/sgextract_$enddate10dig.out
+#PBS -S /bin/sh
+# need envars:  machine, analdate, datapath2, hsidir, save_hpss_full, save_hpss_subset
+
+exptname='2015stream'
+mydatapath='/lustre/f1/unswept/Scott.Gregory/'${exptname}
+
+
+date8dig=(20160113 20160114 20160115 20160116 20160117 20160118 20160119 20160120 20160121 20160122 20160123 20160124 20160125 20160126 20160127 20160128 20160129 20160130 20160131 20160201 20160202 20160203 20160204 20160205 20160206 20160207 20160208 20160209 20160210 20160211 20160212 20160213 20160214 20160215 20160216 20160217 20160218 20160219 20160220 20160221 20160222 20160223 20160224 20160225 20160226 20160227 20160228 20160229 20160301 20160302 20160303 20160304 20160305 20160306 20160307 20160308 20160309 20160310 20160311 20160312 20160313 20160314 20160315 20160316 20160317 20160318 20160319 20160320 20160321 20160322 20160323 20160324 20160325 20160326 20160327 20160328 20160329 20160330 20160331 20160401 20160402 20160403 20160404 20160405 20160406 20160407 20160408 20160409 20160410 20160411 20160412 20160413 20160414 20160415 20160416 20160417 20160418 20160419 20160420 20160421 20160422 20160423 20160424 20160425 20160426 20160427 20160428 20160429 20160430 20160501 20160502 20160503 20160504 20160505 20160506 20160507 20160508 20160509 20160510 20160511 20160512)
+
+source $MODULESHOME/init/sh
+echo new line of text
+module load hsi
+echo module loaded 
+
+export hsidir=/3year/NCEPDEV/GEFSRR/${exptname}
+echo hsidir is $hsidir
+
+hours=('00' '06' '12' '18')
+
+for date in ${date8dig[*]}; do
+   echo analdate is $date
+
+   if [ -d $mydatapath/ ] #if directory exists
+   then
+      echo 'out directory '$mydatapath' exists'
+   else
+      echo 'making out directory '$mydatapath
+      mkdir -p $mydatapath
+   fi
+
+   cd ${mydatapath}
+   rm -rf ${date}'*'
+
+   for hr in ${hours[*]}; do
+      echo "extract ${hsidir}/${date}${hr}_subset.tar"
+      htar -xvf ${hsidir}/${date}${hr}_subset.tar
+      echo "extracted? ${hsidir}/${date}${hr}_subset.tar"
+   done
+done
+
+

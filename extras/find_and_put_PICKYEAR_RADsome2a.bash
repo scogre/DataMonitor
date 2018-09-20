@@ -6,12 +6,17 @@ module load cray-netcdf
 module load gcp
 module load hpcrpt
 module load alcrpt
+#module load moab
+#module load moab/stub
+#module use -a /ncrc/home2/fms/local/modulefiles
+#source /etc/profile.d/moab.csh 
 
-yearruns=('1999' '2003' '2007' '2011' '2015')
-datayrs=('2000' '2004' '2008' '2012' '2016')
-
+#yearruns=('1999' '2003' '2007' '2011' '2015')
+#datayrs=('1999' '2003' '2007' '2011' '2015')
+yearruns=$yearrun
+datayrs=$datayr
 count=0
-outpath='/lustre/f1/Scott.Gregory/'
+outpath='/lustre/f1/unswept/Scott.Gregory/'
 for Y in "${yearruns[@]}"
 do
    modelname=FV3s$Y
@@ -21,8 +26,10 @@ do
    echo "$Y"
 
    ###################################################################
-   diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
+   #diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
    #diagpath=$outpath$YEARRUN'stream/' ### when I download from the hpss
+   diagpath='/lustre/f1/unswept/Scott.Gregory/'$YEARRUN'stream/'
+   #diagpath='/lustre/f1/unswept/Anna.V.Shlyaeva/fv3reanl_diag/'
    echo diagpath is $diagpath
    ###################################################################
 
@@ -45,7 +52,7 @@ do
    if [ "$numfile" == "0" ]
    then
       echo 'making blanks for '$streamyr
-      makeblanks='python RAD/make_rad_annual_all.py '$modelname' '${datayrs[$count]}' '$outputpath
+      makeblanks='python /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/RAD/make_rad_annual_all.py '$modelname' '${datayrs[$count]}' '$outputpath
       $makeblanks
       RAD_ANNFILES=$(ls -1d $outputpath/RAD*$modelname*${datayrs[$count]}*nc)
       #echo $RAD_ANNFILES
@@ -54,36 +61,38 @@ do
    fi
   
 
-   CONV_ANNFILES=$(ls -1d $outputpath/CONV_t*$modelname*${datayrs[$count]}*nc)   ## Temperature is reliably available
-   convnumfile=${#CONV_ANNFILES}
-   echo convnumfile=${#CONV_ANNFILES}
-   if [ "$convnumfile" == "0" ]
-   then
-      makeblanks='python CONV/make_conv_annual_all.py '$modelname' '${datayrs[$count]}' '$outputpath
-      $makeblanks
-      CONV_ANNFILES=$(ls -1d $outputpath/CONV*$modelname*${datayrs[$count]}*nc)
-      #echo $CONV_ANNFILES
-      numfile=${#CONV_ANNFILES}
-      echo numfile=${#CONV_ANNFILES}
-   fi
+   #CONV_ANNFILES=$(ls -1d $outputpath/CONV_$modelname*${datayrs[$count]}*_t_*nc)   ## Temperature is reliably available
+   #convnumfile=${#CONV_ANNFILES}
+   #echo convnumfile=${#CONV_ANNFILES}
+   #if [ "$convnumfile" == "0" ]
+   #then
+   #   makeblanks='python /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/CONV/make_conv_annual_all.py '$modelname' '${datayrs[$count]}' '$outputpath
+   #   $makeblanks
+   #   CONV_ANNFILES=$(ls -1d $outputpath/CONV_$modelname*${datayrs[$count]}*_t_*nc) ##Temperature is reliably available
+   #   #echo $CONV_ANNFILES
+   #   numfile=${#CONV_ANNFILES}
+   #   echo numfile=${#CONV_ANNFILES}
+   #fi
 
 
    ###################################################################
    listfilename='latestlist_'$modelname'.txt'
-   dates_in_ann_fname='date_in_ann'$YEARRUN'.txt'
+   dates_in_ann_fname='date_in_ann'$modelname'_'${datayrs[$count]}'.txt'
    rm $listfilename
    rm $dates_in_ann_fname
    ###################################################################
    ## listing the completed model dates
-   ls -1d $diagpath$YEARRUN* | xargs -n 1 basename  > $listfilename
-   modeldates=$(ls -1d $diagpath$YEARRUN* | xargs -n 1 basename)
+   ls -1d $diagpath${datayrs[$count]}* | xargs -n 1 basename  > $listfilename
+   modeldates=$(ls -1d $diagpath${datayrs[$count]}* | xargs -n 1 basename)
+#   ls -1d $diagpath$YEARRUN* | xargs -n 1 basename  > $listfilename
+#   modeldates=$(ls -1d $diagpath$YEARRUN* | xargs -n 1 basename)
    echo modeldates=$modeldates
    ##################################################################
 
 
 
-#   for ANNFILE in ${RAD_ANNFILES[*]}; do
-   for ANNFILE in ${CONV_ANNFILES[*]}; do
+   for ANNFILE in ${RAD_ANNFILES[*]}; do
+#   for ANNFILE in ${CONV_ANNFILES[*]}; do
       echo ANNFILE=$ANNFILE
       ##################################################################
       fusestring=''
@@ -105,7 +114,7 @@ do
          echo GO=$gosig
          echo END=$endsig
          echo lines=$lines
-         echo fusestring=$fusestring
+#         echo fusestring=$fusestring
       done
       
       lenFUSE=${#fusestring}
@@ -147,16 +156,16 @@ do
       ###date10dig is the list of dates for adding to the annual file
       ##### then we feed this list of dates to the PUT
 ################################################################################################################
-      RADputcode='/ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/RAD/put_all.py'
+      RADputcode='/ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/RAD/put_RAD_some2a.py'
       CONVputcode='/ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/CONV/call_putdate_CONV.py'
       for date in ${date10dig[*]}; do
          echo python $RADputcode $modelname $date $outputpath $diagpath
          echo 'date='$date
          python $RADputcode $modelname $date $outputpath $diagpath
 
-         echo python $CONVputcode $modelname $date $outputpath $diagpath
-         echo 'date='$date
-         python $CONVputcode $modelname $date $outputpath $diagpath
+         #echo python $CONVputcode $modelname $date $outputpath $diagpath
+         #echo 'date='$date
+         #python $CONVputcode $modelname $date $outputpath $diagpath
 
       done
       unset date10dig
@@ -164,8 +173,13 @@ do
 ################################################################################################################
       break #this will break it out of the looping over all ANNFILES because all of that looping will happen in the subroutines
    done
-   cp $outputpath/RAD*nc /lustre/f1/Scott.Gregory/transferDIR/.
-   cp $outputpath/CONV*nc /lustre/f1/Scott.Gregory/transferDIR/.
+   cp $outputpath/RAD*nc /lustre/f1/unswept/Scott.Gregory/transferDIR/.
+   cp $outputpath/CONV*nc /lustre/f1/unswept/Scott.Gregory/transferDIR/.
+   cd /lustre/f1/unswept/Scott.Gregory/transferDIR/
+   tar -czvpf RADannuals.tar.gz RAD_*nc
+   gcp -v RADannuals.tar.gz jet:/lfs3/projects/gfsenkf/Scott.Gregory/GAEAtransfer/.
+   tar -czvpf CONVannuals.tar.gz CONV_*nc
+   gcp -v CONVannuals.tar.gz jet:/lfs3/projects/gfsenkf/Scott.Gregory/GAEAtransfer/.
    unset outputpath
    unset diagpath
    unset RAD_ANNFILES

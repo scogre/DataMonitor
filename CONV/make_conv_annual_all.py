@@ -15,13 +15,13 @@ variables=['t','u','v','q','gps']
 
 for var in variables:
    for region in regions:
-      outfile = outputpath+'/CONV_'+var+'_'+modelstream+'_'+str(datayr)+'_'+region+'.nc'
+      outfile = outputpath+'/CONV_'+modelstream+'_'+str(datayr)+'_'+var+'_'+region+'.nc'
       create_annual_conv(outfile, modelstream , datayr, var, region, pcutoffs)
       print 'outfile=',outfile     
 var = 'ps'
 pcutoffs=[0]
 for region in regions:
-   outfile = outputpath+'/CONV_'+var+'_'+modelstream+'_'+str(datayr)+'_'+region+'.nc'
+   outfile = outputpath+'/CONV_'+modelstream+'_'+str(datayr)+'_'+var+'_'+region+'.nc'
    create_annual_conv(outfile, modelstream, datayr, var, region, pcutoffs)
    print 'outfile=',outfile
 

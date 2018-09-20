@@ -1,0 +1,48 @@
+#!/bin/sh
+#PBS -A nggps_psd
+#PBS -l partition=es,size=1,walltime=5:00:00
+#PBS -q rdtn
+#PBS -N untar
+###############PBS -e $mydatapath/sgextract_$enddate10dig.err
+###############PBS -o $mydatapath/sgextract_$enddate10dig.out
+#PBS -S /bin/sh
+# need envars:  machine, analdate, datapath2, hsidir, save_hpss_full, save_hpss_subset
+
+exptname='2015stream'
+mydatapath='/lustre/f1/unswept/Scott.Gregory/'${exptname}
+
+
+date8dig=(20150723 20150724 20150725 20150726 20150727 20150728 20150729 20150730 20150731 20150801 20150802 20150803 20150804 20150805 20150806 20150807 20150808 20150809 20150810 20150811 20150812 20150813 20150814 20150815 20150816 20150817 20150818 20150819 20150820 20150821 20150822 20150823 20150824 20150825 20150826 20150827 20150828 20150829 20150830 20150831 20150901 20150902 20150903 20150904 20150905 20150906 20150907 20150908 20150909 20150910 20150911 20150912 20150913 20150914 20150915 20150916 20150917 20150918 20150919 20150920 20150921 20150922 20150923 20150924 20150925 20150926 20150927 20150928 20150929 20150930 20151001 20151002 20151003 20151004 20151005 20151006 20151007 20151008 20151009 20151010 20151011 20151012 20151013 20151014 20151015 20151016 20151017 20151018 20151019 20151020 20151021 20151022 20151023 20151024 20151025 20151026 20151027 20151028 20151029 20151030 20151031 20151101 20151102 20151103 20151104 20151105 20151106 20151107 20151108 20151109 20151110 20151111 20151112 20151113 20151114 20151115 20151116 20151117 20151118 20151119 20151120 20151121 20151122 20151123 20151124)
+
+source $MODULESHOME/init/sh
+echo new line of text
+module load hsi
+echo module loaded 
+
+export hsidir=/3year/NCEPDEV/GEFSRR/${exptname}
+echo hsidir is $hsidir
+
+hours=('00' '06' '12' '18')
+
+for date in ${date8dig[*]}; do
+   echo analdate is $date
+
+   if [ -d $mydatapath/ ] #if directory exists
+   then
+      echo 'out directory '$mydatapath' exists'
+   else
+      echo 'making out directory '$mydatapath
+      mkdir -p $mydatapath
+   fi
+
+   cd ${mydatapath}
+   rm -rf ${date}'*'
+
+   for hr in ${hours[*]}; do
+      echo "extract ${hsidir}/${date}${hr}_subset.tar"
+      htar -xvf ${hsidir}/${date}${hr}_subset.tar
+      echo "extracted? ${hsidir}/${date}${hr}_subset.tar"
+   done
+done
+
+

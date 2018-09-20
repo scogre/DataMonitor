@@ -9,26 +9,38 @@ outputpath=sys.argv[3]
 diagpath=sys.argv[4]
 datayr=str(date)[0:4]
 
-if modelstream=='FV3s1999':
-   instrmnts=['amsua', 'avhrr', 'hirs2', 'msu', 'sndr']
-   satlites=[ 'n15'  , 'n15'  , 'n14'  , 'n14', 'g08' ]
-elif modelstream=='FV3s2003':
-   instrmnts=['amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'avhrr', 'avhrr', 'hirs2', 'hirs3', 'hirs3', 'msu', 'sndr']
-   satlites=[ 'n15'  , 'n16'  , 'n15'  , 'n16'  , 'n17'  , 'n16'  , 'n17'  , 'n14'  , 'n16'  , 'n17'  , 'n14', 'g08']
-elif modelstream=='FV3s2007':
-   instrmnts=['airs', 'amsua', 'amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'hirs3', 'mhs', 'sndr']
-   satlites=[ 'aqua', 'aqua' , 'n15'  , 'n18'  , 'n15'  , 'n16'  , 'n17'  , 'n17'  , 'n18', 'g11']
-elif modelstream=='FV3s2011':
-   instrmnts=['airs', 'amsua',  'amsua', 'amsua', 'amsua', 'amsua', 'avhrr'    , 'avhrr', 'hirs3', 'hirs4'   ,'hirs4', 'iasi'   , 'mhs'    ,'mhs', 'mhs' ]
-   satlites=[ 'aqua', 'aqua' ,'metop-a', 'n15'  , 'n18'  , 'n19'  , 'metop-a'  , 'n18'  , 'n17'  , 'metop-a' , 'n19' , 'metop-a', 'metop-a','n18', 'n19' ]
-elif modelstream=='FV3s2015':
-   instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'atms' , 'avhrr'    , 'avhrr', 'cris', 'hirs4'   , 'iasi'   ,     'mhs',     'mhs', 'mhs' , 'mhs','seviri' ]
-   satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n18'  , 'npp'  , 'metop-a'  , 'n18'  , 'npp' , 'metop-a' , 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'm10' ]
-else:
-   instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'amsua', 'amsua', 'amsub', 'amsub', 'amsub', 'atms' , 'avhrr'  , 'avhrr', 'avhrr', 'avhrr', 'avhrr', 'cris', 'hirs2' , 'hirs3', 'hirs3', 'hirs4'   , 'hirs4' , 'iasi'   ,    'mhs',     'mhs', 'mhs' , 'mhs', 'msu', 'seviri', 'sndr', 'sndr']
-   satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n16'  , 'n18'  , 'n19'  , 'n15'  , 'n16'  , 'n17'  , 'npp'  , 'metop-a', 'n15'  , 'n16'  , 'n17'  , 'n18'  , 'npp' , 'n14'   , 'n16'  , 'n17'  , 'metop-a' , 'n19'   , 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'n14',  'm10'  , 'g08' , 'g11' ]
-#   instrmnts=['hirs2','msu','avhrr','hirs3','amsua','amsub' ,'hirs4','sndr', 'mhs','ssmis','airs','atms','cris','seviri','iasi']
-#   satlites= [''     ,''   ,''      ,''     ,''     ,''     ,''     ,''    ,''    ,''     ,''    ,''    ,''    ,''      ,''   ]
+instrmnts=[ 'airs',  \
+            'amsua', 'amsua', 'amsua', 'amsua', 'amsua', 'amsua', 'amsua',   \
+            'amsub', 'amsub', 'amsub', \
+            'atms',  \
+            'avhrr', 'avhrr', 'avhrr', 'avhrr', 'avhrr', \
+            'cris', \
+            'hirs2', 'hirs2',  \
+            'hirs3', 'hirs3', 'hirs3',   \
+            'hirs4', 'hirs4',   \
+            'iasi', 'iasi',  \
+            'mhs', 'mhs', 'mhs', 'mhs',  \
+            'msu', 'msu', \
+            'seviri', 'seviri', \
+            'sndr', 'sndr', 'sndr','sndr','sndr','sndr','sndr', \
+            'ssmis', 'ssmis' ]
+satlites= [ 'aqua', \
+            'aqua', 'metop-a', 'metop-b', 'n15', 'n16', 'n18', 'n19', \
+            'n15', 'n16', 'n17',  \
+            'npp', \
+            'metop-a', 'n15', 'n16', 'n17', 'n18',  \
+            'npp', \
+            'n11', 'n14',  \
+            'n15', 'n16', 'n17',  \
+            'metop-a', 'n19', \
+            'metop-a', 'metop-b', \
+            'metop-a', 'metop-b', 'n18', 'n19',  \
+            'n11', 'n14',  \
+            'm09', 'm10',  \
+            'g08', 'g10', 'g11', 'g12', 'g13', 'g14', 'g15', \
+            'f17', 'f18' ]
+
+
 numinst=len(instrmnts)
 
 

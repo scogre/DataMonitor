@@ -21,8 +21,9 @@ do
    echo "$Y"
 
    ###################################################################
-   diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
+   #diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
    #diagpath=$outpath$YEARRUN'stream/' ### when I download from the hpss
+   diagpath='/lustre/f1/unswept/Anna.V.Shlyaeva/fv3reanl_diag/'
    echo diagpath is $diagpath
    ###################################################################
 
@@ -54,14 +55,14 @@ do
    fi
   
 
-   CONV_ANNFILES=$(ls -1d $outputpath/CONV_t*$modelname*${datayrs[$count]}*nc)   ## Temperature is reliably available
+   CONV_ANNFILES=$(ls -1d $outputpath/CONV_$modelname*${datayrs[$count]}*_t_*nc)   ## Temperature is reliably available
    convnumfile=${#CONV_ANNFILES}
    echo convnumfile=${#CONV_ANNFILES}
    if [ "$convnumfile" == "0" ]
    then
       makeblanks='python CONV/make_conv_annual_all.py '$modelname' '${datayrs[$count]}' '$outputpath
       $makeblanks
-      CONV_ANNFILES=$(ls -1d $outputpath/CONV*$modelname*${datayrs[$count]}*nc)
+      CONV_ANNFILES=$(ls -1d $outputpath/CONV_$modelname*${datayrs[$count]}*_t_*nc) ##Temperature is reliably available
       #echo $CONV_ANNFILES
       numfile=${#CONV_ANNFILES}
       echo numfile=${#CONV_ANNFILES}
@@ -70,13 +71,15 @@ do
 
    ###################################################################
    listfilename='latestlist_'$modelname'.txt'
-   dates_in_ann_fname='date_in_ann'$YEARRUN'.txt'
+   dates_in_ann_fname='date_in_ann'$modelname'_'${datayrs[$count]}'.txt'
    rm $listfilename
    rm $dates_in_ann_fname
    ###################################################################
    ## listing the completed model dates
-   ls -1d $diagpath$YEARRUN* | xargs -n 1 basename  > $listfilename
-   modeldates=$(ls -1d $diagpath$YEARRUN* | xargs -n 1 basename)
+   ls -1d $diagpath${datayrs[$count]}* | xargs -n 1 basename  > $listfilename
+   modeldates=$(ls -1d $diagpath${datayrs[$count]}* | xargs -n 1 basename)
+#   ls -1d $diagpath$YEARRUN* | xargs -n 1 basename  > $listfilename
+#   modeldates=$(ls -1d $diagpath$YEARRUN* | xargs -n 1 basename)
    echo modeldates=$modeldates
    ##################################################################
 
@@ -105,7 +108,7 @@ do
          echo GO=$gosig
          echo END=$endsig
          echo lines=$lines
-         echo fusestring=$fusestring
+#         echo fusestring=$fusestring
       done
       
       lenFUSE=${#fusestring}

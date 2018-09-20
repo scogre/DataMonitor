@@ -34,7 +34,7 @@ for var in variables:
       else:
          pcutoffs=range(0,1000,100) ##=[0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
    
-      outfile = outputpath+'/CONV_'+var+'_'+modelstream+'_'+str(datayr)+'_'+region+'.nc'
+      outfile = outputpath+'/CONV_'+modelstream+'_'+str(datayr)+'_'+var+'_'+region+'.nc'
 
       if os.path.isfile(outfile):
          if modelstream=='CFSR':

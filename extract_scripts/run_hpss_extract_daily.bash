@@ -1,16 +1,19 @@
 #!/bin/bash
 #################20070311002015030807##################################################
-YEARRUN=1999
-STARTMODAHR=040100
-startdate10dig=$YEARRUN$STARTMODAHR
-windowlen_days=90
-hourincremnt=6
+YEARRUN=2007
+#STARTMODAHR=021800
+STARTYR=2007
+STARTMODAHR=052700
+startdate10dig=$STARTYR$STARTMODAHR
+windowlen_days=44
+#hourincremnt=6
+hourincremnt=24
 
 exptname=$YEARRUN'stream'
 
 #diagpath='/lustre/f1/Oar.Esrl.Nggps_psd/'$YEARRUN'stream/'
 #mydatapath='/lustre/f1/Scott.Gregory/'${exptname}'_B'
-mydatapath='/lustre/f1/Scott.Gregory/'${exptname}
+mydatapath='/lustre/f1/unswept/Scott.Gregory/'${exptname}
 ###################################################################
 
 startdate_nohour=${startdate10dig:0:8}
@@ -59,7 +62,7 @@ while [ $datesec -lt $endseconds ]; do
            date10dig[$count]=$(date +%Y%m%d%H -d "1970-01-01 $datesec sec GMT")
            hour[$count]=${date10dig[$count]:8:2}
         fi 
-
+        date8dig[$count]=${date10dig[$count]:0:8}
         #echo hour= ${hour[$count]}
         datesec=$((datesec+hourincremnt*60*60))
         ((count++))
@@ -89,12 +92,12 @@ cd $mydatapath
 echo working place${PWD}
 
 
-for date in ${date10dig[*]}; do
+for date in ${date8dig[*]}; do
    hr=${hour[$count]}        
    echo date IS $date
    echo HOUR IS $hr
 #   MSUB='msub -A nggps_psd -q urgent -lpartition=c4 -lwalltime=5:00:00 -N untar -e sgextract_'$date'.err -o sgextract_'$date'.out -S /bin/csh -venddate10dig='$date',exptname='$exptname',mydatapath='$mydatapath' /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/get_sgextract.sh'
-   MSUB='msub -venddate10dig='$date',exptname='$exptname',mydatapath='$mydatapath' /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/get_sgextract_new.sh'
+   MSUB='msub -venddate8dig='$date',exptname='$exptname',mydatapath='$mydatapath' /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/get_sgextract_daily.sh'
    echo $MSUB
    $MSUB
 done
