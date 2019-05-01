@@ -16,8 +16,8 @@ date2  = sys.argv[3]
 
 varnames=['t','uv','q','ps']
 
-diagpath = '/lustre/f1/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
-outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
+diagpath = '/lustre/f2/scratch/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
+outputpath = '/lustre/f2/dev/esrl/Anna.V.Shlyaeva/monitor/'
 
 years = range(int(date1[0:4]), int(date2[0:4])+1)
 print years

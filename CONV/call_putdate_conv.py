@@ -18,8 +18,8 @@ datayr=str(date)[0:4]
 regions=['GLOBL','TROPI','NORTH','SOUTH']
 varnames=['t','u','v','q','ps','gps']
 
-diagpath = '/lustre/f1/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
-outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
+diagpath = '/lustre/f2/scratch/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
+outputpath = '/lustre/f2/dev/esrl/Anna.V.Shlyaeva/monitor/'
 for var in varnames:
    for region in regions:
       if var == 'ps':

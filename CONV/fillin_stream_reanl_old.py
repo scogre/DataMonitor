@@ -17,8 +17,8 @@ date2  = sys.argv[3]
 regions=['GLOBL','TROPI','NORTH','SOUTH']
 varnames=['t','u','v','q','ps']
 
-diagpath = '/lustre/f1/unswept/Scott.Gregory/'+modelstream+'stream/'
-outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
+diagpath = '/lustre/f2/dev/esrl/Scott.Gregory/'+modelstream+'stream/'
+outputpath = '/lustre/f2/dev/esrl/Anna.V.Shlyaeva/monitor/'
 
 years = range(int(date1[0:4]), int(date2[0:4])+1)
 

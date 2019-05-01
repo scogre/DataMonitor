@@ -16,9 +16,9 @@ date2  = sys.argv[3]
 
 varnames=['t','uv','q','ps']
 
-diagpath = '/lustre/f1/unswept/Scott.Gregory/'+modelstream+'stream/'
-#diagpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/fv3reanl_diag/'
-outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
+diagpath = '/lustre/f2/dev/esrl/Scott.Gregory/'+modelstream+'stream/'
+#diagpath = '/lustre/f2/dev/esrl/Anna.V.Shlyaeva/fv3reanl_diag/'
+outputpath = '/lustre/f2/dev/esrl/Anna.V.Shlyaeva/monitor/'
 
 years = range(int(date1[0:4]), int(date2[0:4])+1)
 print years
