@@ -2,8 +2,8 @@
 from plot_rad_func import plot_rad_func
 import sys, os, os.path, cgi, re
 
-imagedir='/lustre/f1/unswept/Anna.V.Shlyaeva/images/latest/'
-datapath='/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
+imagedir='/lustre/f2/dev/esrl/Anna.V.Shlyaeva/images/latest/'
+datapath='/lustre/f2/dev/esrl/Anna.V.Shlyaeva/monitor/'
 
 if len(sys.argv) < 3:
     raise SystemExit('python call_plot.py <modelstream> <begindate> <enddate>')

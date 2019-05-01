@@ -2,8 +2,8 @@
 from plot_conv_func import plot_conv_func
 import sys
 
-imagedir='/lustre/f1/unswept/Anna.V.Shlyaeva/images/latest/'
-datapath='/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
+imagedir='/lustre/f2/dev/esrl/Anna.V.Shlyaeva/images/latest/'
+datapath='/lustre/f2/dev/esrl/Anna.V.Shlyaeva/monitor/'
 
 if len(sys.argv) < 3:
     raise SystemExit('python call_plot.py <modelstream> <begindate> <enddate>')
@@ -17,15 +17,15 @@ region='GLOBL'
 
 print 'processing from ', begindate, ' to ', enddate
 
-varnames=['t','u','v','q']
+varnames=['v']
 plevels=range(0,1000,100)
 for var in varnames:
    for plev in plevels:
      figname = imagedir+modelstreams[0]+'_'+var+'_'+str(plev)+'.png'
      plot_conv_func(modelstreams,datapath,var,plev,region,begindate,enddate,figname)
 
-var='ps'
-plev=0
-figname = imagedir+modelstreams[0]+'_'+var+'_'+str(plev)+'.png'
-plot_conv_func(modelstreams,datapath,var,plev,region,begindate,enddate,figname)
+#var='ps'
+#plev=0
+#figname = imagedir+modelstreams[0]+'_'+var+'_'+str(plev)+'.png'
+#plot_conv_func(modelstreams,datapath,var,plev,region,begindate,enddate,figname)
 

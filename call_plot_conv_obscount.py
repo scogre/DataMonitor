@@ -2,8 +2,8 @@
 from plot_conv_obscount_func import plot_conv_obscount_func
 import sys
 
-imagepath='/lustre/f1/unswept/Anna.V.Shlyaeva/images/obscounts/'
-datapath='/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
+imagepath='/lustre/f2/dev/esrl/Anna.V.Shlyaeva/images/obscounts/'
+datapath='/lustre/f2/dev/esrl/Anna.V.Shlyaeva/monitor/'
 
 if len(sys.argv) < 3:
     raise SystemExit('python call_plot.py <modelstream> <begindate> <enddate>')

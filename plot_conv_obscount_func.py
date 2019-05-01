@@ -53,7 +53,7 @@ def plot_conv_obscount_func(stream,datapath,begindate,enddate,imagepath):
         for ivar in range(numvars):
           #print('modelstream=',modelstream)
           modelfile=datapath+'CONV_'+modelstreams[modct]+'_'+str(year)+'_'+varnames[ivar]+'_obscounts.nc'
-          #print modelfile
+          print modelfile
           anndata  = Dataset(modelfile, 'r')
           thisdates = anndata['All_Dates'][:]
           indx_in = np.where(np.in1d(thisdates, dates)) [0]

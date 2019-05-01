@@ -2,8 +2,8 @@
 from plot_rad_obscount_func import plot_rad_obscount_func
 import sys
 
-imagedir='/lustre/f1/unswept/Anna.V.Shlyaeva/images/obscounts/'
-datapath='/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
+imagedir='/lustre/f2/dev/esrl/Anna.V.Shlyaeva/images/obscounts/'
+datapath='/lustre/f2/dev/esrl/Anna.V.Shlyaeva/monitor/'
 
 if len(sys.argv) < 3:
     raise SystemExit('python call_plot.py <modelstream> <date1> <date2>')
