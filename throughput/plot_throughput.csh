@@ -1,5 +1,5 @@
 #!/bin/csh
-cd /lustre/f1/unswept/Anna.V.Shlyaeva/DataMonitor/throughput/
+cd /lustre/f2/dev/esrl/Anna.V.Shlyaeva/DataMonitor/throughput/
 
 module load PythonEnv-noaa/1.4.0
 module load cray-hdf5

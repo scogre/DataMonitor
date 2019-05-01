@@ -40,7 +40,7 @@ for i, ax in enumerate(axes.flat):
     willend = today + dt.timedelta(days = willtake)
 
     for j in range(len(rate)):
-      ax.bar(left=dateplot[j],height=rate[j],color='blue', alpha=0.4)
+      ax.bar(left=dateplot[j],height=rate[len(rate)-j-1],color='blue', alpha=0.4)
     ax.axhline(rate.mean(), color='b', ls='--')
 
     ax.xaxis.set_major_formatter(dates.DateFormatter('%m/%d/%Y'))
@@ -51,5 +51,5 @@ for i, ax in enumerate(axes.flat):
     ax.axis('off')
 fig.tight_layout(rect=[0, 0.05, 1, 0.95],pad=2)
 plt.text(0.05, 0.02, "Generated "+strftime("%Y-%m-%d %H:%M:%S", gmtime())+"UTC", fontsize=12, color='grey',transform=fig.transFigure)
-plt.savefig('/lustre/f1/unswept/Anna.V.Shlyaeva/images/throughput/reanl_throughput.png')
+plt.savefig('/lustre/f2/dev/esrl/Anna.V.Shlyaeva/images/throughput/reanl_throughput.png')
 plt.close()
