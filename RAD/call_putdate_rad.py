@@ -22,8 +22,8 @@ instrmnts=['airs', 'amsua',  'amsua',  'amsua','amsua', 'amsua', 'amsua', 'amsua
 satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n16'  , 'n18'  , 'n19'  , 'n15'  , 'n16'  , 'n17'  , 'npp'  , 'metop-a', 'n15'  , 'n16'  , 'n17'  , 'n18'  , 'npp' , 'n14'   , 'n16'  , 'n17'  , 'metop-a' , 'n19'   , 'metop-a','metop-a', 'metop-b', 'n18' , 'n19', 'n14',  'm10'  , 'g08' , 'g11' ]
 
 
-diagpath = '/lustre/f1/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
-outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/fv3_reanl/'
+diagpath = '/lustre/f2/scratch/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
+outputpath = '/lustre/f2/dev/esrl/Anna.V.Shlyaeva/monitor/fv3_reanl/'
 numinst=len(instrmnts)
 #for instrmnt in instrmnts:
 for nn in range(numinst):

@@ -7,7 +7,7 @@ satlites=[ 'aqua', 'aqua' ,'metop-a','metop-b','n15'  , 'n16'  , 'n18'  , 'n19' 
 
 
 numinst=len(instrmnts)
-outputpath='/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/fv3_reanl/'
+outputpath='/lustre/f2/dev/esrl/Anna.V.Shlyaeva/monitor/fv3_reanl/'
 for streamyear in [1999, 2003, 2007, 2011, 2015]:
   for year in range(5):
    for nn in range(numinst):

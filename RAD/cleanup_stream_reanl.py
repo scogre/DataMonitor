@@ -55,8 +55,8 @@ satlites= [ 'aqua', \
             'g11', 'g12', 'g13', 'g14', 'g15', \
             'f17', 'f18' ]
 
-diagpath = '/lustre/f1/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
-outputpath = '/lustre/f1/unswept/Anna.V.Shlyaeva/monitor/'
+diagpath = '/lustre/f2/scratch/Oar.Esrl.Nggps_psd/'+modelstream+'stream/'
+outputpath = '/lustre/f2/dev/esrl/Anna.V.Shlyaeva/monitor/'
 numinst=len(instrmnts)
 
 years = range(int(date1[0:4]), int(date2[0:4])+1)
