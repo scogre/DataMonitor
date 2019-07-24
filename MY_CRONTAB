@@ -1,0 +1,5 @@
+SHELL=/bin/tcsh
+0 0,12 * * * /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/cronrun_slurm.bash  >> /lustre/f2/dev/Scott.Gregory/cronjob_slurm_cronlog
+5 2,14 * * * /ncrc/home1/Scott.Gregory/reanalproject/py-ncepbufr-SG/SGmergeNEW/DataMonitor/tar_and_gcp.tcsh  >> /lustre/f2/dev/Scott.Gregory/tarNmove_cronlog
+
+
